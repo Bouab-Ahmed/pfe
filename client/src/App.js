@@ -4,8 +4,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import Feeds from './pages/Feeds';
 import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register.jsx';
+import Login from './pages/login/Login';
+import Register from './pages/register/Register.jsx';
 function App() {
   return (
     <>

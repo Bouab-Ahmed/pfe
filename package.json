@@ -29,7 +29,10 @@
     "multer-gridfs-storage": "^5.0.2"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.14",
     "concurrently": "^7.6.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "postcss": "^8.4.21",
+    "postcss-modules": "^6.0.0"
   }
 }
