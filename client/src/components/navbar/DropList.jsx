@@ -24,7 +24,7 @@ const DropList = ({ item, categories }) => {
         <Button
           {...triggers}
           variant='text'
-          className='flex items-center gap-1 font-semibold text-[#222222] px-4'>
+          className='flex items-center gap-1 font-semibold text-textColor px-4 hover:bg-primary hover:bg-opacity-10 hover:border-0 hover:outline-none hover:ring-0 border-0 outline-none ring-0'>
           {item}
           <ChevronDownIcon
             strokeWidth={2.5}
@@ -34,16 +34,16 @@ const DropList = ({ item, categories }) => {
           />
         </Button>
       </MenuHandler>
-      <MenuList {...triggers} className='w-fit overflow-visible lg:grid'>
-        <ul className='flex w-full flex-col'>
+      <MenuList {...triggers} className='w-fit overflow-visible'>
+        <ul className='flex w-full flex-col hover:border-0 hover:outline-none hover:ring-0 border-0 outline-none ring-0'>
           {categories?.map(({ name, path }) => (
-            <Link to={path} key={name}>
-              <MenuItem>
-                <Typography variant='h6' color='blue-gray' className='mb-1'>
+            <MenuItem className='hover:bg-primary hover:bg-opacity-10'>
+              <Link to={path} key={name}>
+                <Typography variant='h6' className='text-textColor'>
                   {name}
                 </Typography>
-              </MenuItem>
-            </Link>
+              </Link>
+            </MenuItem>
           ))}
         </ul>
       </MenuList>

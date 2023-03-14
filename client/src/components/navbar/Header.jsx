@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logoutUser, reset } from '../features/auth/authSlice';
-import logo from '../assets/logo.png';
+import { logoutUser, reset } from '../../features/auth/authSlice';
+// import logo from '../../assets/logo.png';
 import NavList from './NavList';
 import { useState, useEffect } from 'react';
 import {
@@ -31,10 +31,12 @@ function Header() {
   }, []);
 
   return (
-    <Navbar className='mx-auto w-[100vw] py-2 px-4 lg:px-8 lg:py-2 rounded-none shadow-sm'>
-      <div className='container mx-auto flex items-center justify-between text-blue-gray-900'>
-        <div className='h-10 cursor-pointer' onClick={() => navigate('/')}>
-          <img src={logo} alt='logo' className='w-full h-full' />
+    <Navbar className='py-2 px-4 lg:px-8 lg:py-2 rounded-none shadow-sm'>
+      <div className='flex items-center justify-between text-blue-gray-900'>
+        <div
+          className='text-3xl text-primary font-DINRoundPro cursor-pointer'
+          onClick={() => navigate('/')}>
+          Logo
         </div>
         <div className='flex items-center justify-between gap-3'>
           <div className='hidden lg:block'>
@@ -43,14 +45,14 @@ function Header() {
           {user ? (
             <Button
               size='sm'
-              className='hidden lg:inline-block bg-gradient-to-r to-[#F9533E] from-yellow-900 px-6'
+              className='hidden lg:inline-block bg-gradient-to-r to-primary from-yellow-900 px-6'
               onClick={onLogout}>
               <span>Log out</span>
             </Button>
           ) : (
             <Button
               size='sm'
-              className='hidden lg:inline-block bg-gradient-to-r to-[#F9533E] from-yellow-900 px-6'
+              className='hidden lg:inline-block bg-gradient-to-r to-primary from-yellow-900 px-6'
               onClick={() => navigate('/auth/login')}>
               <span>Login</span>
             </Button>

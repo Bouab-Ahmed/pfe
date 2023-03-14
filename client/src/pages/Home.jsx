@@ -1,9 +1,10 @@
 import React from 'react';
+import Hero from '../components/hero/Hero';
 
 const Home = () => {
   return (
-    <div className='flex space-y-2 justify-around'>
-      <h1>Home page</h1>
+    <div className=''>
+      <Hero />
     </div>
   );
 };

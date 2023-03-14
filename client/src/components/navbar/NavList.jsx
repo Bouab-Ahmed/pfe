@@ -1,7 +1,7 @@
 import { Typography } from '@material-tailwind/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import navItems from '../shared/navitems';
+import navItems from '../../shared/navitems';
 import DropList from './DropList';
 
 const NavList = () => {

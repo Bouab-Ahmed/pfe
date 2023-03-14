@@ -10,10 +10,13 @@ connectDB();
 
 const app = express();
 
+// middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
+
+// routes
 app.use('/posts', require('./routes/postRoutes'));
 app.use('/auth', require('./routes/userRoutes'));
 

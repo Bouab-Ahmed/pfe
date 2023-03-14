@@ -8,6 +8,11 @@ module.exports = withMT({
         DINRoundPro: ['DINRoundPro', 'sans-serif'],
         sourceSansPro: ['Source Sans Pro', 'sourceSansPro'],
       },
+      colors: {
+        primary: '#F9533E',
+        textColor: '#222222',
+        textColorLight: '#8C887E',
+      },
     },
   },
   plugins: [],
