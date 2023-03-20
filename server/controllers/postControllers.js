@@ -44,14 +44,12 @@ const updatePost = asyncHandler(async (req, res) => {
     throw new Error("can't find this post");
   }
 
-  const user = await User.findById(req.user.id);
-
-  if (!user) {
+  if (!req.user) {
     res.status(400);
     throw new Error("can't find this user");
   }
 
-  if (user.id !== post.user.toString()) {
+  if (req.user.id !== post.user.toString()) {
     res.status(401);
     throw new Error('Not authorized to update this post');
   }
@@ -72,14 +70,12 @@ const deletePost = asyncHandler(async (req, res) => {
     res.status(400).json({ msg: 'post not found' });
   }
 
-  const user = await User.findById(req.user.id);
-
-  if (!user) {
+  if (!req.user) {
     res.status(400);
     throw new Error("can't find this user");
   }
 
-  if (user.id !== post.user.toString()) {
+  if (req.user.id !== post.user.toString()) {
     res.status(401);
     throw new Error('Not authorized to delete this post');
   }
