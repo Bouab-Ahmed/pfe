@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -6,15 +6,43 @@ import { FaUser } from 'react-icons/fa';
 import Spinner from '../../components/Spinner';
 import { registerUser, reset } from '../../features/auth/authSlice';
 
+const convertBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'name':
+      return { ...state, name: action.payload };
+    case 'email':
+      return { ...state, email: action.payload };
+    case 'password':
+      return { ...state, password: action.payload };
+    case 'password2':
+      return { ...state, password2: action.payload };
+    default:
+      return state;
+  }
+};
+
 function Register() {
-  const [formData, setFormData] = useState({
+  const [state, localDispatch] = useReducer(reducer, {
     name: '',
     email: '',
     password: '',
     password2: '',
   });
 
-  const { name, email, password, password2 } = formData;
+  const [cardId, setCardId] = useState('');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -29,31 +57,40 @@ function Register() {
     }
 
     if (isSuccess || user) {
+      toast.success('Registration successful');
       navigate('/');
     }
 
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
-  const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
+  // const onChange = (e) => {
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     [e.target.name]: e.target.value,
+  //   }));
+  // };
+
+  const onChange = async (e) => {
+    const file = e.target.files[0];
+    const base64 = await convertBase64(file);
+    setCardId(base64);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (password !== password2) {
+    console.log(e);
+    if (state.password !== state.password2) {
       toast.error('Passwords do not match');
     } else {
       const userData = {
-        name,
-        email,
-        password,
+        name: state.name,
+        email: state.email,
+        password: state.password,
+        cardId: cardId,
       };
-
+      // console.log(userData);
       dispatch(registerUser(userData));
     }
   };
@@ -79,9 +116,11 @@ function Register() {
               className='form-control'
               id='name'
               name='name'
-              value={name}
+              value={state.name}
               placeholder='Enter your name'
-              onChange={onChange}
+              onChange={(e) =>
+                localDispatch({ type: 'name', payload: e.target.value })
+              }
             />
           </div>
           <div className='form-group'>
@@ -90,9 +129,11 @@ function Register() {
               className='form-control'
               id='email'
               name='email'
-              value={email}
+              value={state.email}
               placeholder='Enter your email'
-              onChange={onChange}
+              onChange={(e) =>
+                localDispatch({ type: 'email', payload: e.target.value })
+              }
             />
           </div>
           <div className='form-group'>
@@ -101,9 +142,11 @@ function Register() {
               className='form-control'
               id='password'
               name='password'
-              value={password}
+              value={state.password}
               placeholder='Enter password'
-              onChange={onChange}
+              onChange={(e) =>
+                localDispatch({ type: 'password', payload: e.target.value })
+              }
             />
           </div>
           <div className='form-group'>
@@ -112,9 +155,21 @@ function Register() {
               className='form-control'
               id='password2'
               name='password2'
-              value={password2}
+              value={state.password2}
               placeholder='Confirm password'
-              onChange={onChange}
+              onChange={(e) =>
+                localDispatch({ type: 'password2', payload: e.target.value })
+              }
+            />
+          </div>
+          <div className='form-group'>
+            <input
+              type='file'
+              className='form-control'
+              id='file'
+              name='file'
+              placeholder='upload ur id card'
+              onChange={(e) => onChange(e)}
             />
           </div>
           <div className='form-group'>

@@ -15,6 +15,23 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, 'Please Add a name'],
     },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
+    },
+    fellows: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: 'User',
+    },
+    fellowers: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: 'User',
+    },
+    cardId: {
+      type: String,
+      required: [true, 'Please upload you id card'],
+    },
   },
   {
     timestamps: true,
