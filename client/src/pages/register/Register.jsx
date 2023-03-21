@@ -58,7 +58,7 @@ function Register() {
 
     if (isSuccess || user) {
       toast.success('Registration successful');
-      navigate('/');
+      navigate('/feeds');
     }
 
     dispatch(reset());
