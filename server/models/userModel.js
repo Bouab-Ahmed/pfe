@@ -17,8 +17,8 @@ const userSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['user', 'admin'],
-      default: 'user',
+      enum: ['writer', 'reader', 'admin'],
+      default: 'reader',
     },
     fellows: {
       type: [mongoose.Schema.Types.ObjectId],
@@ -31,6 +31,10 @@ const userSchema = mongoose.Schema(
     cardId: {
       type: String,
       required: [true, 'Please upload you id card'],
+    },
+    profilePic: {
+      type: String,
+      default: '../public/assets/default.jpg',
     },
   },
   {
