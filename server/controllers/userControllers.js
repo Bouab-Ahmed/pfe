@@ -3,16 +3,24 @@ const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
 
+
+
 //@desc     Register new user
 //@route    POST /auth/register
 //@access   Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, cardId } = req.body;
+  const { name, email, password, cardId, role } = req.body;
 
   // Make sure that all fields are not empty
-  if (!name || !email || !password || !cardId) {
+  if (!name || !email || !password) {
     res.status(400);
     throw new Error('please add all the fields');
+  }
+  if (role === 'writer') {
+    if (!cardId) {
+      res.status(400);
+      throw new Error('please add all the fields');
+    }
   }
 
   //check if user already exists
@@ -96,9 +104,43 @@ const generateToken = (id) => {
   });
 };
 
+//desc send otp
+//route POST auth/otp
+//access Public
+
+const sendOtpCode = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  // Generate a secure token and store it on the server-side
+  const token = crypto.randomBytes(3).toString('hex');
+  // Send the token to the user's email
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.MY_EMAIL,
+      pass: process.env.MY_PASSWORD,
+    },
+  });
+  const mailOptions = {
+    from: process.env.MY_EMAIL,
+    to: email,
+    subject: 'OTP for login',
+    text: `Your OTP is ${token}`,
+  };
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: 'Verification email sent' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error sending verification email' });
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
   getMe,
   getAll,
+  sendOtpCode,
 };
