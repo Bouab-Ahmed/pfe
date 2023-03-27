@@ -7,26 +7,18 @@ import DropList from './DropList';
 const NavList = () => {
   return (
     <ul className='mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row items-center lg:gap-2'>
-      {navItems.map((item) =>
+      {navItems.map((item, i) =>
         item.name === 'Browse' ? (
-          <DropList
-            item={item.name}
-            categories={item.categories}
-            key={item.name}
-          />
+          <DropList item={item.name} categories={item.categories} key={i} />
         ) : item.name === 'Language' ? (
-          <DropList
-            item={item.name}
-            categories={item.languages}
-            key={item.name}
-          />
+          <DropList item={item.name} categories={item.languages} key={i} />
         ) : (
           <Typography
             as='li'
             variant='small'
             color='blue-gray'
             className='font-semibold text-base'
-            key={item.name}>
+            key={i}>
             <Link to={item.path} className='mb-1 flex items-center'>
               {item.name}
             </Link>

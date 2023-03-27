@@ -37,7 +37,9 @@ const DropList = ({ item, categories }) => {
       <MenuList {...triggers} className='w-fit overflow-visible'>
         <ul className='flex w-full flex-col hover:border-0 hover:outline-none hover:ring-0 border-0 outline-none ring-0'>
           {categories?.map(({ name, path }) => (
-            <MenuItem className='hover:bg-primary hover:bg-opacity-10'>
+            <MenuItem
+              className='hover:bg-primary hover:bg-opacity-10'
+              key={name}>
               <Link to={path} key={name}>
                 <Typography variant='h6' className='text-textColor'>
                   {name}
