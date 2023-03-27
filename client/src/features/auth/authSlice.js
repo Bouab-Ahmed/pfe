@@ -8,8 +8,8 @@ const initialState = {
   isError: false,
   isLoading: false,
   isSuccess: false,
-  user: user ? user : null,
   message: '',
+  user: user ? user : null,
 };
 
 // register user
@@ -51,7 +51,7 @@ export const loginUser = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk('auth/logoutUser', async () => {
-  await authService.logout();
+  authService.logout();
 });
 
 export const authSlice = createSlice({
@@ -102,5 +102,7 @@ export const authSlice = createSlice({
 });
 
 export const { reset } = authSlice.actions;
+
+export const getUser = (state) => state.auth.user;
 
 export default authSlice.reducer;
