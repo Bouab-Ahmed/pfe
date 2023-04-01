@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 // get user from local storage
-const user = JSON.parse(localStorage.getItem('user'));
-
-
 
 const Feeds = () => {
+  const user = useRef(JSON.parse(localStorage.getItem('user'))).current;
   return (
     <div>
       <h1>Feeds</h1>
