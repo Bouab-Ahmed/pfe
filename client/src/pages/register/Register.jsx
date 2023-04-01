@@ -6,6 +6,7 @@ import Spinner from '../../components/Spinner';
 import { registerUser, reset } from '../../features/auth/authSlice';
 import { useLocation } from 'react-router-dom';
 import defaultPic from '../../assets/default.jpg';
+const adminSecretCode = 'admin';
 
 const convertBase64 = (file) => {
   return new Promise((resolve, reject) => {
@@ -46,6 +47,8 @@ function Register() {
   });
 
   const [cardId, setCardId] = useState('');
+  const [adminRole, setAdminRole] = useState(false);
+  const [adminCode, setAdminCode] = useState('');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -78,14 +81,18 @@ function Register() {
     if (state.password !== state.password2) {
       toast.error('Passwords do not match');
     } else {
+      if (adminRole && adminCode !== adminSecretCode) {
+        toast.error('Invalid admin code');
+        return;
+      }
       const userData = {
         name: state.name,
         email: state.email,
         password: state.password,
-        role: role ? role : 'reader',
+        role: adminRole ? 'admin' : role,
         profilePic: defaultPic,
       };
-      if (role === 'writer') {
+      if (adminRole === false && role === 'writer') {
         userData.cardId = cardId;
       }
       console.log(userData);
@@ -122,7 +129,7 @@ function Register() {
               <input
                 type='text'
                 required
-                className='w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-pribg-primary shadow-sm rounded-lg'
+                className='w-full mt-2 px-3 py-2 text-gray-900 bg-transparent outline-none border border-gray-400 focus:border-primary shadow-sm rounded-lg'
                 name='fullName'
                 value={state.name}
                 onChange={(e) =>
@@ -135,7 +142,7 @@ function Register() {
               <input
                 type='email'
                 required
-                className='w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-pribg-primary shadow-sm rounded-lg'
+                className='w-full mt-2 px-3 py-2 text-gray-900 bg-transparent outline-none border border-gray-400 focus:border-primary shadow-sm rounded-lg'
                 name='email'
                 value={state.email}
                 onChange={(e) =>
@@ -148,7 +155,7 @@ function Register() {
               <input
                 type='password'
                 required
-                className='w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-pribg-primary shadow-sm rounded-lg'
+                className='w-full mt-2 px-3 py-2 text-gray-900 bg-transparent outline-none border border-gray-400 focus:border-primary shadow-sm rounded-lg'
                 name='password'
                 value={state.password}
                 onChange={(e) =>
@@ -161,7 +168,7 @@ function Register() {
               <input
                 type='password'
                 required
-                className='w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-pribg-primary shadow-sm rounded-lg'
+                className='w-full mt-2 px-3 py-2 text-gray-900 bg-transparent outline-none border border-gray-400 focus:border-primary shadow-sm rounded-lg'
                 name='password'
                 value={state.password2}
                 onChange={(e) =>
@@ -169,13 +176,33 @@ function Register() {
                 }
               />
             </div>
-            {role === 'writer' && (
+
+            <div className='flex items-center gap-1'>
+              <input
+                type='checkbox'
+                className='px-3 py-2 bg-transparent outline-none border border-gray-400 focus:border-primary shadow-sm rounded-lg'
+                name='admin'
+                onChange={(e) => setAdminRole(e.target.checked)}
+              />
+              <label className='font-medium'>Are you an admin</label>
+            </div>
+            {adminRole && (
+              <input
+                type='text'
+                required
+                className='w-full mt-2 px-3 py-2 text-gray-900 bg-transparent outline-none border border-gray-400 focus:border-primary shadow-sm rounded-lg'
+                name='adminCode'
+                onChange={(e) => setAdminCode(e.target.value)}
+              />
+            )}
+
+            {role === 'writer' && adminRole === false && (
               <div>
                 <label className='font-medium'>upload your id card</label>
                 <input
                   type='file'
                   required
-                  className='w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-pribg-primary shadow-sm rounded-lg'
+                  className='w-full mt-2 px-3 py-2 text-gray-900 bg-transparent outline-none border border-gray-400 focus:border-primary shadow-sm rounded-lg'
                   name='file'
                   onChange={onChange}
                 />
