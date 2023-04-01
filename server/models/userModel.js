@@ -30,11 +30,9 @@ const userSchema = mongoose.Schema(
     },
     cardId: {
       type: String,
-      required: [true, 'Please upload you id card'],
     },
     profilePic: {
       type: String,
-      default: '../public/assets/default.jpg',
     },
   },
   {

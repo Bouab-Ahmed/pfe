@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import Spinner from '../../components/Spinner';
 import { registerUser, reset } from '../../features/auth/authSlice';
 import { useLocation } from 'react-router-dom';
+import defaultPic from '../../assets/default.jpg';
 
 const convertBase64 = (file) => {
   return new Promise((resolve, reject) => {
@@ -37,7 +38,6 @@ const reducer = (state, action) => {
 function Register() {
   const location = useLocation();
   const role = location.search.split('=')[1];
-  console.log(role);
   const [state, localDispatch] = useReducer(reducer, {
     name: '',
     email: '',
@@ -82,12 +82,13 @@ function Register() {
         name: state.name,
         email: state.email,
         password: state.password,
-        role: role ? role : 'user',
+        role: role ? role : 'reader',
+        profilePic: defaultPic,
       };
       if (role === 'writer') {
         userData.cardId = cardId;
       }
-      // console.log(userData);
+      console.log(userData);
       dispatch(registerUser(userData));
     }
   };

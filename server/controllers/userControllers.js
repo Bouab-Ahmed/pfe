@@ -9,18 +9,12 @@ const User = require('../models/userModel');
 //@route    POST /auth/register
 //@access   Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, cardId, role } = req.body;
+  const { name, email, password, cardId, role, profilePic } = req.body;
 
   // Make sure that all fields are not empty
   if (!name || !email || !password) {
     res.status(400);
     throw new Error('please add all the fields');
-  }
-  if (role === 'writer') {
-    if (!cardId) {
-      res.status(400);
-      throw new Error('please add all the fields');
-    }
   }
 
   //check if user already exists
@@ -35,12 +29,25 @@ const registerUser = asyncHandler(async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, salt);
 
   // Create the user
-  const user = await User.create({
-    name,
-    email,
-    password: hashedPassword,
-    cardId,
-  });
+  let user;
+  if (role === 'writer') {
+    user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      cardId,
+      role,
+      profilePic,
+    });
+  } else {
+    user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      role,
+      profilePic,
+    });
+  }
 
   if (user) {
     res.status(201).json({
@@ -48,8 +55,9 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user.id,
       name: user.name,
       email: user.email,
-      cardId: user.cardId,
       token: generateToken(user._id),
+      profilePic: user.profilePic,
+      cardId: user.cardId ? user.cardId : null,
     });
   } else {
     res.status(400);
@@ -68,12 +76,12 @@ const loginUser = asyncHandler(async (req, res) => {
   if (user && (await bcrypt.compare(password, user.password))) {
     res.status(200).json({
       message: `user found`,
-      user: {
-        _id: user.id,
-        name: user.name,
-        email: user.email,
-        token: generateToken(user._id),
-      },
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+      token: generateToken(user._id),
+      profilePic: user.profilePic,
+      cardId: user.cardId,
     });
   } else {
     res.status(400);

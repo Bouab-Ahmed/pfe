@@ -12,9 +12,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getUser } from './features/auth/authSlice';
 function App() {
   const location = useLocation();
-  const fullUrl = location.pathname;
-  console.log(fullUrl);
-
   const user = useSelector(getUser);
   console.log(user);
 
