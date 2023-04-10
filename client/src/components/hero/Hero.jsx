@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const Hero = () => {
   const navigate = useNavigate();
   return (
-    <div className='flex flex-col md:flex-row items-center justify-between h-[91vh] mx-10'>
+    <div className='flex flex-col md:flex-row items-center justify-between h-[90vh] mx-10'>
       <div className='flex flex-col items-start justify-start h-[60%] w-[55%]'>
         <h1 className='text-6xl font-bold text-primary font-DINRoundPro leading-[70px] w-3/4'>
           Hi, we're Knowledge hub.
