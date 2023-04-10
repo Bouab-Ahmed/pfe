@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { logoutUser, reset } from '../../features/auth/authSlice';
+import { useSelector } from 'react-redux';
 // import logo from '../../assets/logo.png';
 import NavList from './NavList';
 import { useState, useEffect } from 'react';
@@ -10,18 +9,12 @@ import {
   Button,
   IconButton,
 } from '@material-tailwind/react';
+import ProfileMenu from '../profileMenu/ProfileMenu';
 
 function Header() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const [openNav, setOpenNav] = useState(false);
-
-  const onLogout = () => {
-    dispatch(logoutUser());
-    dispatch(reset());
-    navigate('/');
-  };
 
   useEffect(() => {
     window.addEventListener(
@@ -31,7 +24,7 @@ function Header() {
   }, []);
 
   return (
-    <Navbar className='py-2 px-4 lg:px-8 lg:py-2 rounded-none shadow-sm'>
+    <Navbar className='py-2 px-4 lg:px-8 lg:py-2 rounded-none shadow-sm min-w-full'>
       <div className='flex items-center justify-between text-blue-gray-900'>
         <div
           className='text-3xl text-primary font-DINRoundPro cursor-pointer'
@@ -43,12 +36,9 @@ function Header() {
             <NavList />
           </div>
           {user ? (
-            <Button
-              size='sm'
-              className='hidden lg:inline-block bg-gradient-to-r to-primary from-yellow-900 px-6'
-              onClick={onLogout}>
-              <span>Log out</span>
-            </Button>
+            <div className='mx-4 bg-transparent my-0 py-0'>
+              <ProfileMenu user={user} />
+            </div>
           ) : (
             <Button
               size='sm'
