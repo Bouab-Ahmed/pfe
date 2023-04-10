@@ -2,7 +2,7 @@ import React from 'react';
 import user from '../../assets/default.jpg';
 const Trending = () => {
   return (
-    <div className='mx-2 lg:mx-10 mb-8'>
+    <div className='mx-2 lg:mx-10 mb-8 font-DINRoundPro'>
       <div className='relative grid gap-5 sm:grid-cols-2 lg:grid-cols-3'>
         <h1 className='text-4xl font-bold text-textColor font-DINRoundPro col-span-full'>
           Trending On Platfom
