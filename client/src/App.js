@@ -18,7 +18,7 @@ function App() {
   return (
     <div
       className={`${
-        location.pathname === '/'
+        location.pathname === '/' && !user
           ? 'bg-[url(./assets/heder-bg.png)] bg-no-repeat bg-[right_top_4.1rem]'
           : ''
       }`}>
