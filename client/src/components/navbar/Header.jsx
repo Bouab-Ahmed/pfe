@@ -1,6 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-// import logo from '../../assets/logo.png';
 import NavList from "./NavList";
 import { useState, useEffect } from "react";
 import {
@@ -13,7 +11,7 @@ import ProfileMenu from "../profileMenu/ProfileMenu";
 
 function Header() {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
+  const user = localStorage.getItem("user");
   const [openNav, setOpenNav] = useState(false);
 
   useEffect(() => {
