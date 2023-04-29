@@ -11,8 +11,9 @@ import { useSelector } from 'react-redux';
 import { getUser } from './features/auth/authSlice';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 function App() {
+  // get user from redux store
   const user = useSelector(getUser);
-
+  console.log(user);
   return (
     <div>
       <div className='mx-auto'>
