@@ -1,27 +1,26 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import authService from './authService';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import authService from "./authService";
 // get user from local storage
 
-const user = JSON.parse(localStorage.getItem('user'));
+const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
   isError: false,
   isLoading: false,
   isSuccess: false,
-  message: '',
+  message: "",
   user: user ? user : null,
 };
 
 // send otp
 
 export const sendOtp = createAsyncThunk(
-  'auth/sendOtp',
-  async (user, thunkAPI) => {
+  "auth/sendOtp",
+  async (userData, thunkAPI) => {
     try {
-      console.log('sendOtp', user);
-      return await authService.sendOtp(user);
+      console.log("sendOtp", userData);
+      return await authService.sendOtp(userData);
     } catch (error) {
-      console.log('sendOtp error', error);
       const message =
         (error.response &&
           error.response.data &&
@@ -36,7 +35,7 @@ export const sendOtp = createAsyncThunk(
 // register user
 
 export const registerUser = createAsyncThunk(
-  'auth/registerUser',
+  "auth/registerUser",
   async (user, thunkAPI) => {
     try {
       return await authService.register(user);
@@ -55,7 +54,7 @@ export const registerUser = createAsyncThunk(
 // login user
 
 export const loginUser = createAsyncThunk(
-  'auth/loginUser',
+  "auth/loginUser",
   async (user, thunkAPI) => {
     try {
       return await authService.login(user);
@@ -71,19 +70,19 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const logoutUser = createAsyncThunk('auth/logoutUser', async () => {
+export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
   authService.logout();
 });
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     reset: (state) => {
       state.isError = false;
       state.isLoading = false;
       state.isSuccess = false;
-      state.message = '';
+      state.message = "";
     },
   },
   extraReducers: (builder) => {
