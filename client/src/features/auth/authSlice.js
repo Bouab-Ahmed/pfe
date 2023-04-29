@@ -12,6 +12,27 @@ const initialState = {
   user: user ? user : null,
 };
 
+// send otp
+
+export const sendOtp = createAsyncThunk(
+  'auth/sendOtp',
+  async (user, thunkAPI) => {
+    try {
+      console.log('sendOtp', user);
+      return await authService.sendOtp(user);
+    } catch (error) {
+      console.log('sendOtp error', error);
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 // register user
 
 export const registerUser = createAsyncThunk(
@@ -96,6 +117,20 @@ export const authSlice = createSlice({
         state.user = null;
       })
       .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
+      })
+      .addCase(sendOtp.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(sendOtp.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      })
+      .addCase(sendOtp.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
         state.user = null;
       });
   },

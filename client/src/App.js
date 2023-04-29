@@ -7,22 +7,16 @@ import Header from './components/navbar/Header';
 import Login from './pages/login/Login';
 import Register from './pages/register/Register.jsx';
 import Otp from './pages/Otp';
-import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getUser } from './features/auth/authSlice';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 function App() {
-  const location = useLocation();
+  // get user from redux store
   const user = useSelector(getUser);
-
+  console.log(user);
   return (
-    <div
-      className={`${
-        location.pathname === '/' && !user
-          ? 'bg-[url(./assets/heder-bg.png)] bg-no-repeat bg-[right_top_4.1rem]'
-          : ''
-      }`}>
-      <div className='container1 mx-auto'>
+    <div>
+      <div className='mx-auto'>
         <Header />
         <Routes>
           <Route path='/' element={<ProtectedRoute user={user} />} />

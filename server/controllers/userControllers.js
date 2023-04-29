@@ -1,53 +1,55 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const asyncHandler = require('express-async-handler');
-const User = require('../models/userModel');
-
-
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const asyncHandler = require("express-async-handler");
+const User = require("../models/userModel");
+const sendEmail = require("../config/email");
 
 //@desc     Register new user
 //@route    POST /auth/register
 //@access   Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, cardId, role, profilePic } = req.body;
+  const {
+    name,
+    email,
+    password,
+    cardId,
+    role,
+    profilePic,
+    activated,
+    fellowers,
+    fellows,
+  } = req.body;
 
   // Make sure that all fields are not empty
   if (!name || !email || !password) {
     res.status(400);
-    throw new Error('please add all the fields');
+    throw new Error("please add all the fields");
   }
 
   //check if user already exists
   const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400);
-    throw new Error('a user with this email already exists');
+    throw new Error("a user with this email already exists try to log in");
   }
 
   //hash password
   const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);  
+  const hashedPassword = await bcrypt.hash(password, salt);
 
   // Create the user
   let user;
-  if (role === 'writer') {
-    user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      cardId,
-      role,
-      profilePic,
-    });
-  } else {
-    user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      role,
-      profilePic,
-    });
-  }
+  user = await User.create({
+    name,
+    email,
+    password: hashedPassword,
+    cardId,
+    role,
+    profilePic,
+    activated,
+    fellowers,
+    fellows,
+  });
 
   if (user) {
     res.status(201).json({
@@ -57,11 +59,12 @@ const registerUser = asyncHandler(async (req, res) => {
       email: user.email,
       token: generateToken(user._id),
       profilePic: user.profilePic,
-      cardId: user.cardId ? user.cardId : null,
+      cardId: user.cardId,
+      activated: user.activated,
     });
   } else {
     res.status(400);
-    throw new Error('Invalid user data');
+    throw new Error("Invalid user data");
   }
 });
 
@@ -82,10 +85,11 @@ const loginUser = asyncHandler(async (req, res) => {
       token: generateToken(user._id),
       profilePic: user.profilePic,
       cardId: user.cardId,
+      activated: user.activated,
     });
   } else {
     res.status(400);
-    throw new Error('Invalid user data');
+    throw new Error("Invalid user data");
   }
 });
 
@@ -112,37 +116,56 @@ const generateToken = (id) => {
   });
 };
 
-//desc send otp
-//route POST auth/otp
-//access Public
+//@desc    send otp
+//@route   POST /users/otp
+//@access  Public
+const sendOtp = asyncHandler(async (req, res) => {
+  const {
+    name,
+    email,
+    password,
+    cardId,
+    role,
+    profilePic,
+    activated,
+    fellowers,
+    fellows,
+  } = req.body;
 
-const sendOtpCode = asyncHandler(async (req, res) => {
-  const { email } = req.body;
-  // Generate a secure token and store it on the server-side
-  const token = crypto.randomBytes(3).toString('hex');
-  // Send the token to the user's email
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.MY_EMAIL,
-      pass: process.env.MY_PASSWORD,
-    },
-  });
-  const mailOptions = {
-    from: process.env.MY_EMAIL,
-    to: email,
-    subject: 'OTP for login',
-    text: `Your OTP is ${token}`,
-  };
-  try {
-    await transporter.sendMail(mailOptions);
-    res.status(200).json({ message: 'Verification email sent' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error sending verification email' });
+  // Make sure that all fields are not empty
+  if (!name || !email || !password) {
+    res.status(400);
+    throw new Error("please add all the fields");
   }
+
+  //check if user already exists
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+    res.status(400);
+    throw new Error("a user with this email already exists try to log in");
+  }
+  // generate otp
+  const otp = Math.floor(100000 + Math.random() * 900000);
+
+  try {
+    await sendEmail({
+      email: email,
+      subject: "OTP for Registration",
+      message: `Your OTP for registration is ${otp}.`,
+    });
+  } catch (error) {
+    res.json({ success: false, message: "Error sending OTP." });
+  }
+
+  // hash otp
+  // const salt = await bcrypt.genSalt(10);
+  // const hashedOtp = await bcrypt.hash(otp.toString(), salt);
+  // localStorage.setItem("otp", hashedOtp);
+
+  res.status(200).json({
+    message: `otp sent to ${email}`,
+    otp,
+  });
 });
 
 module.exports = {
@@ -150,5 +173,5 @@ module.exports = {
   loginUser,
   getMe,
   getAll,
-  sendOtpCode,
+  sendOtp,
 };
