@@ -1,9 +1,13 @@
+require("dotenv").config();
+require("express-async-errors");
+
 const express = require("express");
 const colors = require("colors");
-const dotenv = require("dotenv").config();
+
 const { errHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");
 const cors = require("cors");
+const middlewareErrorHandler = require("./middleware/errorMiddleware");
 
 const app = express();
 
@@ -23,7 +27,8 @@ app.all("*", function (req, res, next) {
 app.use("/posts", require("./routes/postRoutes"));
 app.use("/auth", require("./routes/userRoutes"));
 
-app.use(errHandler);
+// app.use(errHandler);
+app.use(middlewareErrorHandler);
 
 const port = process.env.PORT || 5000;
 
