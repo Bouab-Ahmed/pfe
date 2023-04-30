@@ -16,8 +16,7 @@ const initialState = {
 
 export const sendOtp = createAsyncThunk(
   "auth/sendOtp",
-<<<<<<< HEAD
-<<<<<<< HEAD
+
   async (user, thunkAPI) => {
     try {
       console.log("sendOtp", user);
@@ -36,27 +35,14 @@ export const sendOtp = createAsyncThunk(
 );
 
 export const verifyMail = createAsyncThunk(
-  "auth/verify",
+  "auth/verifyMail",
+
   async (data, thunkAPI) => {
     try {
-      console.log("verifyMail", data);
+      console.log("verify", user);
       return await authService.verify(data);
     } catch (error) {
-      console.log("verifyMail error", error);
-=======
-  async (userData, thunkAPI) => {
-    try {
-      console.log("sendOtp", userData);
-      return await authService.sendOtp(userData);
-    } catch (error) {
->>>>>>> 7a8f65622e6c061543520b41b1faf7426cb7f684
-=======
-  async (userData, thunkAPI) => {
-    try {
-      console.log("sendOtp", userData);
-      return await authService.sendOtp(userData);
-    } catch (error) {
->>>>>>> 7a8f65622e6c061543520b41b1faf7426cb7f684
+      console.log("verify error", error);
       const message =
         (error.response &&
           error.response.data &&

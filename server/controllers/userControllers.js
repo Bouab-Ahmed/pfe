@@ -2,17 +2,9 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
-<<<<<<< HEAD
-<<<<<<< HEAD
-const sendEmail = require("../config/email");
+
 const crypto = require("crypto");
 const verificationEmail = require("../utils/verificationEmail");
-=======
-const email = require("../config/email");
->>>>>>> 7a8f65622e6c061543520b41b1faf7426cb7f684
-=======
-const email = require("../config/email");
->>>>>>> 7a8f65622e6c061543520b41b1faf7426cb7f684
 
 //@desc     Register new user
 //@route    POST /auth/register
