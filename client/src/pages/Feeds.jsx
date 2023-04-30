@@ -1,6 +1,4 @@
-import React, { useRef } from "react";
-import { useSelector } from "react-redux";
-import { getUser } from "../features/auth/authSlice";
+import React from "react";
 
 // get user from local storage
 
