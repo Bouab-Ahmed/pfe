@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
-const sendEmail = require("../config/email");
+const email = require("../config/email");
 
 //@desc     Register new user
 //@route    POST /auth/register
@@ -147,15 +147,11 @@ const sendOtp = asyncHandler(async (req, res) => {
   // generate otp
   const otp = Math.floor(100000 + Math.random() * 900000);
 
-  try {
-    await sendEmail({
-      email: email,
-      subject: "OTP for Registration",
-      message: `Your OTP for registration is ${otp}.`,
-    });
-  } catch (error) {
-    res.json({ success: false, message: "Error sending OTP." });
-  }
+  email.sendEmail({
+    email: email,
+    opt: otp,
+    name: name,
+  });
 
   // hash otp
   // const salt = await bcrypt.genSalt(10);
