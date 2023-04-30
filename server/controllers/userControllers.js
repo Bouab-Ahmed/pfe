@@ -41,6 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   //create random value for verify email
   const verificationToken = crypto.randomBytes(40).toString("hex");
+
   // const verificationToken = Math.floor(100000 + Math.random() * 900000);
 
   // Create the user
