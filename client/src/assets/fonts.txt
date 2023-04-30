@@ -1,0 +1,40 @@
+// for title
+DinRounded - 700
+
+Family:
+DinRounded, "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+Style
+normal
+
+Weight
+700
+
+Size
+60px
+
+Color
+#ff6122
+
+// for buttons 
+
+"Source Sans Pro" - 600
+
+Family
+"Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+Style
+normal
+
+Weight
+600
+
+Size
+16px
+
+Color
+#ffffff
+
+
+
+
