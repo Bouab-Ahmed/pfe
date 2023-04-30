@@ -21,7 +21,7 @@ module.exports = {
       });
       console.log("Message sent: %s", info);
     } catch (err) {
-      console.log(err);
+      console.log("error in sending email", err);
     }
   },
 };
