@@ -4,6 +4,7 @@ const { sendCookies } = require("../utils/jwt");
 
 const getAllUsers = async (req, res) => {
   const user = await User.find().select("-password");
+  console.log(req.user);
   res.status(StatusCodes.OK).json({ user });
 };
 
