@@ -1,9 +1,9 @@
 const sendMailer = require("./sendMailer");
 
-const verificationEmail = async ({ name, email, verificationToken, host }) => {
-  const verifyEmail = `${host}/auth/verify?token=${verificationToken}&email=${email}`;
+const verificationEmail = async ({ name, email, verificationToken }) => {
+  // const verifyEmail = `${host}/auth/verify?token=${verificationToken}&email=${email}`;
 
-  const message = `<p>Please confirm your email click here : <a href="${verifyEmail}">Verify Email</a> </p>`;
+  const message = `<p> your confirmation code is :${verificationToken}</p>`;
 
   return sendMailer({
     to: email,
