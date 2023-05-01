@@ -2,7 +2,9 @@ import React, { createRef, useEffect, useState } from "react";
 import { verifyMail } from "../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 const Otp = () => {
+  // eslint-disable-next-line
   const { isLoading, isError } = useSelector((state) => state.auth);
+  // eslint-disable-next-line
   const dispatch = useDispatch();
   const numerOfInputs = 6;
 
@@ -11,6 +13,7 @@ const Otp = () => {
   );
   // eslint-disable-next-line
   const [currentIndex, setCurrentIndex] = useState(0);
+  // eslint-disable-next-line
   const [values, setValues] = useState(0);
 
   const [letters, setLetters] = useState(() =>
@@ -33,7 +36,6 @@ const Otp = () => {
   };
 
   useEffect(() => {
-    console.log(letters);
     if (inputRefsArray?.[0]?.current) {
       inputRefsArray?.[0]?.current?.focus();
     }
@@ -45,6 +47,11 @@ const Otp = () => {
 
     // eslint-disable-next-line
   }, []);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    dispatch(verifyMail(letters.join("").toString()));
+  };
 
   return (
     <div className="relative flex flex-col justify-center overflow-hidden py-12">
@@ -60,7 +67,7 @@ const Otp = () => {
           </div>
 
           <div>
-            <form action="" method="post">
+            <form action="" method="post" onSubmit={onSubmit}>
               <div className="flex flex-col space-y-16">
                 <div className="flex flex-row items-center justify-between mx-auto w-full ">
                   {inputRefsArray.map((ref, index) => {
@@ -93,7 +100,10 @@ const Otp = () => {
 
                 <div className="flex flex-col space-y-5">
                   <div>
-                    <button className="flex flex-row items-center justify-center text-center w-full border rounded-xl outline-none py-5 bg-primary border-none text-white text-sm shadow-sm">
+                    <button
+                      className="flex flex-row items-center justify-center text-center w-full border rounded-xl outline-none py-5 bg-primary border-none text-white text-sm shadow-sm"
+                      type="submit"
+                    >
                       Verify Account
                     </button>
                   </div>

@@ -8,8 +8,6 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register.jsx";
 import Otp from "./pages/Otp";
 import Verify from "./pages/verify";
-import { useSelector } from "react-redux";
-import { getUser } from "./features/auth/authSlice";
 
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 function App() {
