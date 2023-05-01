@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../../components/Spinner";
-import { reset, sendOtp } from "../../features/auth/authSlice";
+import { registerUser, reset, sendOtp } from "../../features/auth/authSlice";
+
 import { useLocation } from "react-router-dom";
 import defaultPic from "../../assets/default.jpg";
 const adminSecretCode = "admin";
@@ -98,7 +99,7 @@ function Register() {
         fellowers: [],
       };
       console.log(userData);
-      dispatch(sendOtp(userData));
+      dispatch(registerUser(userData));
     }
   };
 

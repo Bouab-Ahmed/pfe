@@ -15,8 +15,8 @@ const sendCookies = (res, payload) => {
 
   res.cookie("token", token, {
     sameSite: "none",
-    httpOnly: true,
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 1),
+    httpOnly: true,
     // secure: true,
     // signed: true,
   });

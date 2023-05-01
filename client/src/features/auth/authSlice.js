@@ -2,14 +2,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
 // get user from local storage
 
-const user = JSON.parse(localStorage.getItem("user"));
+const users = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: "",
-  user: user ? user : null,
+  user: users ? users : null,
 };
 
 // send otp
@@ -37,10 +37,10 @@ export const sendOtp = createAsyncThunk(
 export const verifyMail = createAsyncThunk(
   "auth/verifyMail",
 
-  async (data, thunkAPI) => {
+  async (user, thunkAPI) => {
     try {
       console.log("verify", user);
-      return await authService.verify(data);
+      return await authService.verify(user);
     } catch (error) {
       console.log("verify error", error);
       const message =
@@ -77,9 +77,9 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
-  async (user, thunkAPI) => {
+  async (userData, thunkAPI) => {
     try {
-      return await authService.login(user);
+      return authService.login(userData);
     } catch (error) {
       const message =
         (error.response &&
@@ -129,6 +129,7 @@ export const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        localStorage.setItem("user", JSON.stringify(action.payload));
         state.user = action.payload;
       })
       .addCase(loginUser.rejected, (state, action) => {
