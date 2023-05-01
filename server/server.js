@@ -13,11 +13,15 @@ const connectDB = require("./config/db");
 //router
 const postRoute = require("./routes/postRoutes");
 const authRoute = require("./routes/authRoutes");
+const userRoute = require("./routes/userRoutes");
 
 //errors
 const middlewareErrorHandler = require("./middleware/errorMiddleware");
 
-app.use(cors());
+// app.use(cors());
+// app.use(cors({ credentials: true, origin: ["http://localhost:3000"] }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+// app.use(cors({ credentials: true, origin: "*" }));
 
 // middlewares
 app.use(express.json());
@@ -26,6 +30,7 @@ app.use(cookieParser(process.env.JWT_SECRET)); //process.env.JWT_SECRET
 // routes
 app.use("/posts", postRoute);
 app.use("/auth", authRoute);
+app.use("/user", userRoute);
 
 // app.use(errHandler);
 app.use(middlewareErrorHandler);

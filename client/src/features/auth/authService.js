@@ -29,11 +29,16 @@ export const register = async (userData) => {
 // login user
 
 export const login = async (userData) => {
-  const response = await axios.post(API_URL + "/auth/login", userData);
-  if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
-  }
-  return response.data;
+  // const response = await axios.post(API_URL + "/auth/login", userData);
+  const response = await fetch(API_URL + "/auth/login", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+  return await response.json();
 };
 
 export const logout = () => {

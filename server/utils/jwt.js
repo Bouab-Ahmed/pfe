@@ -14,10 +14,10 @@ const sendCookies = (res, payload) => {
   const token = generateToken(payload);
 
   res.cookie("token", token, {
-    sameSite: "none",
-    httpOnly: true,
+    // sameSite: "none",
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 1),
-    // secure: true,
+    httpOnly: true,
+    secure: true,
     // signed: true,
   });
 };
