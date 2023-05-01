@@ -11,13 +11,16 @@ const registerUser = async (req, res) => {
   const { name, email } = req.body;
 
   //create random value for verify email
-  const verificationToken = crypto.randomBytes(40).toString("hex");
+  // const verificationToken = crypto.randomBytes(40).toString("hex");
+  const verificationToken = Math.floor(100000 + Math.random() * 900000);
 
   const user = await User.create({ ...req.body, verificationToken });
   // const token = await user.generateToken();
-  const host = "http://localhost:3000";
+  // const host = "http://localhost:3000";
 
-  await verificationEmail({ name, email, verificationToken, host });
+  // generate verification email code of 6 degits
+
+  await verificationEmail({ name, email, verificationToken });
 
   const payload = { userId: user._id, user: user.name, role: user.role };
   sendCookies(res, payload);
@@ -53,50 +56,26 @@ const loginUser = async (req, res) => {
   res.status(200).json({ msg: "login success", payload });
 };
 
-/***********sendOtp*********************/
-const sendOtp = async (req, res) => {
-  const { name, email, password } = req.body;
-
-  // Make sure that all fields are not empty
-  if (!name || !email || !password) {
-    res.status(400);
-    throw new Error("please add all the fields");
-  }
-
-  //check if user already exists
-  const userExists = await User.findOne({ email });
-  if (userExists) {
-    res.status(400);
-    throw new Error("a user with this email already exists try to log in");
-  }
-  // generate otp
-  const otp = Math.floor(100000 + Math.random() * 900000);
-
-  email.sendEmail({ email: email, opt: otp, name: name });
-
-  res.status(200).json({
-    message: `otp sent to ${email}`,
-    otp,
-  });
-};
-
 /***********verfiy email*********************/
 const verifyEmail = async (req, res) => {
-  const { verificationToken, email } = req.body;
+  const { token } = req.body;
 
-  const user = await User.findOne({ email });
+  const user = await User.findById({ _id: req.user.userId });
+
+  if (!token) {
+    throw new Error("you must provide verification token");
+  }
+
   if (!user) {
-    res.status(400);
     throw new Error("Verification Failed");
   }
 
-  if (user.verificationToken !== verificationToken) {
-    res.status(400);
-    throw new Error("Verification Failed");
+  if (user.token !== token) {
+    throw new Error("your account is already verified or invalid token");
   }
 
   user.activated = true;
-  user.verificationToken = "";
+  user.token = "";
   await user.save();
   res.status(200).json({ msg: "Email Verified" });
 };
@@ -108,4 +87,4 @@ const logout = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "logout success" });
 };
 
-module.exports = { registerUser, loginUser, sendOtp, verifyEmail, logout };
+module.exports = { registerUser, loginUser, verifyEmail, logout };
