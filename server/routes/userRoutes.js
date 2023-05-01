@@ -10,7 +10,7 @@ const {
 const { auth } = require("../middleware/authMiddleware");
 const router = express.Router();
 
-router.route("/").get(getAllUsers);
+router.route("/").get(auth, getAllUsers);
 router.route("/me").get(auth, setCurrentUser);
 router.route("/:id").get(auth, getSingleUsers);
 router.route("/updateUser").patch(auth, updateUser);
