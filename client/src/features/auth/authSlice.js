@@ -37,10 +37,10 @@ export const sendOtp = createAsyncThunk(
 export const verifyMail = createAsyncThunk(
   "auth/verifyMail",
 
-  async (user, thunkAPI) => {
+  async (token, thunkAPI) => {
     try {
-      console.log("verify", user);
-      return await authService.verify(user);
+      console.log("verify", token);
+      return await authService.verify(token);
     } catch (error) {
       console.log("verify error", error);
       const message =
@@ -129,7 +129,7 @@ export const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        localStorage.setItem("user", JSON.stringify(action.payload));
+        // localStorage.setItem("user", JSON.stringify(action.payload));
         state.user = action.payload;
       })
       .addCase(loginUser.rejected, (state, action) => {
