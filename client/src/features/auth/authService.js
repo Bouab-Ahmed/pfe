@@ -11,7 +11,6 @@ export const sendOtp = async (userData) => {
 };
 
 export const verify = async (token) => {
-  console.log(token);
   const response = await fetch(API_URL + "/auth/verifyEmail", {
     method: "POST",
     credentials: "include",
