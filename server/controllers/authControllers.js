@@ -1,13 +1,11 @@
-const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 
 const crypto = require("crypto");
 const verificationEmail = require("../utils/verificationEmail");
 const { sendCookies } = require("../utils/jwt");
 
-//@desc     Register new user
-//@route    POST /auth/register
-//@access   Public
+/***********register User*********************/
+
 const registerUser = async (req, res) => {
   const { name, email } = req.body;
 
@@ -25,6 +23,8 @@ const registerUser = async (req, res) => {
 
   res.status(201).json({ msg: "registered success", payload });
 };
+
+/***********login User*********************/
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -52,38 +52,9 @@ const loginUser = async (req, res) => {
   res.status(200).json({ msg: "login success", payload });
 };
 
-//@desc     get user infos
-//@route    GET /users/me
-//@access   Private
-const getMe = asyncHandler(async (req, res) => {
-  res.status(200).json(req.user);
-});
-
-//@desc     get all user infos
-//@route    GET /users/getAll
-//@access   Private
-const getAll = asyncHandler(async (req, res) => {
-  const users = await User.find();
-  res.send(users);
-});
-
-// generate token
-
-//@desc    send otp
-//@route   POST /users/otp
-//@access  Public
-const sendOtp = asyncHandler(async (req, res) => {
-  const {
-    name,
-    email,
-    password,
-    cardId,
-    role,
-    profilePic,
-    activated,
-    fellowers,
-    fellows,
-  } = req.body;
+/***********sendOtp*********************/
+const sendOtp = async (req, res) => {
+  const { name, email, password } = req.body;
 
   // Make sure that all fields are not empty
   if (!name || !email || !password) {
@@ -100,24 +71,16 @@ const sendOtp = asyncHandler(async (req, res) => {
   // generate otp
   const otp = Math.floor(100000 + Math.random() * 900000);
 
-  email.sendEmail({
-    email: email,
-    opt: otp,
-    name: name,
-  });
-
-  // hash otp
-  // const salt = await bcrypt.genSalt(10);
-  // const hashedOtp = await bcrypt.hash(otp.toString(), salt);
-  // localStorage.setItem("otp", hashedOtp);
+  email.sendEmail({ email: email, opt: otp, name: name });
 
   res.status(200).json({
     message: `otp sent to ${email}`,
     otp,
   });
-});
+};
 
-const verifyEmail = asyncHandler(async (req, res) => {
+/***********verfiy email*********************/
+const verifyEmail = async (req, res) => {
   const { verificationToken, email } = req.body;
 
   const user = await User.findOne({ email });
@@ -135,13 +98,13 @@ const verifyEmail = asyncHandler(async (req, res) => {
   user.verificationToken = "";
   await user.save();
   res.status(200).json({ msg: "Email Verified" });
-});
-
-module.exports = {
-  registerUser,
-  loginUser,
-  getMe,
-  getAll,
-  sendOtp,
-  verifyEmail,
 };
+
+/***********logout*********************/
+
+const logout = async (req, res) => {
+  res.cookie("token", "logout", { expires: new Date(Date.now()) });
+  res.status(StatusCodes.OK).json({ msg: "logout success" });
+};
+
+module.exports = { registerUser, loginUser, sendOtp, verifyEmail, logout };

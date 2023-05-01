@@ -12,7 +12,7 @@ const connectDB = require("./config/db");
 
 //router
 const postRoute = require("./routes/postRoutes");
-const userRoute = require("./routes/userRoutes");
+const authRoute = require("./routes/authRoutes");
 
 //errors
 const middlewareErrorHandler = require("./middleware/errorMiddleware");
@@ -25,7 +25,7 @@ app.use(cookieParser(process.env.JWT_SECRET)); //process.env.JWT_SECRET
 
 // routes
 app.use("/posts", postRoute);
-app.use("/auth", userRoute);
+app.use("/auth", authRoute);
 
 // app.use(errHandler);
 app.use(middlewareErrorHandler);
