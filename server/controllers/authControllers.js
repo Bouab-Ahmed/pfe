@@ -7,6 +7,7 @@ const { sendCookies } = require("../utils/jwt");
 /***********register User*********************/
 
 const registerUser = async (req, res) => {
+  // add all data from req.body to user
   const { name, email } = req.body;
 
   //create random value for verify email
