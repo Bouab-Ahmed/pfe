@@ -3,6 +3,7 @@ const User = require("../models/userModel");
 
 const crypto = require("crypto");
 const verificationEmail = require("../utils/verificationEmail");
+const { sendCookies } = require("../utils/jwt");
 
 //@desc     Register new user
 //@route    POST /auth/register
@@ -14,12 +15,15 @@ const registerUser = async (req, res) => {
   const verificationToken = crypto.randomBytes(40).toString("hex");
 
   const user = await User.create({ ...req.body, verificationToken });
-  const token = await user.generateToken();
+  // const token = await user.generateToken();
   const host = "http://localhost:3000";
 
   await verificationEmail({ name, email, verificationToken, host });
 
-  res.status(201).json({ user, token });
+  const payload = { userId: user._id, user: user.name, role: user.role };
+  sendCookies(res, payload);
+
+  res.status(201).json({ msg: "registered success", payload });
 };
 
 const loginUser = async (req, res) => {
@@ -42,7 +46,10 @@ const loginUser = async (req, res) => {
     throw new Error("you must to confirm your eamil");
   }
 
-  res.status(200).json({ user });
+  const payload = { userId: user._id, user: user.name, role: user.role };
+  sendCookies(res, payload);
+
+  res.status(200).json({ msg: "login success", payload });
 };
 
 //@desc     get user infos
