@@ -39,8 +39,7 @@ export const verifyMail = createAsyncThunk(
 
   async (token, thunkAPI) => {
     try {
-      console.log("verify", token);
-      return await authService.verify(token);
+      return authService.verify(token);
     } catch (error) {
       console.log("verify error", error);
       const message =
@@ -60,7 +59,7 @@ export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (user, thunkAPI) => {
     try {
-      return await authService.register(user);
+      return authService.register(user);
     } catch (error) {
       const message =
         (error.response &&

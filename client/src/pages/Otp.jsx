@@ -1,9 +1,11 @@
 import React, { createRef, useEffect, useState } from "react";
 import { verifyMail } from "../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const Otp = () => {
   // eslint-disable-next-line
-  const { isLoading, isError } = useSelector((state) => state.auth);
+  const { isLoading, isError, isSuccess } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   // eslint-disable-next-line
   const dispatch = useDispatch();
   const numerOfInputs = 6;
@@ -20,8 +22,6 @@ const Otp = () => {
     Array.from({ length: numerOfInputs }, () => "")
   );
 
-  console.log(letters.join("").toString());
-
   const handleKeyPress = () => {
     setCurrentIndex((prevIndex) => {
       if (prevIndex === numerOfInputs - 1) {
@@ -33,6 +33,12 @@ const Otp = () => {
       nextInput.select();
       return nextIndex;
     });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const data = { token: letters.join("").toString() };
+    dispatch(verifyMail(data));
   };
 
   useEffect(() => {
@@ -47,11 +53,6 @@ const Otp = () => {
 
     // eslint-disable-next-line
   }, []);
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    dispatch(verifyMail(letters.join("").toString()));
-  };
 
   return (
     <div className="relative flex flex-col justify-center overflow-hidden py-12">

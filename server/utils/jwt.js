@@ -17,7 +17,7 @@ const sendCookies = (res, payload) => {
     // sameSite: "none",
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 1),
     httpOnly: true,
-    secure: true,
+    // secure: true,
     // signed: true,
   });
 };
