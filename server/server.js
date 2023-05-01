@@ -19,8 +19,9 @@ const userRoute = require("./routes/userRoutes");
 const middlewareErrorHandler = require("./middleware/errorMiddleware");
 
 // app.use(cors());
-app.use(cors({ credentials: true, origin: ["http://localhost:3000"] }));
-// app.use(cors({ origin: "*" }));
+// app.use(cors({ credentials: true, origin: ["http://localhost:3000"] }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+// app.use(cors({ credentials: true, origin: "*" }));
 
 // middlewares
 app.use(express.json());
