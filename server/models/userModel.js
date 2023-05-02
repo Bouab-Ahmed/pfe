@@ -6,16 +6,16 @@ const userSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      // required: [true, "Please Add a name"],
+      required: [true, "Please Add a name"],
     },
     email: {
       type: String,
-      // required: [true, "Please Add an email"],
+      required: [true, "Please Add an email"],
       unique: true,
     },
     password: {
       type: String,
-      // required: [true, "Please Add a name"],
+      required: [true, "Please Add a name"],
     },
     role: {
       type: String,
@@ -30,11 +30,12 @@ const userSchema = mongoose.Schema(
       type: [mongoose.Schema.Types.ObjectId],
       ref: "User",
     },
-    cardId: {
-      type: String,
-    },
+    // cardId: {
+    //   type: String,
+    // },
     profilePic: {
       type: String,
+      require: [true, "you must to provide image"],
     },
     verificationToken: String,
     activated: {

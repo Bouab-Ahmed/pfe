@@ -8,27 +8,30 @@ const { uploadProductImageLocal } = require("./uploadsController");
 /***********register User*********************/
 
 const registerUser = async (req, res) => {
-  // console.log(await uploadProductImageLocal(req));
-  // add all data from req.body to user
-  console.log(req.files, req.body);
-  // const { name, email } = req.body;
+  const pathImg = await uploadProductImageLocal(req);
 
-  // //create random value for verify email
-  // // const verificationToken = crypto.randomBytes(40).toString("hex");
-  // const verificationToken = Math.floor(100000 + Math.random() * 900000);
+  const { name, email } = req.body;
 
-  // const user = await User.create({ ...req.body, verificationToken });
-  // // const token = await user.generateToken();
-  // // const host = "http://localhost:3000";
+  //create random value for verify email
+  // const verificationToken = crypto.randomBytes(40).toString("hex");
+  const verificationToken = Math.floor(100000 + Math.random() * 900000);
 
-  // // generate verification email code of 6 degits
+  const user = await User.create({
+    ...req.body,
+    verificationToken,
+    profilePic: pathImg,
+  });
+  // const token = await user.generateToken();
+  // const host = "http://localhost:3000";
 
-  // await verificationEmail({ name, email, verificationToken });
+  // generate verification email code of 6 degits
 
-  // const payload = { userId: user._id, user: user.name, role: user.role };
-  // sendCookies(res, payload);
+  await verificationEmail({ name, email, verificationToken });
 
-  // res.status(201).json({ msg: "registered success", payload });
+  const payload = { userId: user._id, user: user.name, role: user.role };
+  sendCookies(res, payload);
+
+  res.status(201).json({ msg: "registered success", payload });
 };
 
 /***********login User*********************/
