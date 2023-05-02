@@ -4,53 +4,21 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../../components/Spinner";
 import { registerUser, reset, sendOtp } from "../../features/auth/authSlice";
-
 import { useLocation } from "react-router-dom";
-import defaultPic from "../../assets/default.jpg";
 const adminSecretCode = "admin";
-
-const convertBase64 = (file) => {
-  return new Promise((resolve, reject) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-    fileReader.onload = () => {
-      resolve(fileReader.result);
-    };
-    fileReader.onerror = (error) => {
-      reject(error);
-    };
-  });
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "name":
-      return { ...state, name: action.payload };
-    case "email":
-      return { ...state, email: action.payload };
-    case "password":
-      return { ...state, password: action.payload };
-    case "password2":
-      return { ...state, password2: action.payload };
-    default:
-      return state;
-  }
-};
 
 function Register() {
   const location = useLocation();
   const role = location.search.split("=")[1];
-  const [state, localDispatch] = useReducer(reducer, {
-    name: "",
-    email: "",
-    password: "",
-    password2: "",
-    activate: false,
-  });
 
-  const [cardId, setCardId] = useState("");
+  // const [cardId, setCardId] = useState("");
   const [adminRole, setAdminRole] = useState(false);
   const [adminCode, setAdminCode] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordCon, setPasswordCon] = useState("");
+  const [image, setImage] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -59,47 +27,26 @@ function Register() {
     (state) => state.auth
   );
 
-  useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-
-    if (isSuccess || user) {
-      toast.success("otp sent to your email");
-      navigate("/auth/otp");
-    }
-
-    dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
-
-  const onChange = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
-    setCardId(base64);
-  };
-
   const onSubmit = (e) => {
     e.preventDefault();
-    if (state.password !== state.password2) {
+    const myForm = new FormData();
+
+    myForm.set("name", name);
+    myForm.set("email", email);
+    myForm.set("password", password);
+    myForm.set("passwordCon", passwordCon);
+    myForm.set("image", image);
+    myForm.set("role", adminRole ? "admin" : role ? role : "reader");
+
+    if (password !== passwordCon) {
       toast.error("Passwords do not match");
     } else {
       if (adminRole && adminCode !== adminSecretCode) {
         toast.error("Invalid admin code");
         return;
       }
-      const userData = {
-        name: state.name,
-        email: state.email,
-        password: state.password,
-        role: adminRole ? "admin" : role ? role : "reader",
-        profilePic: defaultPic,
-        activated: false,
-        cardId: cardId,
-        fellows: [],
-        fellowers: [],
-      };
-      console.log(userData);
-      dispatch(registerUser(userData));
+
+      dispatch(registerUser(myForm));
     }
   };
 
@@ -133,11 +80,9 @@ function Register() {
                 type="text"
                 required
                 className="w-full mt-2 px-3 py-2 text-gray-900 bg-transparent outline-none border border-gray-400 focus:border-primary shadow-sm rounded-lg"
-                name="fullName"
-                value={state.name}
-                onChange={(e) =>
-                  localDispatch({ type: "name", payload: e.target.value })
-                }
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div>
@@ -147,10 +92,8 @@ function Register() {
                 required
                 className="w-full mt-2 px-3 py-2 text-gray-900 bg-transparent outline-none border border-gray-400 focus:border-primary shadow-sm rounded-lg"
                 name="email"
-                value={state.email}
-                onChange={(e) =>
-                  localDispatch({ type: "email", payload: e.target.value })
-                }
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
@@ -160,10 +103,8 @@ function Register() {
                 required
                 className="w-full mt-2 px-3 py-2 text-gray-900 bg-transparent outline-none border border-gray-400 focus:border-primary shadow-sm rounded-lg"
                 name="password"
-                value={state.password}
-                onChange={(e) =>
-                  localDispatch({ type: "password", payload: e.target.value })
-                }
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div>
@@ -173,10 +114,8 @@ function Register() {
                 required
                 className="w-full mt-2 px-3 py-2 text-gray-900 bg-transparent outline-none border border-gray-400 focus:border-primary shadow-sm rounded-lg"
                 name="password"
-                value={state.password2}
-                onChange={(e) =>
-                  localDispatch({ type: "password2", payload: e.target.value })
-                }
+                value={passwordCon}
+                onChange={(e) => setPasswordCon(e.target.value)}
               />
             </div>
 
@@ -205,11 +144,14 @@ function Register() {
                 type="file"
                 required
                 className="w-full mt-2 px-3 py-2 text-gray-900 bg-transparent outline-none border border-gray-400 focus:border-primary shadow-sm rounded-lg"
-                name="file"
-                onChange={onChange}
+                name="image"
+                onChange={(e) => setImage(e.target.files[0])}
               />
             </div>
-            <button className="w-full px-4 py-2 text-white font-medium bg-primary hover:bg-primary active:bg-primary rounded-lg duration-150">
+            <button
+              type="submit"
+              className="w-full px-4 py-2 text-white font-medium bg-primary hover:bg-primary active:bg-primary rounded-lg duration-150"
+            >
               Register
             </button>
           </form>
