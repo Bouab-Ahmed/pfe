@@ -70,12 +70,12 @@ const verifyEmail = async (req, res) => {
     throw new Error("Verification Failed");
   }
 
-  if (user.token !== token) {
+  if (user.verificationToken !== token) {
     throw new Error("your account is already verified or invalid token");
   }
 
   user.activated = true;
-  user.token = "";
+  user.verificationToken = "";
   await user.save();
   res.status(200).json({ msg: "Email Verified" });
 };
