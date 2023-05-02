@@ -1,173 +1,71 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
-const email = require("../config/email");
+const { StatusCodes } = require("http-status-codes");
+const { sendCookies } = require("../utils/jwt");
 
-//@desc     Register new user
-//@route    POST /auth/register
-//@access   Public
-const registerUser = asyncHandler(async (req, res) => {
-  const {
-    name,
-    email,
-    password,
-    cardId,
-    role,
-    profilePic,
-    activated,
-    fellowers,
-    fellows,
-  } = req.body;
-
-  // Make sure that all fields are not empty
-  if (!name || !email || !password) {
-    res.status(400);
-    throw new Error("please add all the fields");
-  }
-
-  //check if user already exists
-  const userExists = await User.findOne({ email });
-  if (userExists) {
-    res.status(400);
-    throw new Error("a user with this email already exists try to log in");
-  }
-
-  //hash password
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-
-  // Create the user
-  let user;
-  user = await User.create({
-    name,
-    email,
-    password: hashedPassword,
-    cardId,
-    role,
-    profilePic,
-    activated,
-    fellowers,
-    fellows,
-  });
-
-  if (user) {
-    res.status(201).json({
-      message: `user created successfully`,
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
-      profilePic: user.profilePic,
-      cardId: user.cardId,
-      activated: user.activated,
-    });
-  } else {
-    res.status(400);
-    throw new Error("Invalid user data");
-  }
-});
-
-//@desc     authenticate user
-//@route    POST /users/login
-//@access   Public
-const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-  //check for user email
-  const user = await User.findOne({ email });
-
-  if (user && (await bcrypt.compare(password, user.password))) {
-    res.status(200).json({
-      message: `user found`,
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
-      profilePic: user.profilePic,
-      cardId: user.cardId,
-      activated: user.activated,
-    });
-  } else {
-    res.status(400);
-    throw new Error("Invalid user data");
-  }
-});
-
-//@desc     get user infos
-//@route    GET /users/me
-//@access   Private
-const getMe = asyncHandler(async (req, res) => {
-  res.status(200).json(req.user);
-});
-
-//@desc     get all user infos
-//@route    GET /users/getAll
-//@access   Private
-const getAll = asyncHandler(async (req, res) => {
-  const users = await User.find();
-  res.send(users);
-});
-
-// generate token
-
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  });
+const getAllUsers = async (req, res) => {
+  const user = await User.find().select("-password");
+  console.log(req.user);
+  res.status(StatusCodes.OK).json({ user });
 };
 
-//@desc    send otp
-//@route   POST /users/otp
-//@access  Public
-const sendOtp = asyncHandler(async (req, res) => {
-  const {
-    name,
-    email,
-    password,
-    cardId,
-    role,
-    profilePic,
-    activated,
-    fellowers,
-    fellows,
-  } = req.body;
+const getSingleUsers = async (req, res) => {
+  const user = await User.findOne({ _id: req.params.id }).select("-password");
 
-  // Make sure that all fields are not empty
-  if (!name || !email || !password) {
-    res.status(400);
-    throw new Error("please add all the fields");
+  if (!user) {
+    throw new Error("user not found");
   }
 
-  //check if user already exists
-  const userExists = await User.findOne({ email });
-  if (userExists) {
-    res.status(400);
-    throw new Error("a user with this email already exists try to log in");
+  res.status(StatusCodes.OK).json({ user });
+};
+
+const updateUser = async (req, res) => {
+  const { name, email } = req.body;
+  if (!name || !email) {
+    throw new Error("put name and password");
   }
-  // generate otp
-  const otp = Math.floor(100000 + Math.random() * 900000);
+  // const user = await User.findByIdAndUpdate({ _id: req.user.userId }, { name, email }, { new: true, runValidators: true })
+  const user = await User.findById({ _id: req.user.userId });
+  user.name = name;
+  user.email = email;
+  await user.save();
+  const payload = { userId: user._id, user: user.name, role: user.role };
+  sendCookies(res, payload);
+  res.status(StatusCodes.OK).json({ msg: "update user", payload });
+};
 
-  email.sendEmail({
-    email: email,
-    opt: otp,
-    name: name,
-  });
+const setCurrentUser = async (req, res) => {
+  res.status(StatusCodes.OK).json(req.user);
+};
 
-  // hash otp
-  // const salt = await bcrypt.genSalt(10);
-  // const hashedOtp = await bcrypt.hash(otp.toString(), salt);
-  // localStorage.setItem("otp", hashedOtp);
+const removeUser = async (req, res) => {
+  res.status(StatusCodes.OK).json("remove user");
+};
 
-  res.status(200).json({
-    message: `otp sent to ${email}`,
-    otp,
-  });
-});
+const updatePassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+
+  if (!oldPassword || !newPassword) {
+    throw new Error("please put values");
+  }
+
+  const user = await User.findById({ _id: req.user.userId });
+  const checkPassword = await user.comparePassword(oldPassword);
+
+  if (!checkPassword) {
+    throw new Error("invalid password");
+  }
+
+  user.password = newPassword;
+  await user.save();
+  res.status(StatusCodes.OK).json({ msg: "password updated successfully" });
+};
 
 module.exports = {
-  registerUser,
-  loginUser,
-  getMe,
-  getAll,
-  sendOtp,
+  getAllUsers,
+  getAllUsers,
+  updateUser,
+  updatePassword,
+  removeUser,
+  getSingleUsers,
+  setCurrentUser,
 };

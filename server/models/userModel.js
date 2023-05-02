@@ -1,32 +1,34 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+// const jwt = require("jsonwebtoken");
 
 const userSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Please Add a name'],
+      required: [true, "Please Add a name"],
     },
     email: {
       type: String,
-      required: [true, 'Please Add an email'],
+      required: [true, "Please Add an email"],
       unique: true,
     },
     password: {
       type: String,
-      required: [true, 'Please Add a name'],
+      required: [true, "Please Add a name"],
     },
     role: {
       type: String,
-      enum: ['writer', 'reader', 'admin'],
-      default: 'reader',
+      enum: ["writer", "reader", "admin"],
+      default: "reader",
     },
     fellows: {
       type: [mongoose.Schema.Types.ObjectId],
-      ref: 'User',
+      ref: "User",
     },
     fellowers: {
       type: [mongoose.Schema.Types.ObjectId],
-      ref: 'User',
+      ref: "User",
     },
     cardId: {
       type: String,
@@ -34,6 +36,7 @@ const userSchema = mongoose.Schema(
     profilePic: {
       type: String,
     },
+    verificationToken: String,
     activated: {
       type: Boolean,
       default: false,
@@ -44,4 +47,21 @@ const userSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('User', userSchema);
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+  this.password = await bcrypt.hash(this.password, 10);
+});
+
+// userSchema.methods.generateToken = async function () {
+//   return jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {
+//     expiresIn: process.env.JWT_EXPIRES_IN,
+//   });
+// };
+
+userSchema.methods.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
+
+module.exports = mongoose.model("User", userSchema);

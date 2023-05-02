@@ -1,6 +1,18 @@
 import React, { createRef, useEffect, useState } from "react";
+<<<<<<< HEAD
 
 const Otp = () => {
+=======
+import { verifyMail } from "../features/auth/authSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+const Otp = () => {
+  // eslint-disable-next-line
+  const { isLoading, isError, isSuccess } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  // eslint-disable-next-line
+  const dispatch = useDispatch();
+>>>>>>> kayou
   const numerOfInputs = 6;
 
   const [inputRefsArray] = useState(() =>
@@ -8,6 +20,8 @@ const Otp = () => {
   );
   // eslint-disable-next-line
   const [currentIndex, setCurrentIndex] = useState(0);
+  // eslint-disable-next-line
+  const [values, setValues] = useState(0);
 
   const [letters, setLetters] = useState(() =>
     Array.from({ length: numerOfInputs }, () => "")
@@ -24,6 +38,12 @@ const Otp = () => {
       nextInput.select();
       return nextIndex;
     });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const data = { token: letters.join("").toString() };
+    dispatch(verifyMail(data));
   };
 
   useEffect(() => {
@@ -52,7 +72,7 @@ const Otp = () => {
           </div>
 
           <div>
-            <form action="" method="post">
+            <form action="" method="post" onSubmit={onSubmit}>
               <div className="flex flex-col space-y-16">
                 <div className="flex flex-row items-center justify-between mx-auto w-full ">
                   {inputRefsArray.map((ref, index) => {
@@ -85,7 +105,10 @@ const Otp = () => {
 
                 <div className="flex flex-col space-y-5">
                   <div>
-                    <button className="flex flex-row items-center justify-center text-center w-full border rounded-xl outline-none py-5 bg-primary border-none text-white text-sm shadow-sm">
+                    <button
+                      className="flex flex-row items-center justify-center text-center w-full border rounded-xl outline-none py-5 bg-primary border-none text-white text-sm shadow-sm"
+                      type="submit"
+                    >
                       Verify Account
                     </button>
                   </div>

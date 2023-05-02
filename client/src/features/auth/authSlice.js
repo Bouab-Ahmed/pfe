@@ -2,25 +2,46 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
 // get user from local storage
 
-const user = JSON.parse(localStorage.getItem("user"));
+const users = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: "",
-  user: user ? user : null,
+  user: users ? users : null,
 };
 
 // send otp
 
 export const sendOtp = createAsyncThunk(
   "auth/sendOtp",
-  async (userData, thunkAPI) => {
+
+  async (user, thunkAPI) => {
     try {
-      console.log("sendOtp", userData);
-      return await authService.sendOtp(userData);
+      console.log("sendOtp", user);
+      return await authService.sendOtp(user);
     } catch (error) {
+      console.log("sendOtp error", error);
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const verifyMail = createAsyncThunk(
+  "auth/verifyMail",
+
+  async (token, thunkAPI) => {
+    try {
+      return authService.verify(token);
+    } catch (error) {
+      console.log("verify error", error);
       const message =
         (error.response &&
           error.response.data &&
@@ -38,7 +59,7 @@ export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (user, thunkAPI) => {
     try {
-      return await authService.register(user);
+      return authService.register(user);
     } catch (error) {
       const message =
         (error.response &&
@@ -55,9 +76,9 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
-  async (user, thunkAPI) => {
+  async (userData, thunkAPI) => {
     try {
-      return await authService.login(user);
+      return authService.login(userData);
     } catch (error) {
       const message =
         (error.response &&
@@ -107,6 +128,7 @@ export const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        // localStorage.setItem("user", JSON.stringify(action.payload));
         state.user = action.payload;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -131,6 +153,20 @@ export const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.user = null;
+      })
+
+      ////////////////
+      .addCase(verifyMail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(verifyMail.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(verifyMail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });
