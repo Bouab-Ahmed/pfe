@@ -10,9 +10,9 @@ export const sendOtp = async (userData) => {
   return response.data;
 };
 
-export const verify = async (userData) => {
-  console.log("verifyEmail", userData);
-  const response = await axios.post(API_URL + "/auth/verifyEmail", userData);
+export const verify = async (token) => {
+  console.log("verifyEmail", token);
+  const response = await axios.post(API_URL + "/auth/verifyEmail", token);
   return response.data;
 };
 
