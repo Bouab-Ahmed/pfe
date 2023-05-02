@@ -1,8 +1,4 @@
 import React, { createRef, useEffect, useState } from "react";
-<<<<<<< HEAD
-
-const Otp = () => {
-=======
 import { verifyMail } from "../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +8,6 @@ const Otp = () => {
   const navigate = useNavigate();
   // eslint-disable-next-line
   const dispatch = useDispatch();
->>>>>>> kayou
   const numerOfInputs = 6;
 
   const [inputRefsArray] = useState(() =>
