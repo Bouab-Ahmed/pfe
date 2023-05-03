@@ -42,13 +42,13 @@ export const verifyMail = createAsyncThunk(
       return authService.verify(token);
     } catch (error) {
       console.log("verify error", error);
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString();
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -159,14 +159,16 @@ export const authSlice = createSlice({
       .addCase(verifyMail.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(verifyMail.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-      })
       .addCase(verifyMail.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        state.isSuccess = false;
         state.message = action.payload;
+      })
+      .addCase(verifyMail.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
       });
   },
 });
