@@ -1,13 +1,11 @@
 import React, { createRef, useEffect, useState } from "react";
-import { verifyMail } from "../features/auth/authSlice";
+import { reset, verifyMail } from "../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 const Otp = () => {
   // eslint-disable-next-line
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
+  const { isError, isSuccess, message } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   // eslint-disable-next-line
@@ -25,17 +23,6 @@ const Otp = () => {
   const [letters, setLetters] = useState(() =>
     Array.from({ length: numerOfInputs }, () => "")
   );
-
-  useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-
-    if (isSuccess) {
-      toast.success("verification successful");
-      navigate("/");
-    }
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const handleKeyPress = () => {
     setCurrentIndex((prevIndex) => {
@@ -67,6 +54,18 @@ const Otp = () => {
     };
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess) {
+      toast.success("verification successful");
+      navigate("/");
+      dispatch(reset());
+    }
+  }, [isError, isSuccess]);
 
   return (
     <div className="relative flex flex-col justify-center overflow-hidden py-12">
