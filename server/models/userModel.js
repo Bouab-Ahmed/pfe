@@ -30,11 +30,12 @@ const userSchema = mongoose.Schema(
       type: [mongoose.Schema.Types.ObjectId],
       ref: "User",
     },
-    cardId: {
-      type: String,
-    },
+    // cardId: {
+    //   type: String,
+    // },
     profilePic: {
       type: String,
+      require: [true, "you must to provide image"],
     },
     verificationToken: String,
     activated: {
