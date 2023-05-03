@@ -20,7 +20,7 @@ function App() {
           <Route path="/" element={<ProtectedRoute user={user} />} />
           <Route path={"/auth/login"} element={<Login />} />
           <Route path={"/auth/register"} element={<Register />} />
-          <Route path={"/auth/otp"} element={<Otp />} />
+          <Route path={"/auth/verifyEmail"} element={<Otp />} />
 
           <Route path="/auth/verify" element={<Verify />} />
 
