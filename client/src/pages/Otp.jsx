@@ -2,10 +2,14 @@ import React, { createRef, useEffect, useState } from "react";
 import { verifyMail } from "../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 const Otp = () => {
   // eslint-disable-next-line
-  const { isLoading, isError, isSuccess } = useSelector((state) => state.auth);
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
   const navigate = useNavigate();
+
   // eslint-disable-next-line
   const dispatch = useDispatch();
   const numerOfInputs = 6;
@@ -21,6 +25,17 @@ const Otp = () => {
   const [letters, setLetters] = useState(() =>
     Array.from({ length: numerOfInputs }, () => "")
   );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess) {
+      toast.success("verification successful");
+      navigate("/");
+    }
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const handleKeyPress = () => {
     setCurrentIndex((prevIndex) => {
