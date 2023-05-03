@@ -50,6 +50,17 @@ function Register() {
     }
   };
 
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess) {
+      dispatch(reset());
+      navigate("/auth/verifyEmail");
+    }
+  }, [isError, isSuccess]);
+
   if (isLoading) {
     return <Spinner />;
   }
