@@ -63,6 +63,7 @@ const loginUser = async (req, res) => {
 };
 
 /***********verfiy email*********************/
+
 const verifyEmail = async (req, res) => {
   const { token } = req.body;
   console.log(token);
