@@ -13,30 +13,10 @@ import {
   UserCircleIcon,
   LifebuoyIcon,
 } from "@heroicons/react/24/outline";
-import { logoutUser, reset } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { useEffect } from "react";
 
-const ProfileMenu = ({ user }) => {
+const ProfileMenu = ({ user, onLogout }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const { isSucess, message } = useSelector((state) => state.auth);
-
-  const onLogout = () => {
-    dispatch(logoutUser());
-  };
-
-  useEffect(() => {
-    if (isSucess) {
-      toast.success(message);
-      console.log(message);
-      dispatch(reset());
-      navigate("/");
-    }
-  }, [isSucess, message]);
 
   return (
     <Menu>
@@ -79,7 +59,7 @@ const ProfileMenu = ({ user }) => {
         <hr className="my-2 border-blue-gray-50" />
         <MenuItem
           className="flex items-center gap-2  text-textColor "
-          onClick={onLogout}
+          onClick={() => onLogout()}
         >
           <PowerIcon strokeWidth={2} className="h-4 w-4" />
           <Typography variant="small" className="font-normal">
