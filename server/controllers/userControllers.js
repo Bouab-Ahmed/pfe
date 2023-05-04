@@ -1,10 +1,10 @@
 const User = require("../models/userModel");
 const { StatusCodes } = require("http-status-codes");
 const { sendCookies } = require("../utils/jwt");
+const { BadRequestError } = require("../errors");
 
 const getAllUsers = async (req, res) => {
   const user = await User.find().select("-password");
-  console.log(req.user);
   res.status(StatusCodes.OK).json({ user });
 };
 
@@ -12,7 +12,7 @@ const getSingleUsers = async (req, res) => {
   const user = await User.findOne({ _id: req.params.id }).select("-password");
 
   if (!user) {
-    throw new Error("user not found");
+    throw new BadRequestError("user not found");
   }
 
   res.status(StatusCodes.OK).json({ user });
@@ -21,7 +21,7 @@ const getSingleUsers = async (req, res) => {
 const updateUser = async (req, res) => {
   const { name, email } = req.body;
   if (!name || !email) {
-    throw new Error("put name and password");
+    throw new BadRequestError("put name and password");
   }
   // const user = await User.findByIdAndUpdate({ _id: req.user.userId }, { name, email }, { new: true, runValidators: true })
   const user = await User.findById({ _id: req.user.userId });
