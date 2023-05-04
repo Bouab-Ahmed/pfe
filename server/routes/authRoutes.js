@@ -13,6 +13,6 @@ router.route("/login").post(loginUser);
 router.route("/upload").post(uploadProductImageLocal);
 router.route("/register").post(registerUser);
 router.route("/verifyEmail").post(auth, verifyEmail);
-router.route("/logout").get(logout);
+router.route("/logout").post(logout);
 
 module.exports = router;
