@@ -20,6 +20,9 @@ export const verify = async (token) => {
     body: JSON.stringify(token),
   });
 
+  if (!response.ok) {
+    throw new Error("verfiy your mail or password");
+  }
   return await response.json();
 };
 
@@ -50,8 +53,21 @@ export const login = async (userData) => {
     },
     body: JSON.stringify(userData),
   });
+
   return await response.json();
 };
+
+// get current user
+
+// export const getUserInformation = async () => {
+//   const response = await fetch(API_URL + "/auth/user", {
+//     method: "GET",
+//     credentials: "include",
+//   });
+//   return await response.json();
+// };
+
+// logout user
 
 export const logout = () => {
   localStorage.removeItem("user");
