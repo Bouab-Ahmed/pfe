@@ -6,10 +6,7 @@ import { loginUser, reset } from "../../features/auth/authSlice";
 import Spinner from "../../components/Spinner";
 
 function Login() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
   const { email, password } = formData;
 
@@ -20,21 +17,6 @@ function Login() {
     (state) => state.auth
   );
 
-  const user = localStorage.getItem("user");
-
-  useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-
-    if (isSuccess || user) {
-      toast.success(message);
-      navigate("/");
-    }
-
-    dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
-
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -44,14 +26,22 @@ function Login() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
-    const userData = {
-      email,
-      password,
-    };
-
+    const userData = { email, password };
     dispatch(loginUser(userData));
   };
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+      dispatch(reset());
+    }
+
+    if (isSuccess) {
+      toast.success(message);
+      navigate("/");
+      dispatch(reset());
+    }
+  }, [isError, isSuccess]);
 
   if (isLoading) {
     return <Spinner />;
