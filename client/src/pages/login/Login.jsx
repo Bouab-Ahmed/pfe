@@ -16,9 +16,11 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
+  const { isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
+
+  const user = localStorage.getItem("user");
 
   useEffect(() => {
     if (isError) {
@@ -26,6 +28,7 @@ function Login() {
     }
 
     if (isSuccess || user) {
+      toast.success(message);
       navigate("/");
     }
 
