@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
+import { toast } from "react-toastify";
 // get user from local storage
 
 const users = JSON.parse(localStorage.getItem("user"));
@@ -12,44 +13,10 @@ const initialState = {
   user: users ? users : null,
 };
 
-// send otp
-
-export const sendOtp = createAsyncThunk(
-  "auth/sendOtp",
-
-  async (user, thunkAPI) => {
-    try {
-      console.log("sendOtp", user);
-      return await authService.sendOtp(user);
-    } catch (error) {
-      console.log("sendOtp error", error);
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
 export const verifyMail = createAsyncThunk(
   "auth/verifyMail",
-
   async (token, thunkAPI) => {
-    try {
-      return authService.verify(token);
-    } catch (error) {
-      console.log("verify error", error);
-      // const message =
-      //   (error.response &&
-      //     error.response.data &&
-      //     error.response.data.message) ||
-      //   error.message ||
-      //   error.toString();
-      return thunkAPI.rejectWithValue(error);
-    }
+    return authService.verify(token, thunkAPI);
   }
 );
 
@@ -58,17 +25,7 @@ export const verifyMail = createAsyncThunk(
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (user, thunkAPI) => {
-    try {
-      return authService.register(user);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return authService.register(user, thunkAPI);
   }
 );
 
@@ -77,23 +34,16 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (userData, thunkAPI) => {
-    try {
-      return authService.login(userData);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return authService.login(userData, thunkAPI);
   }
 );
 
-export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
-  authService.logout();
-});
+export const logoutUser = createAsyncThunk(
+  "auth/logoutUser",
+  async (_, thunkAPI) => {
+    return authService.logout(thunkAPI);
+  }
+);
 
 export const authSlice = createSlice({
   name: "auth",
@@ -111,64 +61,72 @@ export const authSlice = createSlice({
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state, { payload }) => {
+        state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload;
+        state.user = payload;
+        localStorage.setItem("user", JSON.stringify(payload.payload));
+        state.message = payload.msg;
       })
-      .addCase(registerUser.rejected, (state, action) => {
+      .addCase(registerUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload;
-        state.user = null;
-      })
-      .addCase(loginUser.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        // localStorage.setItem("user", JSON.stringify(action.payload));
-        state.user = action.payload;
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.user = null;
-      })
-      .addCase(logoutUser.fulfilled, (state) => {
-        state.user = null;
-      })
-      .addCase(sendOtp.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(sendOtp.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.user = action.payload;
-      })
-      .addCase(sendOtp.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
+        state.message = payload.msg;
         state.user = null;
       })
 
-      ////////////////
+      .addCase(loginUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(loginUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        localStorage.setItem("user", JSON.stringify(payload.payload));
+        state.user = payload.payload;
+        state.message = payload.msg;
+      })
+      .addCase(loginUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = payload.msg;
+        localStorage.removeItem("user");
+        state.user = null;
+      })
+
       .addCase(verifyMail.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(verifyMail.rejected, (state, action) => {
+      .addCase(verifyMail.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.message = action.payload;
+        state.message = payload.msg;
       })
-      .addCase(verifyMail.fulfilled, (state, action) => {
+      .addCase(verifyMail.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
+        state.message = payload.msg;
+      })
+
+      .addCase(logoutUser.fulfilled, (state, { payload }) => {
+        state.user = null;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.message = payload.msg;
+        toast.success(payload.msg);
+        localStorage.removeItem("user");
+      })
+      .addCase(logoutUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = payload.msg;
+      })
+      .addCase(logoutUser.pending, (state) => {
+        state.isLoading = true;
       });
   },
 });

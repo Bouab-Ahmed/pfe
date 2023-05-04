@@ -58,10 +58,11 @@ const Otp = () => {
   useEffect(() => {
     if (isError) {
       toast.error(message);
+      dispatch(reset());
     }
 
     if (isSuccess) {
-      toast.success("verification successful");
+      toast.success(message);
       navigate("/");
       dispatch(reset());
     }

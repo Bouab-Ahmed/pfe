@@ -2,16 +2,8 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000";
 
-// send otp
-
-export const sendOtp = async (userData) => {
-  console.log("sendOtp from authService", userData);
-  const response = await axios.post(API_URL + "/auth/otp", userData);
-  return response.data;
-};
-
-export const verify = async (token) => {
-  const response = await fetch(API_URL + "/auth/verifyEmail", {
+export const verify = async (token, thunkAPI) => {
+  const res = await fetch(API_URL + "/auth/verifyEmail", {
     method: "POST",
     credentials: "include",
     headers: {
@@ -19,17 +11,16 @@ export const verify = async (token) => {
     },
     body: JSON.stringify(token),
   });
-
-  if (!response.ok) {
-    throw new Error("verfiy your mail or password");
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
   }
-  return await response.json();
+  return await res.json();
 };
 
 // register user
 
-export const register = async (userData) => {
-  const response = await fetch(API_URL + "/auth/register", {
+export const register = async (userData, thunkAPI) => {
+  const res = await fetch(API_URL + "/auth/register", {
     method: "POST",
     credentials: "include",
     // headers: {
@@ -38,14 +29,17 @@ export const register = async (userData) => {
     // body: JSON.stringify(userData),
     body: userData,
   });
-  return await response.json();
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+  return await res.json();
 };
 
 // login user
 
-export const login = async (userData) => {
+export const login = async (userData, thunkAPI) => {
   // const response = await axios.post(API_URL + "/auth/login", userData);
-  const response = await fetch(API_URL + "/auth/login", {
+  const res = await fetch(API_URL + "/auth/login", {
     method: "POST",
     credentials: "include",
     headers: {
@@ -54,30 +48,33 @@ export const login = async (userData) => {
     body: JSON.stringify(userData),
   });
 
-  return await response.json();
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+
+  return await res.json();
 };
 
-// get current user
+export const logout = async (thunkAPI) => {
+  const res = await fetch(API_URL + "/auth/logout", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-// export const getUserInformation = async () => {
-//   const response = await fetch(API_URL + "/auth/user", {
-//     method: "GET",
-//     credentials: "include",
-//   });
-//   return await response.json();
-// };
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
 
-// logout user
-
-export const logout = () => {
-  localStorage.removeItem("user");
+  return await res.json();
 };
 
 const authService = {
   register,
   logout,
   login,
-  sendOtp,
   verify,
 };
 

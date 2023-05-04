@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import NavList from "./NavList";
 import { useState, useEffect } from "react";
+import { logoutUser, reset } from "../../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import {
   Navbar,
   MobileNav,
@@ -11,8 +14,15 @@ import ProfileMenu from "../profileMenu/ProfileMenu";
 
 function Header() {
   const navigate = useNavigate();
-  const user = localStorage.getItem("user");
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.auth.user);
+  const { isSuccess, message } = useSelector((state) => state.auth);
   const [openNav, setOpenNav] = useState(false);
+
+  const onLogout = () => {
+    dispatch(logoutUser());
+  };
 
   useEffect(() => {
     window.addEventListener(
@@ -20,6 +30,13 @@ function Header() {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+      dispatch(reset());
+    }
+  }, [isSuccess]);
 
   return (
     <Navbar className="py-2 px-4 lg:px-8 lg:py-2 rounded-none shadow-sm min-w-full">
@@ -36,7 +53,7 @@ function Header() {
           </div>
           {user ? (
             <div className="mx-4 bg-transparent my-0 py-0">
-              <ProfileMenu user={user} />
+              <ProfileMenu user={user} onLogout={onLogout} />
             </div>
           ) : (
             <Button

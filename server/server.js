@@ -20,12 +20,14 @@ const authRoute = require("./routes/authRoutes");
 const userRoute = require("./routes/userRoutes");
 
 //errors
-const middlewareErrorHandler = require("./middleware/errorMiddleware");
+const errorHandlerMiddleware = require("./middleware/errorMiddleware");
+const middlewareNotFoundError = require("./middleware/notFound");
 
 // app.use(cors());
 app.use(cors({ credentials: true, origin: ["http://localhost:3000"] }));
-// app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+// app.use(cors({ origin: "http://localhost:3000" }));
 // app.use(cors({ credentials: true, origin: "*" }));
+// app.use(cors({ origin: "*" }));
 
 // middlewares
 app.use(express.json());
@@ -39,18 +41,12 @@ app.use("/posts", postRoute);
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
 
-// app.post("/stats", upload.single("image"), function (req, res) {
-//   // req.file is the name of your file in the form above, here 'uploaded_file'
-//   // req.body will hold the text fields, if there were any
-//   console.log(req.file, req.body);
-// });
-
-// app.use(errHandler);
-app.use(middlewareErrorHandler);
+app.use(middlewareNotFoundError);
+app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 5000;
 
-(async () => {
+const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
     app.listen(port, () =>
@@ -59,4 +55,5 @@ const port = process.env.PORT || 5000;
   } catch (error) {
     console.log(error);
   }
-})();
+};
+start();

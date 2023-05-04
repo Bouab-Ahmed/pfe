@@ -58,6 +58,7 @@ function Register() {
     if (isSuccess) {
       dispatch(reset());
       navigate("/auth/verifyEmail");
+      toast.success(message);
     }
   }, [isError, isSuccess]);
 
