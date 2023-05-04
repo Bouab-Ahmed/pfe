@@ -1,24 +1,22 @@
-const asyncHandler = require("express-async-handler");
-
 const Post = require("../models/postModel");
 const User = require("../models/userModel");
 
 //@desc     Get posts
 //@route    GET /posts
 //@access   Private(after we add authentication)
-const getPost = asyncHandler(async (req, res) => {
+const getPost = async (req, res) => {
   const posts =
     req.user.id !== "undefined"
       ? await Post.find({ user: req.user.id })
       : await Post.find();
 
   res.status(200).json(posts);
-});
+};
 
 //@desc     set posts
 //@route    SET /posts
 //@access   Private(after we add authentication)
-const setPost = asyncHandler(async (req, res) => {
+const setPost = async (req, res) => {
   if (!req.body.text) {
     res.status(400);
     throw new Error("Please add some text");
@@ -29,12 +27,12 @@ const setPost = asyncHandler(async (req, res) => {
     user: req.user.id,
   });
   res.status(200).json(post);
-});
+};
 
 //@desc     update posts
 //@route    PUT /posts
 //@access   Private(after we add authentication)
-const updatePost = asyncHandler(async (req, res) => {
+const updatePost = async (req, res) => {
   const post = await Post.findById(req.params.id);
 
   // console.log(post);
@@ -58,12 +56,12 @@ const updatePost = asyncHandler(async (req, res) => {
     new: true,
   });
   res.status(200).send(updatedPost);
-});
+};
 
 //@desc     delete posts
 //@route    DELETE /posts/:id
 //@access   Private(after we add authentication)
-const deletePost = asyncHandler(async (req, res) => {
+const deletePost = async (req, res) => {
   const post = await Post.findById(req.params.id);
 
   if (!post) {
@@ -86,7 +84,7 @@ const deletePost = asyncHandler(async (req, res) => {
     message: "post removed",
     id: req.params.id,
   });
-});
+};
 
 module.exports = {
   getPost,
