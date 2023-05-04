@@ -36,20 +36,8 @@ export const sendOtp = createAsyncThunk(
 
 export const verifyMail = createAsyncThunk(
   "auth/verifyMail",
-
   async (token, thunkAPI) => {
-    try {
-      return authService.verify(token);
-    } catch (error) {
-      console.log("verify error", error);
-      // const message =
-      //   (error.response &&
-      //     error.response.data &&
-      //     error.response.data.message) ||
-      //   error.message ||
-      //   error.toString();
-      return thunkAPI.rejectWithValue(error);
-    }
+    return authService.verify(token, thunkAPI);
   }
 );
 
@@ -140,35 +128,22 @@ export const authSlice = createSlice({
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
       })
-      .addCase(sendOtp.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(sendOtp.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.user = action.payload;
-      })
-      .addCase(sendOtp.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.user = null;
-      })
 
       ////////////////
       .addCase(verifyMail.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(verifyMail.rejected, (state, action) => {
+      .addCase(verifyMail.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.message = action.payload;
+        state.message = payload.msg;
       })
-      .addCase(verifyMail.fulfilled, (state, action) => {
+      .addCase(verifyMail.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
+        state.message = payload.msg;
       });
   },
 });
