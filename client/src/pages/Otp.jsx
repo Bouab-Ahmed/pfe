@@ -54,10 +54,8 @@ const Otp = () => {
     };
     // eslint-disable-next-line
   }, []);
-  console.log(isError);
 
   useEffect(() => {
-    console.log(isError);
     if (isError) {
       toast.error(message);
       dispatch(reset());

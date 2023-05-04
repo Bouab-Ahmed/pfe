@@ -5,7 +5,7 @@ import React from "react";
 const Feeds = () => {
   const user = localStorage.getItem("user");
   return (
-    <div>
+    <div className="">
       <h1>Feeds</h1>
       {user && (
         <>
