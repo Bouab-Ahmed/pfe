@@ -19,8 +19,8 @@ export const verify = async (token, thunkAPI) => {
 
 // register user
 
-export const register = async (userData) => {
-  const response = await fetch(API_URL + "/auth/register", {
+export const register = async (userData, thunkAPI) => {
+  const res = await fetch(API_URL + "/auth/register", {
     method: "POST",
     credentials: "include",
     // headers: {
@@ -29,14 +29,17 @@ export const register = async (userData) => {
     // body: JSON.stringify(userData),
     body: userData,
   });
-  return await response.json();
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+  return await res.json();
 };
 
 // login user
 
-export const login = async (userData) => {
+export const login = async (userData, thunkAPI) => {
   // const response = await axios.post(API_URL + "/auth/login", userData);
-  const response = await fetch(API_URL + "/auth/login", {
+  const res = await fetch(API_URL + "/auth/login", {
     method: "POST",
     credentials: "include",
     headers: {
@@ -44,11 +47,28 @@ export const login = async (userData) => {
     },
     body: JSON.stringify(userData),
   });
-  return await response.json();
+
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+
+  return await res.json();
 };
 
-export const logout = () => {
-  localStorage.removeItem("user");
+export const logout = async (thunkAPI) => {
+  const res = await fetch(API_URL + "/auth/logout", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+
+  return await res.json();
 };
 
 const authService = {
