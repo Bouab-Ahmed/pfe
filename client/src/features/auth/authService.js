@@ -2,14 +2,6 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000";
 
-// send otp
-
-export const sendOtp = async (userData) => {
-  console.log("sendOtp from authService", userData);
-  const response = await axios.post(API_URL + "/auth/otp", userData);
-  return response.data;
-};
-
 export const verify = async (token) => {
   const response = await fetch(API_URL + "/auth/verifyEmail", {
     method: "POST",
@@ -61,7 +53,6 @@ const authService = {
   register,
   logout,
   login,
-  sendOtp,
   verify,
 };
 
