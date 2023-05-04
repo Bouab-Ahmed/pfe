@@ -2,8 +2,8 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000";
 
-export const verify = async (token) => {
-  const response = await fetch(API_URL + "/auth/verifyEmail", {
+export const verify = async (token, thunkAPI) => {
+  const res = await fetch(API_URL + "/auth/verifyEmail", {
     method: "POST",
     credentials: "include",
     headers: {
@@ -11,8 +11,10 @@ export const verify = async (token) => {
     },
     body: JSON.stringify(token),
   });
-
-  return await response.json();
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+  return await res.json();
 };
 
 // register user
