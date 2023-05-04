@@ -2,16 +2,16 @@ import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/navbar/Header";
-// import Feeds from './pages/Feeds';
-// import Home from './pages/Home';
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register.jsx";
 import Otp from "./pages/Otp";
 import Verify from "./pages/verify";
 
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
+import { useSelector } from "react-redux";
+
 function App() {
-  const user = localStorage.getItem("user");
+  const user = useSelector((state) => state.auth.user);
   return (
     <div>
       <div className="mx-auto">
