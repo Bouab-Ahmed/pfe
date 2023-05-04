@@ -34,18 +34,18 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    throw new BadRequestError("Please provide email and password");
+    throw new CustomError.BadRequestError("Please provide email and password");
   }
   const user = await User.findOne({ email });
   if (!user) {
-    throw new BadRequestError("verfiy your mail or password");
+    throw new CustomError.BadRequestError("verfiy your mail or password");
   }
   const isPasswordCorrect = await user.comparePassword(password);
   if (!isPasswordCorrect) {
-    throw new BadRequestError("verfiy your mail or password");
+    throw new CustomError.BadRequestError("verfiy your mail or password");
   }
   if (!user.activated) {
-    throw new BadRequestError("you must to confirm your eamil");
+    throw new CustomError.BadRequestError("you must to confirm your eamil");
   }
   const payload = { userId: user._id, user: user.name, role: user.role };
   sendCookies(res, payload);
