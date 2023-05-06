@@ -13,6 +13,7 @@ const initialState = {
   user: users ? users : null,
 };
 
+// verify mail
 export const verifyMail = createAsyncThunk(
   "auth/verifyMail",
   async (token, thunkAPI) => {
@@ -21,7 +22,6 @@ export const verifyMail = createAsyncThunk(
 );
 
 // register user
-
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (user, thunkAPI) => {
@@ -30,7 +30,6 @@ export const registerUser = createAsyncThunk(
 );
 
 // login user
-
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (userData, thunkAPI) => {
@@ -38,6 +37,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+// logout user
 export const logoutUser = createAsyncThunk(
   "auth/logoutUser",
   async (_, thunkAPI) => {
@@ -45,6 +45,15 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
+// refresh user
+export const refreshUser = createAsyncThunk(
+  "auth/refreshUser",
+  async (_, thunkAPI) => {
+    return authService.refresh(thunkAPI);
+  }
+);
+
+// auth slice
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -126,6 +135,21 @@ export const authSlice = createSlice({
       })
       .addCase(logoutUser.pending, (state) => {
         state.isLoading = true;
+      })
+      .addCase(refreshUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(refreshUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        // state.user = payload;
+        console.log(payload);
+      })
+      .addCase(refreshUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
       });
   },
 });

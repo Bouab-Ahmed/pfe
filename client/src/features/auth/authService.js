@@ -1,7 +1,6 @@
-import axios from "axios";
-
 const API_URL = "http://localhost:5000";
 
+// verify user
 export const verify = async (token, thunkAPI) => {
   const res = await fetch(API_URL + "/auth/verifyEmail", {
     method: "POST",
@@ -18,7 +17,6 @@ export const verify = async (token, thunkAPI) => {
 };
 
 // register user
-
 export const register = async (userData, thunkAPI) => {
   const res = await fetch(API_URL + "/auth/register", {
     method: "POST",
@@ -36,7 +34,6 @@ export const register = async (userData, thunkAPI) => {
 };
 
 // login user
-
 export const login = async (userData, thunkAPI) => {
   // const response = await axios.post(API_URL + "/auth/login", userData);
   const res = await fetch(API_URL + "/auth/login", {
@@ -55,9 +52,27 @@ export const login = async (userData, thunkAPI) => {
   return await res.json();
 };
 
+// logout user
 export const logout = async (thunkAPI) => {
   const res = await fetch(API_URL + "/auth/logout", {
     method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+
+  return await res.json();
+};
+
+// refresh user
+export const refresh = async (thunkAPI) => {
+  const res = await fetch(API_URL + "/user/me", {
+    method: "GET",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
