@@ -15,19 +15,8 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     )} has been registered before`;
   }
 
-  // return res.status(500).json({ err });
-  return res.status(customError.statusCode).json({ msg: customError.message });
+  return res.status(500).json({ err });
+  // return res.status(customError.statusCode).json({ msg: customError.message });
 };
-
-// const errorHandlerMiddleware = (err, req, res, next) => {
-//   const statusCode = res.statusCode ? res.statusCode : 500;
-//   console.log(err.message, statusCode);
-//   res.status(statusCode).json({
-//     message: err.message,
-//     stack: process.env.NODE_ENV === "production" ? null : err.stack,
-//   });
-
-//   next();
-// };
 
 module.exports = errorHandlerMiddleware;
