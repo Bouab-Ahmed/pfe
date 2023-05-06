@@ -3,7 +3,6 @@ import NavList from "./NavList";
 import { useState, useEffect } from "react";
 import { logoutUser, reset } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import {
   Navbar,
   MobileNav,
@@ -11,13 +10,14 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import ProfileMenu from "../profileMenu/ProfileMenu";
+import SearchBar from "../searchBar/SearchBar";
 
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.user);
-  const { isSuccess, message } = useSelector((state) => state.auth);
+  const { isSuccess } = useSelector((state) => state.auth);
   const [openNav, setOpenNav] = useState(false);
 
   const onLogout = () => {
@@ -35,17 +35,28 @@ function Header() {
     if (isSuccess) {
       navigate("/");
       dispatch(reset());
+      console.log("header success");
     }
+    // eslint-disable-next-line
   }, [isSuccess]);
 
   return (
-    <Navbar className="py-2 px-4 lg:px-8 lg:py-2 rounded-none shadow-sm min-w-full">
-      <div className="flex items-center justify-between text-blue-gray-900 container1 mx-auto">
-        <div
-          className="text-3xl text-primary font-DINRoundPro cursor-pointer"
-          onClick={() => navigate("/")}
-        >
-          Logo
+    <Navbar className="sticky inset-0 z-10 h-max max-w-full py-2 px-4 lg:px-8 lg:py-2 rounded-none shadow-sm min-w-full">
+      <div
+        className={
+          user
+            ? "flex items-center justify-between text-blue-gray-900 "
+            : "flex items-center justify-between text-blue-gray-900 container1 mx-auto"
+        }
+      >
+        <div className="flex items-center gap-4 flex-[2]">
+          <div
+            className="text-3xl text-primary font-DINRoundPro cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            <span>Logo</span>
+          </div>
+          <SearchBar />
         </div>
         <div className="flex items-center justify-between gap-3">
           <div className="hidden lg:block">
