@@ -5,7 +5,6 @@ import Header from "./components/navbar/Header";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register.jsx";
 import Otp from "./pages/Otp";
-import Verify from "./pages/verify";
 
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 import { useSelector } from "react-redux";
@@ -21,10 +20,6 @@ function App() {
           <Route path={"/auth/login"} element={<Login />} />
           <Route path={"/auth/register"} element={<Register />} />
           <Route path={"/auth/verifyEmail"} element={<Otp />} />
-
-          <Route path="/auth/verify" element={<Verify />} />
-
-          {/* <Route path={'/feeds'} element={<Feeds />} /> */}
         </Routes>
       </div>
       <ToastContainer />
