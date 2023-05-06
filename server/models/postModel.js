@@ -1,6 +1,16 @@
 const mongoose = require("mongoose");
 
-const postSChema = new mongoose.Schema(
+const commentSchema = mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  body: { type: String, required: [true, "you must to put a comment"] },
+  created: { type: Date, default: Date.now },
+});
+
+const postSchema = mongoose.Schema(
   {
     title: {
       type: String,
@@ -19,9 +29,7 @@ const postSChema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    comment: {
-      type: String,
-    },
+    comments: [commentSchema],
     content: {
       type: String,
     },
@@ -37,4 +45,9 @@ const postSChema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Post", postSChema);
+postSchema.methods.addComment = function (id, body) {
+  this.comments.push({ user: id, body });
+  return this.save();
+};
+
+module.exports = mongoose.model("Post", postSchema);
