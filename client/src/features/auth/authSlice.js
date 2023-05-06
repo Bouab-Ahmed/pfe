@@ -84,7 +84,7 @@ export const authSlice = createSlice({
         state.isSuccess = true;
         localStorage.setItem("user", JSON.stringify(payload.payload));
         state.user = payload.payload;
-        state.message = payload.msg;
+        toast.success(payload.msg);
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -108,6 +108,7 @@ export const authSlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.message = payload.msg;
+        localStorage.removeItem("user");
       })
 
       .addCase(logoutUser.fulfilled, (state, { payload }) => {
@@ -115,8 +116,6 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.message = payload.msg;
-        toast.success(payload.msg);
         localStorage.removeItem("user");
       })
       .addCase(logoutUser.rejected, (state, { payload }) => {
