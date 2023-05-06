@@ -1,10 +1,9 @@
 import React, { createRef, useEffect, useState } from "react";
-import { reset, verifyMail } from "../features/auth/authSlice";
+import { logoutUser, reset, verifyMail } from "../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 const Otp = () => {
-  // eslint-disable-next-line
   const { isError, isSuccess, message } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
@@ -63,9 +62,11 @@ const Otp = () => {
 
     if (isSuccess) {
       toast.success(message);
-      navigate("/");
       dispatch(reset());
+      navigate("/");
+      dispatch(logoutUser());
     }
+    // eslint-disable-next-line
   }, [isError, isSuccess]);
 
   return (
