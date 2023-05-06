@@ -34,6 +34,7 @@ const updateUser = async (req, res) => {
 };
 
 const setCurrentUser = async (req, res) => {
+  console.log(req.user);
   res.status(StatusCodes.OK).json(req.user);
 };
 
