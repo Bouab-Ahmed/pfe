@@ -60,6 +60,7 @@ function Register() {
       navigate("/auth/verifyEmail");
       toast.success(message);
     }
+    // eslint-disable-next-line
   }, [isError, isSuccess]);
 
   if (isLoading) {
