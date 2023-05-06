@@ -7,13 +7,14 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import {
-  Cog6ToothIcon,
   PowerIcon,
   InboxArrowDownIcon,
   UserCircleIcon,
   LifebuoyIcon,
 } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+
+const serverLocalHost = "http://localhost:5000";
 
 const ProfileMenu = ({ user, onLogout }) => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const ProfileMenu = ({ user, onLogout }) => {
           variant="circular"
           alt="candice wu"
           className="cursor-pointer"
-          src={user?.profilePic}
+          src={`${serverLocalHost}${user?.profilePic}`}
         />
       </MenuHandler>
       <MenuList>
