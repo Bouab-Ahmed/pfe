@@ -18,7 +18,7 @@ const registerUser = async (req, res) => {
   const user = await User.create({
     ...req.body,
     verificationToken,
-    profilePic: pathImg,
+    cardId: pathImg,
   });
   // const token = await user.generateToken();
   // const host = "http://localhost:3000";
@@ -36,18 +36,29 @@ const loginUser = async (req, res) => {
   if (!email || !password) {
     throw new CustomError.BadRequestError("Please provide email and password");
   }
+  // disable-eslint-next-line
   const user = await User.findOne({ email });
+
   if (!user) {
     throw new CustomError.BadRequestError("verfiy your mail or password");
   }
   const isPasswordCorrect = await user.comparePassword(password);
+
   if (!isPasswordCorrect) {
     throw new CustomError.BadRequestError("verfiy your mail or password");
   }
   if (!user.activated) {
     throw new CustomError.BadRequestError("you must to confirm your eamil");
   }
-  const payload = { userId: user._id, user: user.name, role: user.role };
+
+  if (!user.accepted) {
+    throw new CustomError.BadRequestError(
+      "wait till the admin accept your account"
+    );
+  }
+
+  // const payload = { userId: user._id, user: user.name, role: user.role, };
+  const payload = { userId: user._id, ...user._doc };
   sendCookies(res, payload);
   res.status(StatusCodes.OK).json({ msg: "login success", payload });
 };
