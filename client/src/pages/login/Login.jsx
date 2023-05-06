@@ -37,7 +37,6 @@ function Login() {
     }
 
     if (isSuccess) {
-      toast.success(message);
       navigate("/");
       dispatch(reset());
     }
