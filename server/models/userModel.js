@@ -30,15 +30,20 @@ const userSchema = mongoose.Schema(
       type: [mongoose.Schema.Types.ObjectId],
       ref: "User",
     },
-    // cardId: {
-    //   type: String,
-    // },
+    cardId: {
+      type: String,
+      require: [true, "you must to provide cardId"],
+    },
     profilePic: {
       type: String,
-      require: [true, "you must to provide image"],
+      default: "/uploads/default.jpg",
     },
     verificationToken: String,
     activated: {
+      type: Boolean,
+      default: false,
+    },
+    accepted: {
       type: Boolean,
       default: false,
     },
