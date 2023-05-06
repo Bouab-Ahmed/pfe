@@ -18,6 +18,7 @@ const connectDB = require("./config/db");
 const postRoute = require("./routes/postRoutes");
 const authRoute = require("./routes/authRoutes");
 const userRoute = require("./routes/userRoutes");
+const commentRoute = require("./routes/commentRoutes");
 
 //errors
 const errorHandlerMiddleware = require("./middleware/errorMiddleware");
@@ -40,6 +41,7 @@ app.use(fileUpload());
 app.use("/posts", postRoute);
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
+app.use("/comment", commentRoute);
 
 app.use(middlewareNotFoundError);
 app.use(errorHandlerMiddleware);
