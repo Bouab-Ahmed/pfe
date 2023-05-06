@@ -1,6 +1,15 @@
 const Post = require("../models/postModel");
 const User = require("../models/userModel");
 
+//@desc    Get posts
+//@route    GET /posts
+//@access   Private(after we add authentication)
+
+const getPosts = async (req, res) => {
+  const posts = await Post.find({}).populate("user", "name");
+  res.status(200).json(posts);
+};
+
 //@desc     Get posts
 //@route    GET /posts
 //@access   Private(after we add authentication)
