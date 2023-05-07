@@ -1,4 +1,4 @@
-const { CustomError } = require("../errors");
+const { NotFoundError } = require("../errors");
 const Post = require("../models/postModel");
 
 const createNewComment = async (req, res) => {
@@ -8,7 +8,7 @@ const createNewComment = async (req, res) => {
   const post = await Post.findById({ _id: req.body.postId });
 
   if (!post) {
-    throw new CustomError.NotFoundError("not found any product ");
+    throw new NotFoundError("not found any post ");
   }
 
   const addPost = await post.addComment(req.user.userId, comment);
@@ -21,7 +21,14 @@ const updateComment = async (req, res) => {
 };
 
 const deleteComment = async (req, res) => {
-  res.status(200).json("remove");
+  const comment = await Post.findOne({ _id: req.body.postId });
+  if (!comment) {
+    throw new NotFoundError("not found any post ");
+  }
+
+  const post = await comment.removeComment(req.params.id);
+
+  res.status(200).json({ msg: "deleted comment" });
 };
 
 module.exports = { createNewComment, updateComment, deleteComment };
