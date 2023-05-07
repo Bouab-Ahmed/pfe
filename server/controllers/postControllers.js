@@ -1,4 +1,4 @@
-const { CustomError } = require("../errors");
+const { NotFoundError } = require("../errors");
 const Post = require("../models/postModel");
 const User = require("../models/userModel");
 
@@ -13,11 +13,10 @@ const getAllPosts = async (req, res) => {
 };
 
 const getSinglePost = async (req, res) => {
-  console.log(req.params.id);
   const post = await Post.findOne({ _id: req.params.id });
 
   if (!post) {
-    throw new CustomError.NotFoundError("not found any product ");
+    throw new NotFoundError("not found any product ");
   }
   res.status(200).json({ post, commentLength: post.comments.length });
 };
