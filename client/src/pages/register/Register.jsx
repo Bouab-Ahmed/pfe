@@ -1,9 +1,9 @@
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../../components/Spinner";
-import { registerUser, reset, sendOtp } from "../../features/auth/authSlice";
+import { registerUser, reset } from "../../features/auth/authSlice";
 import { useLocation } from "react-router-dom";
 const adminSecretCode = "admin";
 
