@@ -15,16 +15,42 @@ const createNewComment = async (req, res) => {
 };
 
 const getAllCommentofPost = async (req, res) => {
-  const comment = await Comments.findById({ _id: req.body.postId });
+  const comment = await Comments.find({ post: req.body.postId })
+    .populate({
+      path: "user",
+      select: "name profilePic -_id",
+    })
+    .populate({
+      path: "replies",
+      populate: {
+        path: "user",
+        select: "name profilePic -_id",
+      },
+    });
 
-  if (!comment) {
+  if (!comment.length) {
     throw new NotFoundError("not found any comment ");
   }
   res.status(200).json({ comment });
 };
 
 const replyComment = async (req, res) => {
-  res.status(200).json("reply comment");
+  const { comment } = req.body;
+  const findComment = await Comments.findOne({
+    _id: req.params.id,
+  })
+    // .populate("user", "name profilePic")
+    .populate({
+      path: "replies",
+      select: "name profilePic -_id",
+      populate: {
+        path: "user",
+        select: "name profilePic -_id",
+      },
+    });
+
+  const reply = await findComment.addReplyComment(req.user.userId, comment);
+  res.status(200).json({ reply });
 };
 
 const updateComment = async (req, res) => {
