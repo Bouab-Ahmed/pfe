@@ -14,12 +14,17 @@ const createNewComment = async (req, res) => {
   res.status(201).json({ commentWithInfoUser });
 };
 
-const createAllommentofPost = async (req, res) => {
-  // const comment = await Comments.find({ _id: req.body.postId });
-  // if (!comment) {
-  //   throw new NotFoundError("not found any comment ");
-  // }
-  // res.status(200).json({ comment });
+const getAllCommentofPost = async (req, res) => {
+  const comment = await Comments.findById({ _id: req.body.postId });
+
+  if (!comment) {
+    throw new NotFoundError("not found any comment ");
+  }
+  res.status(200).json({ comment });
+};
+
+const replyComment = async (req, res) => {
+  res.status(200).json("reply comment");
 };
 
 const updateComment = async (req, res) => {
@@ -50,5 +55,6 @@ module.exports = {
   createNewComment,
   updateComment,
   deleteComment,
-  createAllommentofPost,
+  getAllCommentofPost,
+  replyComment,
 };
