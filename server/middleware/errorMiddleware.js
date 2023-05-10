@@ -19,15 +19,4 @@ const errorHandlerMiddleware = (err, req, res, next) => {
   return res.status(customError.statusCode).json({ msg: customError.message });
 };
 
-// const errorHandlerMiddleware = (err, req, res, next) => {
-//   const statusCode = res.statusCode ? res.statusCode : 500;
-//   console.log(err.message, statusCode);
-//   res.status(statusCode).json({
-//     message: err.message,
-//     stack: process.env.NODE_ENV === "production" ? null : err.stack,
-//   });
-
-//   next();
-// };
-
 module.exports = errorHandlerMiddleware;
