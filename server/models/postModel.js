@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 
-const commentSchema = mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  body: { type: String, required: [true, "you must to put a comment"] },
-  created: { type: Date, default: Date.now },
-});
+// const commentSchema = mongoose.Schema({
+//   user: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: "User",
+//     required: true,
+//   },
+//   body: { type: String, required: [true, "you must to put a comment"] },
+//   created: { type: Date, default: Date.now },
+// });
 
 const postSchema = mongoose.Schema(
   {
@@ -29,7 +29,7 @@ const postSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    comments: [commentSchema],
+    // comments: [commentSchema],
     content: {
       type: String,
     },
@@ -42,22 +42,32 @@ const postSchema = mongoose.Schema(
       ref: "User",
     },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true } }
 );
 
-postSchema.methods.addComment = function (id, body) {
-  this.comments.push({ user: id, body });
-  return this.save();
-};
+postSchema.virtual("comments", {
+  ref: "Comments",
+  localField: "_id",
+  foreignField: "post",
+  // justOne: false// if true it return one item but it false return array of object
+});
 
-postSchema.methods.removeComment = function (id) {
-  const comment = this.comments.id(id);
+// postSchema.methods.addComment = async function (id, body) {
+//   const num = this.comments.push({ user: id, body });
+//   // this.comments[num - 1]
+//   // console.log(this.comments[num - 1]);
+//   // const idCom= this.comments[num - 1].id
+//   return this.save();
+// };
 
-  if (!comment) {
-    throw new NotFoundError("not found any comment ");
-  }
-  comment.remove();
-  return this.save();
-};
+// postSchema.methods.removeComment = async function (id) {
+//   const comment = this.comments.id(id);
+
+//   // if (!comment) {
+//   //   throw new Error("not found any comment ");
+//   // }
+//   // comment.remove();
+//   // return this.save();
+// };
 
 module.exports = mongoose.model("Post", postSchema);
