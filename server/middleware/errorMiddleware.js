@@ -15,8 +15,8 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     )} has been registered before`;
   }
 
-  return res.status(500).json({ err });
-  // return res.status(customError.statusCode).json({ msg: customError.message });
+  // return res.status(500).json({ err });
+  return res.status(customError.statusCode).json({ msg: customError.message });
 };
 
 module.exports = errorHandlerMiddleware;
