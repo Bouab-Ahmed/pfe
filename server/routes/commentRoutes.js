@@ -6,9 +6,10 @@ const {
   createNewComment,
   updateComment,
   deleteComment,
+  createAllommentofPost,
 } = require("../controllers/commentControllers");
 
-router.route("/").post(auth, createNewComment);
+router.route("/").post(auth, createNewComment).get(auth, createAllommentofPost);
 router.route("/:id").patch(auth, updateComment).delete(auth, deleteComment);
 
 module.exports = router;
