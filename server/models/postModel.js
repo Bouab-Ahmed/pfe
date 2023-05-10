@@ -52,6 +52,10 @@ postSchema.virtual("comments", {
   // justOne: false// if true it return one item but it false return array of object
 });
 
+postSchema.pre("remove", async function () {
+  await this.model("Comments").deleteMany({ post: this._id });
+});
+
 // postSchema.methods.addComment = async function (id, body) {
 //   const num = this.comments.push({ user: id, body });
 //   // this.comments[num - 1]
