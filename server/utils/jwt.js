@@ -13,6 +13,12 @@ const isValidToken = (token) => {
 const sendCookies = (res, payload) => {
   const token = generateToken(payload);
 
+  // // enrypt token
+  // const encryptedToken = crypto
+  //   .createCipheriv("aes-256-cbc", process.env.JWT_SECRET, process.env.JWT_SECRET)
+  //   .update(token)
+  //   .toString("hex");
+
   res.cookie("token", token, {
     // sameSite: "none",
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 1),
