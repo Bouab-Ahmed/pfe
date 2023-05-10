@@ -28,7 +28,7 @@ const getSinglePost = async (req, res) => {
     });
 
   if (!post) {
-    throw new NotFoundError("not found any product ");
+    throw new NotFoundError("not found any post ");
   }
   res.status(200).json({ post });
 };
@@ -38,7 +38,15 @@ const updatePost = async (req, res) => {
 };
 
 const deletePost = async (req, res) => {
-  res.status(200).json({ removed });
+  const comment = await Post.findOne({ _id: req.params.id });
+
+  if (!comment) {
+    throw new NotFoundError("this post not found");
+  }
+
+  comment.remove();
+
+  res.status(200).json({ comment });
 };
 
 module.exports = {
