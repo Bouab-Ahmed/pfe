@@ -10,11 +10,12 @@ const {
   replyComment,
 } = require("../controllers/commentControllers");
 
+router.route("/").post(auth, createNewComment).get(auth, getAllCommentofPost);
+
 router
-  .route("/")
-  .post(auth, createNewComment)
-  .get(auth, getAllCommentofPost)
-  .patch(auth, replyComment);
-router.route("/:id").patch(auth, updateComment).delete(auth, deleteComment);
+  .route("/:id")
+  .post(auth, replyComment)
+  .patch(auth, updateComment)
+  .delete(auth, deleteComment);
 
 module.exports = router;
