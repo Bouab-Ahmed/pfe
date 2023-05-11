@@ -4,6 +4,12 @@ const Comments = require("../models/commentModel");
 const createNewComment = async (req, res) => {
   req.body.user = req.user.userId;
   req.body.post = req.body.postId;
+  const post = await Comments.findById({ _id: req.body.postId });
+
+  if (!post) {
+    throw new NotFoundError("not found any comment ");
+  }
+
   const comment = await Comments.create({ ...req.body });
 
   const commentWithInfoUser = await comment.populate({
