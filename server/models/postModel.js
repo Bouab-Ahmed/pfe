@@ -4,11 +4,11 @@ const postSchema = mongoose.Schema(
   {
     title: {
       type: String,
-      require: true,
+      require: [true, "you must to provide title"],
     },
     image: {
       type: String,
-      require: true,
+      require: [true, "you must to provide image"],
       default: "/uploads/default.jpg",
     },
     like: {
@@ -21,19 +21,19 @@ const postSchema = mongoose.Schema(
     },
     content: {
       type: String,
-      require: true,
+      require: [true, "you must to provide content"],
     },
 
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: [true, "you must to provide user id"],
       ref: "User",
     },
     tags: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tag",
-        require: true,
+        required: [true, "you must to provide tag id"],
       },
     ],
   },
