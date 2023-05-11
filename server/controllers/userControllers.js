@@ -1,10 +1,11 @@
 const User = require("../models/userModel");
+const Tag = require("../models/tagModel");
 const { StatusCodes } = require("http-status-codes");
 const { sendCookies } = require("../utils/jwt");
 const { BadRequestError } = require("../errors");
 
 const getAllUsers = async (req, res) => {
-  const user = await User.find().select("-password");
+  const user = await User.find().select("-password").populate("tags");
   res.status(StatusCodes.OK).json({ user });
 };
 
@@ -34,8 +35,10 @@ const updateUser = async (req, res) => {
 };
 
 const setCurrentUser = async (req, res) => {
-  console.log(req.user);
-  res.status(StatusCodes.OK).json(req.user);
+  const user = await User.findById({ _id: req.user.userId })
+    .populate("tags")
+    .select("-password");
+  res.status(StatusCodes.OK).json(user);
 };
 
 const removeUser = async (req, res) => {
@@ -61,6 +64,24 @@ const updatePassword = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "password updated successfully" });
 };
 
+const addTag = async (req, res) => {
+  const user = await User.findOne({ _id: req.user.userId }).select("-password");
+  user.tags.push(req.params.id);
+  user.save();
+  const payload = { userId: user._id, ...user._doc };
+  sendCookies(res, payload);
+  res.status(StatusCodes.OK).json(user);
+};
+
+const addFollow = async (req, res) => {
+  const user = await User.findOne({ _id: req.user.userId }).select("-password");
+  user.following.push(req.params.id);
+  user.save();
+  const payload = { userId: user._id, ...user._doc };
+  sendCookies(res, payload);
+  res.status(StatusCodes.OK).json(user);
+};
+
 module.exports = {
   getAllUsers,
   getAllUsers,
@@ -69,4 +90,6 @@ module.exports = {
   removeUser,
   getSingleUsers,
   setCurrentUser,
+  addTag,
+  addFollow,
 };
