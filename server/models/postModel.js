@@ -1,15 +1,5 @@
 const mongoose = require("mongoose");
 
-// const commentSchema = mongoose.Schema({
-//   user: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "User",
-//     required: true,
-//   },
-//   body: { type: String, required: [true, "you must to put a comment"] },
-//   created: { type: Date, default: Date.now },
-// });
-
 const postSchema = mongoose.Schema(
   {
     title: {
@@ -29,18 +19,23 @@ const postSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    // comments: [commentSchema],
     content: {
       type: String,
+      require: true,
     },
-    content: {
-      type: String,
-    },
+
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "User",
     },
+    tags: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tag",
+        require: true,
+      },
+    ],
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );
