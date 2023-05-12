@@ -19,7 +19,6 @@ function Header() {
   const dispatch = useDispatch();
   const location = useLocation();
   const path = location.pathname.substring(1);
-  console.log(path);
 
   const user = useSelector((state) => state.auth.user);
   const { isSuccess } = useSelector((state) => state.auth);
