@@ -1,9 +1,11 @@
 const { NotFoundError } = require("../errors");
 const Post = require("../models/postModel");
+const { uploadProductImageLocal } = require("./uploadsController");
 // const User = require("../models/userModel");
 
 const createNewPost = async (req, res) => {
-  const post = await Post.create({ ...req.body, user: req.user.userId });
+  const pathImg = await uploadProductImageLocal(req);
+  const post = await Post.create({ ...req.body, user: req.user.userId, image: pathImg });
   post.tags.push(req.body.idTag);
   await post.save();
   res.status(200).json({ post });

@@ -2,14 +2,14 @@
 const API_URL = "http://localhost:5000";
 
 export const createPost = async (post,thunkAPI) => {
-  const res = await fetch(API_URL + "posts/newPost", {
+  const res = await fetch(API_URL + "/posts", {
     method: "POST",
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(post),
-    // body: post,
+    // headers: {
+    //   "Content-Type": "multipart/form-data",
+    // },
+    // body: JSON.stringify(post),
+    body: post,
   });
   if (!res.ok) {
     return thunkAPI.rejectWithValue(await res.json());
@@ -40,10 +40,24 @@ export const getSinglePost = async (id, thunkAPI) => {
   return await res.json();
 };
 
+export const getTags = async (thunkAPI) => {
+  const res = await fetch(API_URL + "/tag", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+
+  return await res.json();
+};
+
 const postsService = {
   createPost,
   getPosts,
   getSinglePost,
+  getTags,
 };
 
 export default postsService;
