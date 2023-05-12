@@ -22,7 +22,7 @@ const PostCard = (post) => {
       </div>
       <div
         className="flex flex-row items-center justify-between cursor-pointer"
-        onClick={() => navigate(`post/${post.id}`)}
+        onClick={() => navigate(`/posts/${post.id}`)}
       >
         <div className="flex flex-col w-3/4">
           <h2 className="text-2xl pt-2 font-bold">{post.title}</h2>
