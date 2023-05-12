@@ -8,9 +8,10 @@ import Otp from "./pages/Otp";
 
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 import { useSelector } from "react-redux";
+import PageDetails from "./pages/PageDetails";
 
 function App() {
-  const user = useSelector((state) => state.auth.user);
+  const user = localStorage.getItem("user");
   return (
     <div>
       <div className="mx-auto">
@@ -26,6 +27,7 @@ function App() {
             element={user ? <ProtectedRoute user={user} /> : <Register />}
           />
           <Route path={"/auth/verifyEmail"} element={<Otp />} />
+          <Route path="/posts/:id" element={<PageDetails />} />
         </Routes>
       </div>
       <ToastContainer />
