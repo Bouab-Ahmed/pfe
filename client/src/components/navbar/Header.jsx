@@ -56,7 +56,7 @@ function Header() {
           >
             <span>Logo</span>
           </div>
-          <SearchBar />
+          {user && <SearchBar />}
         </div>
         <div className="flex items-center justify-between gap-3">
           <div className="hidden lg:block">
