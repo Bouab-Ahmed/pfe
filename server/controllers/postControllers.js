@@ -25,25 +25,27 @@ const getAllPosts = async (req, res) => {
 };
 
 const getSinglePost = async (req, res) => {
-  const post = await Post.findOne({ _id: req.params.id })
-    //this is  complex i must to think about it because there are a lot of sub document to user info for each one
+  const post = await Post.findById({ _id: req.params.id })
     .populate({
       path: "user",
-      select: "name profilePic -_id",
+      select: "name profilePic _id",
     })
     .populate({
       path: "comments",
       populate: {
         path: "user",
-        select: "name profilePic -_id",
+        select: "name profilePic _id",
       },
-      // populate: {
-      //   path: "replies",
-      //   populate: {
-      //     path: "user",
-      //     select: "name profilePic -_id",
-      //   },
-      // },
+    })
+    .populate({
+      path: "comments",
+      populate: {
+        path: "replies",
+        populate: {
+          path: "user",
+          select: "name profilePic _id",
+        },
+      },
     });
 
   if (!post) {
