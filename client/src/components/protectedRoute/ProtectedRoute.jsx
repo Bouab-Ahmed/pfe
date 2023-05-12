@@ -1,8 +1,10 @@
 import React from "react";
 import Feeds from "../../pages/Feeds";
 import Home from "../../pages/Home";
+import { useSelector } from "react-redux";
 
-const ProtectedRoute = ({ user }) => {
+const ProtectedRoute = () => {
+  const user = useSelector((state) => state.auth.user);
   if (user) {
     return <Feeds />;
   } else {

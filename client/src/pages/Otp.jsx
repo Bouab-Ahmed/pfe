@@ -126,14 +126,18 @@ const Otp = () => {
 
                   <div className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500">
                     <p>Didn't recieve code?</p>{" "}
-                    <a
+                    <button
                       className="flex flex-row items-center text-primary"
-                      href="http://"
-                      target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() =>
+                        toast.info(
+                          "we already sent you the code check your mail please"
+                        )
+                      }
+                      type="button"
                     >
                       Resend
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
