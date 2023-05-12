@@ -57,6 +57,10 @@ const userSchema = mongoose.Schema(
         ref: "Tag",
       },
     ],
+    counter: {
+      type: Number,
+      default: 50,
+    },
   },
   {
     timestamps: true,
