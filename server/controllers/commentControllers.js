@@ -4,11 +4,6 @@ const Comments = require("../models/commentModel");
 const createNewComment = async (req, res) => {
   req.body.user = req.user.userId;
   req.body.post = req.body.postId;
-  const post = await Comments.findById({ _id: req.body.postId });
-
-  if (!post) {
-    throw new NotFoundError("not found any comment ");
-  }
 
   const comment = await Comments.create({ ...req.body });
 
@@ -17,10 +12,13 @@ const createNewComment = async (req, res) => {
     select: "name profilePic -_id",
   });
 
-  res.status(201).json({ commentWithInfoUser });
+  res.status(201).json({
+    msg: "comment created success and wait admin approve it",
+    comment: commentWithInfoUser,
+  });
 };
 
-const getAllCommentofPost = async (req, res) => {
+const getAllCommentofOnePost = async (req, res) => {
   const comment = await Comments.find({ post: req.body.postId })
     .populate({
       path: "user",
@@ -42,20 +40,24 @@ const getAllCommentofPost = async (req, res) => {
 
 const replyComment = async (req, res) => {
   const { comment } = req.body;
-  const findComment = await Comments.findOne({
-    _id: req.params.id,
-  })
-    // .populate("user", "name profilePic")
+  const reply = await Comments.findOneAndUpdate(
+    { _id: req.params.id },
+    { $push: { replies: { user: req.user.userId, comment } } },
+    { new: true }
+  )
+    .populate("user", "name profilePic _id")
     .populate({
       path: "replies",
-      select: "name profilePic -_id",
       populate: {
         path: "user",
-        select: "name profilePic -_id",
+        select: "name profilePic _id",
       },
     });
 
-  const reply = await findComment.addReplyComment(req.user.userId, comment);
+  if (!reply) {
+    throw new NotFoundError("not found any comment to reply it ");
+  }
+  // const reply = await findComment.addReplyComment(req.user.userId, comment);
   res.status(200).json({ reply });
 };
 
@@ -87,6 +89,6 @@ module.exports = {
   createNewComment,
   updateComment,
   deleteComment,
-  getAllCommentofPost,
+  getAllCommentofOnePost,
   replyComment,
 };
