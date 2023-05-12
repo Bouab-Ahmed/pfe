@@ -19,6 +19,7 @@ const postRoute = require("./routes/postRoutes");
 const authRoute = require("./routes/authRoutes");
 const userRoute = require("./routes/userRoutes");
 const commentRoute = require("./routes/commentRoutes");
+const tagRoute = require("./routes/tagRoute");
 
 //errors
 const errorHandlerMiddleware = require("./middleware/errorMiddleware");
@@ -42,6 +43,7 @@ app.use("/posts", postRoute);
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use("/comment", commentRoute);
+app.use("/tag", tagRoute);
 
 app.use(middlewareNotFoundError);
 app.use(errorHandlerMiddleware);

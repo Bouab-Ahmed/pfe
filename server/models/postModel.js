@@ -1,24 +1,14 @@
 const mongoose = require("mongoose");
 
-// const commentSchema = mongoose.Schema({
-//   user: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "User",
-//     required: true,
-//   },
-//   body: { type: String, required: [true, "you must to put a comment"] },
-//   created: { type: Date, default: Date.now },
-// });
-
 const postSchema = mongoose.Schema(
   {
     title: {
       type: String,
-      require: true,
+      require: [true, "you must to provide title"],
     },
     image: {
       type: String,
-      require: true,
+      require: [true, "you must to provide image"],
       default: "/uploads/default.jpg",
     },
     like: {
@@ -29,18 +19,23 @@ const postSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    // comments: [commentSchema],
     content: {
       type: String,
+      require: [true, "you must to provide content"],
     },
-    content: {
-      type: String,
-    },
+
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: [true, "you must to provide user id"],
       ref: "User",
     },
+    tags: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tag",
+        required: [true, "you must to provide tag id"],
+      },
+    ],
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );
