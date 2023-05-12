@@ -4,6 +4,7 @@ import postsService from "./postsService";
 const initialState = {
   posts: [],
   singlePost: null,
+  tags: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -34,6 +35,15 @@ export const getSinglePost = createAsyncThunk(
   }
 );
 
+// get tags
+
+export const getTags = createAsyncThunk(
+  "posts/getTags",
+  async (_, thunkAPI) => {
+    return postsService.getTags(thunkAPI);
+  }
+);
+
 export const postsSlice = createSlice({
   name: "post",
   initialState,
@@ -48,17 +58,19 @@ export const postsSlice = createSlice({
       state.message = "";
     });
     builder.addCase(createPost.fulfilled, (state, action) => {
+      console.log(action);
       state.isLoading = false;
       state.isError = false;
       state.isSuccess = true;
-      state.message.push(action.payload.msg);
-      state.posts = [...action.payload.posts];
+      // state.message.push(action.payload.msg);
+      // state.posts = [...action.payload.posts];
     });
     builder.addCase(createPost.rejected, (state, action) => {
+      console.log(action);
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
-      state.message.push(action.payload.msg);
+      // state.message.push(action.payload.msg);
     });
     builder.addCase(getSinglePost.pending, (state) => {
       state.isLoading = true;
@@ -74,12 +86,32 @@ export const postsSlice = createSlice({
       state.message = action.payload.msg;
       state.singlePost = action.payload.post;
     });
-    builder.addCase(getSinglePost.rejected, (state, action) => {
+    builder.addCase(getSinglePost.rejected, (state) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
       // state.message = action.payload.msg;
     });
+    builder.addCase(getTags.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+      state.isSuccess = false;
+      state.message = "";
+    }
+    );
+    builder.addCase(getTags.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isError = false;
+      state.isSuccess = true;
+      state.tags = [...action.payload.tag];
+    }
+    );
+    builder.addCase(getTags.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    }
+    );
   },
 });
 
