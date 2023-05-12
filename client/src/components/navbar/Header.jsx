@@ -1,8 +1,10 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import NavList from "./NavList";
 import { useState, useEffect } from "react";
 import { logoutUser, reset } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { BsPencilSquare } from "react-icons/bs";
+
 import {
   Navbar,
   MobileNav,
@@ -15,6 +17,9 @@ import SearchBar from "../searchBar/SearchBar";
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const path = location.pathname.substring(1);
+  console.log(path);
 
   const user = useSelector((state) => state.auth.user);
   const { isSuccess } = useSelector((state) => state.auth);
@@ -60,7 +65,17 @@ function Header() {
         </div>
         <div className="flex items-center justify-between gap-3">
           <div className="hidden lg:block">
-            <NavList />
+            {user && user.role === "writer" ? (
+              <div
+                className={`flex items-center gap-1 mx-2 cursor-pointer text-[#222] hover:text-black hover:scale-105 transition-all duration-200 ease-in-out ${path === "newPost" && "hidden"}`}
+                onClick={() => navigate("/newPost")}
+              >
+                <BsPencilSquare />
+                <span>write</span>
+              </div>
+            ) : (
+              <NavList />
+            )}
           </div>
           {user ? (
             <div className="mx-4 bg-transparent my-0 py-0">
