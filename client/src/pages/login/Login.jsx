@@ -33,10 +33,14 @@ function Login() {
   useEffect(() => {
     if (isError) {
       toast.error(message);
+      if (message === "you must to confirm your eamil") {
+        navigate("/auth/verifyEmail");
+      }
       dispatch(reset());
     }
 
     if (isSuccess) {
+      // check if user has follows
       navigate("/");
       dispatch(reset());
     }
