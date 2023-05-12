@@ -1,13 +1,20 @@
-import axios from "axios";
 
 const API_URL = "http://localhost:5000";
 
-export const createPost = async (post, token) => {
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
-  const request = await axios.post(API_URL + "/newPost", post, config);
-  return request.data;
+export const createPost = async (post,thunkAPI) => {
+  const res = await fetch(API_URL + "posts/newPost", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(post),
+    // body: post,
+  });
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+  return await res.json();
 };
 
 export const getPosts = async (thunkAPI) => {
