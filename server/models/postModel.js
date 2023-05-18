@@ -4,11 +4,11 @@ const postSchema = mongoose.Schema(
   {
     title: {
       type: String,
-      require: [true, "you must to provide title"],
+      required: [true, "you must to provide title"],
     },
     image: {
       type: String,
-      require: [true, "you must to provide image"],
+      required: [true, "you must to provide image"],
       default: "/uploads/default.jpg",
     },
     like: {
@@ -21,7 +21,7 @@ const postSchema = mongoose.Schema(
     },
     content: {
       type: String,
-      require: [true, "you must to provide content"],
+      required: [true, "you must to provide content"],
     },
 
     user: {
@@ -51,8 +51,23 @@ postSchema.pre("remove", async function () {
   await this.model("Comments").deleteMany({ post: this._id });
 });
 
+postSchema.methods.decrease= async function(id){
+  this.tags.push(id)
+  const user = await this.model("User").findById(this.user);
+    if (user.counter < 5) {
+    throw new Error("you don't have more point to post");
+  }
+  await this.model("User").findByIdAndUpdate({_id:this.user}, { $inc: { counter: -5 } })
+  await this.save();
+}
+
 postSchema.pre("save", async function () {
-  console.log(await this.model("User").findById(this.user));
+  // const user = await this.model("User").findById(this.user);
+  // if (user.counter < 5) {
+  //   throw new Error("you don't have more point to post");
+  // }
+  // user.counter -= 5;
+  // await user.save();
 });
 
 // postSchema.methods.addComment = async function (id, body) {
