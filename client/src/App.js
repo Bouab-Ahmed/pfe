@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/navbar/Header";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register.jsx";
+import Profile from "./pages/Profile.jsx";
 import Otp from "./pages/Otp";
 
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
@@ -30,6 +31,7 @@ function App() {
           <Route path={"/auth/verifyEmail"} element={<Otp />} />
           <Route path="/posts/:id" element={<PageDetails />} />
           <Route path="/newPost" element={<NewPost />} />
+          <Route path="/profile/me" element={<Profile />} />
         </Routes>
       </div>
       <ToastContainer />
