@@ -13,7 +13,7 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { isLoading, isError, isSuccess, message } = useSelector(
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
 
@@ -42,6 +42,7 @@ function Login() {
     if (isSuccess) {
       // check if user has follows
       navigate("/");
+      localStorage.setItem("user", JSON.stringify(user));
       dispatch(reset());
     }
   }, [isError, isSuccess]);
