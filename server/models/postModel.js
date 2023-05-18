@@ -51,6 +51,10 @@ postSchema.pre("remove", async function () {
   await this.model("Comments").deleteMany({ post: this._id });
 });
 
+postSchema.pre("save", async function () {
+  console.log(await this.model("User").findById(this.user));
+});
+
 // postSchema.methods.addComment = async function (id, body) {
 //   const num = this.comments.push({ user: id, body });
 //   // this.comments[num - 1]
