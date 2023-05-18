@@ -32,7 +32,7 @@ const ProfileMenu = ({ user, onLogout }) => {
       <MenuList>
         <MenuItem
           className="flex items-center gap-2  text-textColor"
-          onClick={() => navigate("/profile")}
+          onClick={() => navigate(`/profile/me`)}
         >
           <UserCircleIcon strokeWidth={2} className="h-4 w-4" />
           <Typography variant="small" className="font-normal">
