@@ -5,6 +5,7 @@ import { store } from './app/store';
 import App from './App';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
+import { StyleProvider } from "@ant-design/cssinjs";
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -13,7 +14,9 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <StyleProvider>
+          <App />
+        </StyleProvider>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>
