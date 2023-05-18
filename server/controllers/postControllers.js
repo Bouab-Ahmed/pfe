@@ -17,6 +17,12 @@ const getAllPosts = async (req, res) => {
       // { following: { $in: req.user.following } },
       { tags: { $in: req.user.tags } },
     ],
+  }).populate({
+    path: "tags",
+    select: "name _id",
+  }).populate({
+    path: "user",
+    select: "name profilePic _id following follower createdAt",
   });
 
   if (!posts.length) {
@@ -30,7 +36,7 @@ const getSinglePost = async (req, res) => {
   const post = await Post.findById({ _id: req.params.id })
     .populate({
       path: "user",
-      select: "name profilePic _id",
+      select: "name profilePic _id following follower",
     })
     .populate({
       path: "comments",
@@ -48,6 +54,10 @@ const getSinglePost = async (req, res) => {
           select: "name profilePic _id",
         },
       },
+    })
+    .populate({
+      path: "tags",
+      select: "name _id",
     });
 
   if (!post) {
@@ -57,7 +67,17 @@ const getSinglePost = async (req, res) => {
 };
 
 const updatePost = async (req, res) => {
-  res.status(200).send("updatedPost");
+  const post = await Post.findOneAndUpdate(
+    { _id: req.params.id },
+    { ...req.body },
+    { new: true }
+  );
+
+  if (!post) {
+    throw new NotFoundError("this post not found");
+  }
+
+  res.status(200).json({ post });
 };
 
 const deletePost = async (req, res) => {
