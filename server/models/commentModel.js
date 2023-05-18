@@ -39,4 +39,11 @@ commentSchema.methods.addReplyComment = async function (id, comment) {
   return this.save();
 };
 
+commentSchema.methods.increseCounters = async function () {
+  const user = await this.model("User").findById(this.user);
+  user.counter += 1;
+  await user.save();
+  
+};
+
 module.exports = mongoose.model("Comments", commentSchema);
