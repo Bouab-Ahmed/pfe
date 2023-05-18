@@ -19,7 +19,7 @@ const createNewComment = async (req, res) => {
 };
 
 const getAllCommentofOnePost = async (req, res) => {
-  const comment = await Comments.find({ post: req.body.postId })
+  const comment = await Comments.find({ post: req.params.id })
     .populate({
       path: "user",
       select: "name profilePic -_id",
