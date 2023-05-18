@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema(
       enum: ["writer", "reader", "admin"],
       default: "reader",
     },
-    followers: [
+    follower: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

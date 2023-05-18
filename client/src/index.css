@@ -3,8 +3,113 @@
 @tailwind base;
 @tailwind components;
 * {
-  @apply font-sourceSansPro;
+  @apply font-sourceSansPro select-none;
 }
+.postContent {
+  @apply font-DINRoundPro flex flex-col justify-center gap-4;
+}
+.postContent h1 {
+  @apply font-semibold text-4xl font-DINRoundPro leading-tight my-4 tracking-normal;
+}
+.postContent h2 {
+  @apply font-semibold text-2xl;
+}
+.postContent h3 {
+  @apply font-semibold text-xl;
+}
+.postContent h4 {
+  @apply font-semibold text-lg;
+}
+.postContent h5 {
+  @apply font-semibold text-base;
+}
+.postContent h6 {
+  @apply font-semibold text-sm;
+}
+.postContent p {
+  @apply text-base text-gray-800;
+}
+.postContent a {
+  @apply text-blue-500;
+}
+.postContent a:hover {
+  @apply text-blue-700;
+}
+.postContent ul {
+  @apply list-disc list-inside text-gray-900;
+}
+.postContent ol {
+  @apply list-decimal list-inside;
+}
+.postContent li {
+  @apply my-2;
+}
+.postContent blockquote {
+  @apply border-l-4 border-gray-300 pl-4 my-2;
+}
+.postContent blockquote p {
+  @apply italic;
+}
+.postContent img {
+  @apply my-4 mx-auto;
+}
+.postContent img + em {
+  @apply block text-center text-sm text-gray-500;
+}
+.postContent code {
+  @apply bg-gray-100 rounded p-1;
+}
+.postContent pre {
+  @apply bg-gray-100 rounded p-1;
+}
+.postContent pre code {
+  @apply bg-gray-100 rounded p-1;
+}
+.postContent hr {
+  @apply my-2;
+}
+.postContent table {
+  @apply w-full;
+}
+.postContent table thead {
+  @apply bg-gray-100;
+}
+.postContent table thead tr th {
+  @apply font-semibold;
+}
+.postContent table tbody tr:nth-child(even) {
+  @apply bg-gray-100;
+}
+.postContent table tbody tr td {
+  @apply py-1 px-2;
+}
+.postContent table tbody tr td:first-child {
+  @apply font-semibold;
+}
+.postContent table tbody tr td:last-child {
+  @apply text-right;
+}
+.postContent table tbody tr td:last-child a {
+  @apply text-blue-500;
+}
+.postContent table tbody tr td:last-child a:hover {
+  @apply text-blue-700;
+}
+.postContent strong {
+  @apply font-semibold;
+}
+.postContent em {
+  @apply italic;
+}
+.postContent del {
+  @apply line-through;
+}
+.postContent hr {
+  @apply my-2;
+}
+
+
+
 @tailwind utilities;
 
 .container1 {

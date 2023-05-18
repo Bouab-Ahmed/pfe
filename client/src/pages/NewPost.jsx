@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost, getTags } from "../features/posts/postsSlice";
+import { createPost, getTags, reset } from "../features/posts/postsSlice";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-
+import { useNavigate } from "react-router-dom";
 
 const NewPost = () => {
   const [contentEditor, setContentEditor] = useState();
@@ -14,16 +14,22 @@ const NewPost = () => {
   const [preview, setPreview] = useState();
 
   const dispatch = useDispatch();
-  const { tags, isLoading } = useSelector(
-    (state) => state.post
-  );
+  const navigate = useNavigate();
+  const {
+    tags,
+    isPostLoading,
+    isPostSuccess,
+    isPostError,
+    isTagLoading,
+    isTagSuccess,
+    isTagError,
+  } = useSelector((state) => state.post);
   const handleIdTagChange = (e) => {
     setIdTag(e.target.value);
   };
   const handleEditorChange = (content, editor) => {
     setContentEditor(content);
   };
-
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -50,9 +56,20 @@ const NewPost = () => {
   };
 
   useEffect(() => {
+    dispatch(reset());
+
     dispatch(getTags());
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (isPostSuccess) {
+      dispatch(reset());
+      navigate("/");
+      toast.success("Post created successfully");
+    }
+    // eslint-disable-next-line
+  }, [isPostSuccess]);
 
   useEffect(() => {
     if (!image) {
@@ -166,7 +183,9 @@ const NewPost = () => {
         <button
           type="submit"
           className="w-full px-4 py-2 text-white font-medium bg-primary hover:bg-primary active:bg-primary rounded-lg duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary"
-          disabled={!contentEditor || !idTag || !title || isLoading || !image}
+          disabled={
+            !contentEditor || !idTag || !title || isPostLoading || !image
+          }
         >
           Publish
         </button>

@@ -4,14 +4,14 @@ const sendMailer = async ({ to, subject, html }) => {
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "messaoud.messaoud92@gmail.com",
-      pass: "rznkenkudqluxcqq",
+      user: "bouab.ahmed757@gmail.com",
+      pass: "loqdsebhesqtpclt",
     },
   });
 
   // send mail with defined transport object
   return transporter.sendMail({
-    from: '"programming coding <misso@misso.com>', // sender address
+    from: 'Knowledge Hub <bouab.ahmed757@gmail.com>', // sender address
     to,
     subject,
     html,

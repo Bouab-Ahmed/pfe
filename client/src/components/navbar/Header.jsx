@@ -60,13 +60,16 @@ function Header() {
           >
             <span>Logo</span>
           </div>
-          {user && <SearchBar />}
+          {((user && path !== "auth/verifyEmail") ||
+            path.startsWith("tag")) && <SearchBar />}
         </div>
         <div className="flex items-center justify-between gap-3">
           <div className="hidden lg:block">
             {user && user.role === "writer" ? (
               <div
-                className={`flex items-center gap-1 mx-2 cursor-pointer text-[#222] hover:text-black hover:scale-105 transition-all duration-200 ease-in-out ${path === "newPost" && "hidden"}`}
+                className={`flex items-center gap-1 mx-2 cursor-pointer text-[#222] hover:text-black hover:scale-105 transition-all duration-200 ease-in-out ${
+                  path === "newPost" && "hidden"
+                }`}
                 onClick={() => navigate("/newPost")}
               >
                 <BsPencilSquare />
@@ -76,7 +79,7 @@ function Header() {
               <NavList />
             )}
           </div>
-          {user ? (
+          {user?.accepted === true ? (
             <div className="mx-4 bg-transparent my-0 py-0">
               <ProfileMenu user={user} onLogout={onLogout} />
             </div>

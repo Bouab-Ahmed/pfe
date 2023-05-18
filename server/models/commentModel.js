@@ -8,6 +8,14 @@ const ReplySchema = new mongoose.Schema({
     required: [true, "you must to provide user id"],
   },
   created: { type: Date, default: Date.now },
+  like: {
+    type: Number,
+    default: 0,
+  },
+  dislike: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const commentSchema = new mongoose.Schema(
@@ -26,6 +34,14 @@ const commentSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "Post",
       required: [true, "you must to provide post id"],
+    },
+    like: {
+      type: Number,
+      default: 0,
+    },
+    dislike: {
+      type: Number,
+      default: 0,
     },
 
     //
