@@ -1,14 +1,17 @@
 const { NotFoundError } = require("../errors");
 const Post = require("../models/postModel");
+const User = require("../models/userModel");
 const { uploadProductImageLocal } = require("./uploadsController");
 // const User = require("../models/userModel");
 
 const createNewPost = async (req, res) => {
   const pathImg = await uploadProductImageLocal(req);
+  
   const post = await Post.create({ ...req.body, user: req.user.userId, image: pathImg });
-  post.tags.push(req.body.idTag);
-  await post.save();
-  res.status(200).json({ post });
+
+  await post.decrease(req.body.idTag)
+
+  res.status(200).json({ post }); 
 };
 
 const getAllPosts = async (req, res) => {
@@ -72,10 +75,22 @@ const deletePost = async (req, res) => {
   res.status(200).json({ post });
 };
 
+const like = async (req,res)=>{
+  const user = await Post.findOne({ _id: req.params.id })
+  res.status(200).json("like");
+}
+
+const dislike = async (req,res)=>{
+  res.status(200).json("dislike");
+
+}
+
 module.exports = {
   getAllPosts,
   getSinglePost,
   createNewPost,
   updatePost,
   deletePost,
+  like,
+  dislike
 };
