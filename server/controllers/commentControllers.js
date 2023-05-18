@@ -1,16 +1,24 @@
 const { NotFoundError } = require("../errors");
 const Comments = require("../models/commentModel");
+const Post = require("../models/postModel");
 
 const createNewComment = async (req, res) => {
   req.body.user = req.user.userId;
   req.body.post = req.body.postId;
 
   const comment = await Comments.create({ ...req.body });
+  
 
   const commentWithInfoUser = await comment.populate({
     path: "user",
-    select: "name profilePic -_id",
+    select: "name profilePic _id",
   });
+
+  const isComment = await Comments.find({user:comment.user,post:comment.post})
+
+  if(isComment.length === 1 ){
+   await comment.increseCounters()
+  }
 
   res.status(201).json({
     msg: "comment created success and wait admin approve it",
