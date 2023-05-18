@@ -14,4 +14,12 @@ const getAllTags = async (req, res) => {
   res.status(200).json({ tag });
 };
 
-module.exports = { createTag, getAllTags };
+const getSingleTag = async (req, res) => {
+  const tag = await Tag.findById({ _id: req.params.id });
+  if (!tag) {
+    throw new NotFoundError("no tag found");
+  }
+  res.status(200).json({ tag });
+};
+
+module.exports = { createTag, getAllTags, getSingleTag };
