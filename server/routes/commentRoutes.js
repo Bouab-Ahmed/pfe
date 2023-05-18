@@ -12,11 +12,12 @@ const {
 
 router
   .route("/")
-  .post(auth, createNewComment)
-  .get(auth, getAllCommentofOnePost);
+  .post(auth, createNewComment);
+  // .get(auth, getAllCommentofOnePost);
 
 router
   .route("/:id")
+  .get(auth, getAllCommentofOnePost)
   .post(auth, replyComment)
   .patch(auth, updateComment)
   .delete(auth, deleteComment);
