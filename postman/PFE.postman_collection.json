@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "43edd66c-56e4-4a65-ab1e-9f5f40f5e385",
+		"_postman_id": "d542519c-9e18-47d9-bef7-6862f1fe2b50",
 		"name": "PFE",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10772900"
 	},
 	"item": [
 		{
@@ -19,7 +20,7 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/MB/Pictures/Capture.PNG"
+									"src": "/C:/Users/calem/OneDrive/سطح المكتب/pfe/server/public/uploads/default.jpg"
 								},
 								{
 									"key": "name",
@@ -36,12 +37,7 @@
 									"value": "12345678",
 									"type": "default"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "http://localhost:5000/auth/register",
@@ -65,7 +61,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"email\":\"misso@gmail.com\",\r\n  \"password\":\"12345678\"\r\n}",
+							"raw": "{\r\n\"email\":\"kayou@gmail.com\",\r\n  \"password\":\"12345678\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -147,12 +143,7 @@
 						"header": [],
 						"body": {
 							"mode": "formdata",
-							"formdata": [],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"formdata": []
 						},
 						"url": {
 							"raw": "http://localhost:5000/user/addTag/645c45cb40ab9c98b0f9c962",
@@ -222,13 +213,29 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"title\":\"Sql injection tutorial\",\r\n    \"content\":\"about sql injection \",\r\n    \"idTag\":\"645c45cb40ab9c98b0f9c962\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Sql injection tutorial",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "about sql injection",
+									"type": "text"
+								},
+								{
+									"key": "idTag",
+									"value": "64663c95eada3b0b47347849",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/calem/OneDrive/سطح المكتب/pfe/server/public/uploads/diagnostiaueCar.PNG"
 								}
-							}
+							]
 						},
 						"url": {
 							"raw": "http://localhost:5000/posts",
@@ -303,6 +310,48 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "like",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/posts/64677a7b80a4686c0117dcf6/like",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"posts",
+								"64677a7b80a4686c0117dcf6",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dislike",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/posts/64677a7b80a4686c0117dcf6/dislike",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"posts",
+								"64677a7b80a4686c0117dcf6",
+								"dislike"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -316,7 +365,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"postId\":\"645cc6e018af733725ad2863\",\r\n    \"comment\":\"this is second comment\"\r\n}",
+							"raw": "{\r\n    \"postId\":\"64667b318a61a208e3cf416f\",\r\n    \"comment\":\"this is second comment\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -480,7 +529,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"design\"\r\n}",
+							"raw": "{\r\n    \"name\": \"security\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
