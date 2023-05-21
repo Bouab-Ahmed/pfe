@@ -128,8 +128,9 @@ const like = async (req, res) => {
 
   await post.save();
 
-
-  res.status(200).json({ likes: post.like.length });
+  res
+    .status(200)
+    .json({ likes: post.like.length, dislikes: post.dislike.length });
 };
 
 const dislike = async (req, res) => {
@@ -159,7 +160,9 @@ const dislike = async (req, res) => {
 
   await post.save();
 
-  res.status(200).json({ likes: post.like.length });
+  res
+    .status(200)
+    .json({ dislikes: post.dislike.length, likes: post.like.length });
 };
 
 module.exports = {
