@@ -42,19 +42,6 @@ export const getSinglePost = async (id, thunkAPI) => {
   return await res.json();
 };
 
-export const getTags = async (thunkAPI) => {
-  const res = await fetch(API_URL + "/tag", {
-    method: "GET",
-    credentials: "include",
-  });
-
-  if (!res.ok) {
-    return thunkAPI.rejectWithValue(await res.json());
-  }
-
-  return await res.json();
-};
-
 export const getComments = async (id, thunkAPI) => {
   const res = await fetch(API_URL + "/comment/" + id, {
     method: "GET",
@@ -99,7 +86,6 @@ const postsService = {
   createPost,
   getPosts,
   getSinglePost,
-  getTags,
   getComments,
   updatePost,
   getSingleTag,

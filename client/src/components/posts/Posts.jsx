@@ -6,19 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Posts = () => {
   const dispatch = useDispatch();
-  const { posts, isPostLoading, isPostSuccess, isPostError,isTagSuccess } = useSelector(
+  const { posts, isPostLoading, isPostSuccess, isPostError } = useSelector(
     (state) => state.post
   );
 
   useEffect(() => {
     dispatch(getPosts());
   }, []);
-
-  // useEffect(() => {
-  //     if (isSuccess) {
-  //       dispatch(reset());
-  //     }
-  // }, [isSuccess]);
 
   if (isPostLoading) {
     return <h1>Loading...</h1>;
@@ -32,10 +26,15 @@ const Posts = () => {
   console.log(posts)
 
   return (
-    <div className="flex flex-col">
-      { isTagSuccess && posts.map((post) => (
+    <div className="flex flex-col items-center">
+      { isPostSuccess && posts.map((post) => (
         <PostCard key={post.id} {...post} />
       ))}
+      <div>
+        <button className="text-[#222222] font-bold py-2 px-4 rounded-lg bg-gray-300 ">
+          follow more categories to see more posts
+        </button>
+      </div>
     </div>
   );
 };

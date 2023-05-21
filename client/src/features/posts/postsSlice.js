@@ -1,19 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import postsService from "./postsService";
-import { toast } from "react-toastify";
 
 const initialState = {
   posts: [],
   singlePost: null,
   tags: [],
+  message: "",
+  singleTag: null,
+
   isPostLoading: false,
   isPostSuccess: false,
   isPostError: false,
-  isTagLoading: false,
-  isTagSuccess: false,
-  isTagError: false,
-  message: "",
-  singleTag: null,
+
 };
 
 // create post
@@ -40,15 +38,6 @@ export const getSinglePost = createAsyncThunk(
   }
 );
 
-// get tags
-
-export const getTags = createAsyncThunk(
-  "posts/getTags",
-  async (_, thunkAPI) => {
-    return postsService.getTags(thunkAPI);
-  }
-);
-
 // update post
 
 export const updatePost = createAsyncThunk(
@@ -66,12 +55,6 @@ export const deletePost = createAsyncThunk(
   }
 );
 
-export const getSingleTag = createAsyncThunk(
-  "post/getSingleTag",
-  async (id, thunkAPI) => {
-    return postsService.getSingleTag(id, thunkAPI);
-  }
-);
 
 // posts slice
 export const postsSlice = createSlice({
@@ -172,47 +155,6 @@ export const postsSlice = createSlice({
       state.isPostError = true;
       state.isPostSuccess = false;
     });
-
-    builder.addCase(getTags.pending, (state) => {
-      state.isTagLoading = true;
-      state.isTagError = false;
-      state.isTagSuccess = false;
-      state.message = "";
-    });
-    builder.addCase(getTags.fulfilled, (state, action) => {
-      state.isTagLoading = false;
-      state.isTagError = false;
-      state.isTagSuccess = true;
-      state.isPostSuccess = false;
-      state.tags = [...action.payload.tag];
-    });
-    builder.addCase(getTags.rejected, (state, action) => {
-      state.isTagLoading = false;
-      state.isTagError = true;
-      state.isTagSuccess = false;
-    });
-
-    builder.addCase(getSingleTag.pending, (state) => {
-      state.isTagLoading = true;
-      state.isTagError = false;
-      state.isTagSuccess = false;
-      state.message = "";
-    }
-    );
-    builder.addCase(getSingleTag.fulfilled, (state, action) => {
-      state.isTagLoading = false;
-      state.isTagError = false;
-      state.isTagSuccess = true;
-      state.singleTag = action.payload.tag;
-    }
-    );
-    builder.addCase(getSingleTag.rejected, (state, action) => {
-      state.isTagLoading = false;
-      state.isTagError = true;
-      state.isTagSuccess = false;
-    }
-    );
-
   },
 });
 

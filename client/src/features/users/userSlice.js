@@ -104,7 +104,6 @@ export const postsSlice = createSlice({
       state.users = [];
     });
     builder.addCase(getAllusers.fulfilled, (state, action) => {
-      console.log(action);
       state.isUserLoading = false;
       state.isUserError = false;
       state.isUserSuccess = true;

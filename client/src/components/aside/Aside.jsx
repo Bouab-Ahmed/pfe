@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getTags } from "../../features/posts/postsSlice";
+import { getTags } from "../../features/tags/tagSlice";
 import { useNavigate } from "react-router-dom";
 import { getAllusers } from "../../features/users/userSlice";
 
@@ -9,11 +9,11 @@ const Aside = ({user}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
-  const { tags, isLoading, isSuccess, isError } = useSelector(
-    (state) => state.post
+  const { tags } = useSelector(
+    (state) => state.tag
   );
 
-  const { users, isUserLoading, isUserSuccess, isUserError } = useSelector((state) => state.user);
+  const { users } = useSelector((state) => state.user);
 
 
 

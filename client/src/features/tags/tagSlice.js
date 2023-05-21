@@ -3,9 +3,10 @@ import tagService from "./tagService";
 
 const initialState = {
     tags: [],
-    isError: false,
-    isLoading: false,
-    isSuccess: false,
+		tag: null,
+    isTagError: false,
+    isTagLoading: false,
+    isTagSuccess: false,
     message: "",
 };
 
@@ -44,73 +45,83 @@ export const deleteTag = createAsyncThunk(
     }
 );
 
+// get single tag
+export const getSingleTag = createAsyncThunk(
+  "post/getSingleTag",
+  async (id, thunkAPI) => {
+    return tagService.getSingleTag(id, thunkAPI);
+  }
+);
+
+
 // tag slice
 
 export const tagsSlice = createSlice({
     name: "tag",
     initialState,
     reducers: {
-        reset: (state) => initialState,
+        tagRest: (state) => initialState,
     },
     extraReducers: (builder) => {
         builder.addCase(createTag.pending, (state) => {
-            state.isLoading = true;
-            state.isError = false;
-            state.isSuccess = false;
+            state.isTagLoading = true;
+            state.isTagError = false;
+            state.isTagSuccess = false;
             state.message = "";
         });
         builder.addCase(createTag.fulfilled, (state, { payload }) => {
-            state.isLoading = false;
-            state.isError = false;
-            state.isSuccess = true;
+            state.isTagLoading = false;
+            state.isTagError = false;
+            state.isTagSuccess = true;
             state.message = payload.msg;
         }
         );
         builder.addCase(getTags.pending, (state) => {
-            state.isLoading = true;
-            state.isError = false;
-            state.isSuccess = false;
+            state.isTagLoading = true;
+            state.isTagError = false;
+            state.isTagSuccess = false;
             state.tags = [];
         }
         );
         builder.addCase(getTags.fulfilled, (state, { payload }) => {
-            state.isLoading = false;
-            state.isError = false;
-            state.isSuccess = true;
-            state.tags = [...payload.tags];
+			console.log(payload)
+            state.isTagLoading = false;
+            state.isTagError = false;
+            state.isTagSuccess = true;
+            state.tags = [...payload.tag];
         }
         );
         builder.addCase(updateTag.pending, (state) => {
-            state.isLoading = true;
-            state.isError = false;
-            state.isSuccess = false;
+            state.isTagLoading = true;
+            state.isTagError = false;
+            state.isTagSuccess = false;
             state.message = "";
         }
         );
         builder.addCase(updateTag.fulfilled, (state, { payload }) => {
-            state.isLoading = false;
-            state.isError = false;
-            state.isSuccess = true;
+            state.isTagLoading = false;
+            state.isTagError = false;
+            state.isTagSuccess = true;
             state.message = payload.msg;
         }
         );
         builder.addCase(deleteTag.pending, (state) => {
-            state.isLoading = true;
-            state.isError = false;
-            state.isSuccess = false;
+            state.isTagLoading = true;
+            state.isTagError = false;
+            state.isTagSuccess = false;
             state.message = "";
         }
         );
         builder.addCase(deleteTag.fulfilled, (state, { payload }) => {
-            state.isLoading = false;
-            state.isError = false;
-            state.isSuccess = true;
+            state.isTagLoading = false;
+            state.isTagError = false;
+            state.isTagSuccess = true;
             state.message = payload.msg;
         }
         );
     },
 });
 
-export const { reset } = tagsSlice.actions;
+export const { tagRest } = tagsSlice.actions;
 
 export default tagsSlice.reducer;

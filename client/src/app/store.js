@@ -4,6 +4,7 @@ import postsReducer from '../features/posts/postsSlice';
 import userReducer from '../features/users/userSlice';
 import commentReducer from '../features/comments/commentSlice';
 import tagReducer from '../features/tags/tagSlice.js';
+import rateReducer from '../features/rate/rateSlice.js';
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     user: userReducer,
     comment: commentReducer,
     tag: tagReducer,
+    rate: rateReducer,
   },
 });
