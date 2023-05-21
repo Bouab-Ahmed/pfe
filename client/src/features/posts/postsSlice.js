@@ -11,7 +11,6 @@ const initialState = {
   isPostLoading: false,
   isPostSuccess: false,
   isPostError: false,
-
 };
 
 // create post
@@ -54,7 +53,6 @@ export const deletePost = createAsyncThunk(
     return postsService.deletePost(id, thunkAPI);
   }
 );
-
 
 // posts slice
 export const postsSlice = createSlice({
