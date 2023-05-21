@@ -108,19 +108,26 @@ const like = async (req, res) => {
     throw new NotFoundError("this post not found");
   }
 
-  const isLiked = await Post.findOne({
-    _id: req.params.id,
-    "like.user": req.user.userId,
-  });
+  const isLiked = await post.like.findIndex(
+    (like) => like.user.toString() === req.user.userId
+  );
 
-  if (!isLiked) {
-    post.dislike.pop({ user: req.user.userId });
-    post.like.push({ user: req.user.userId });
-    await post.save();
-  } else {
-    post.like.pop({ user: req.user.userId });
-    await post.save();
+  const existingDislikeIndex = post.dislike.findIndex(
+    (dislike) => dislike.user.toString() === req.user.userId
+  );
+
+  if (existingDislikeIndex !== -1) {
+    post.dislike.splice(existingDislikeIndex, 1);
   }
+
+  if (isLiked !== -1) {
+    post.like.splice(isLiked, 1);
+  } else {
+    post.like.push({ user: req.user.userId });
+  }
+
+  await post.save();
+
 
   res.status(200).json({ likes: post.like.length });
 };
@@ -132,21 +139,27 @@ const dislike = async (req, res) => {
     throw new NotFoundError("this post not found");
   }
 
-  const isDislike = await Post.findOne({
-    _id: req.params.id,
-    "dislike.user": req.user.userId,
-  });
+  const isLiked = await post.like.findIndex(
+    (like) => like.user.toString() === req.user.userId
+  );
 
-  if (!isDislike) {
-    post.like.pop({ user: req.user.userId });
-    post.dislike.push({ user: req.user.userId });
-    await post.save();
-  } else {
-    post.dislike.pop({ user: req.user.userId });
-    await post.save();
+  const existingDislikeIndex = post.dislike.findIndex(
+    (dislike) => dislike.user.toString() === req.user.userId
+  );
+
+  if (isLiked !== -1) {
+    post.like.splice(isLiked, 1);
   }
 
-  res.status(200).json({ dislikes: post.dislike.length });
+  if (existingDislikeIndex !== -1) {
+    post.dislike.splice(existingDislikeIndex, 1);
+  } else {
+    post.dislike.push({ user: req.user.userId });
+  }
+
+  await post.save();
+
+  res.status(200).json({ likes: post.like.length });
 };
 
 module.exports = {
