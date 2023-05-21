@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000";
 
-export const createPost = async (post,thunkAPI) => {
+export const createPost = async (post, thunkAPI) => {
   const res = await fetch(API_URL + "/posts", {
     method: "POST",
     credentials: "include",
@@ -69,7 +69,7 @@ export const getSingleTag = async (id, thunkAPI) => {
 };
 
 export const updatePost = async (post, thunkAPI) => {
-  console.log(post)
+  console.log(post);
   const res = axios.put(API_URL + "/posts/" + post._id, post, {
     withCredentials: true,
   });
@@ -79,7 +79,6 @@ export const updatePost = async (post, thunkAPI) => {
   }
 
   return await res;
-
 };
 
 const postsService = {
