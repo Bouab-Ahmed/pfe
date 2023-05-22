@@ -48,7 +48,7 @@ function Header() {
     <Navbar className="sticky inset-0 z-10 h-max max-w-full py-2 px-4 lg:px-8 lg:py-2 rounded-none shadow-sm min-w-full">
       <div
         className={
-          user
+          user || path === "trending" || path.startsWith("tag")
             ? "flex items-center justify-between text-blue-gray-900 "
             : "flex items-center justify-between text-blue-gray-900 container1 mx-auto"
         }
@@ -61,11 +61,12 @@ function Header() {
             <span>Logo</span>
           </div>
           {((user && path !== "auth/verifyEmail") ||
+            path === "trending" ||
             path.startsWith("tag")) && <SearchBar />}
         </div>
         <div className="flex items-center justify-between gap-3">
           <div className="hidden lg:block">
-            {user && user.role === "writer" ? (
+            {user && user.role !== "reader" ? (
               <div
                 className={`flex items-center gap-1 mx-2 cursor-pointer text-[#222] hover:text-black hover:scale-105 transition-all duration-200 ease-in-out ${
                   path === "newPost" && "hidden"
