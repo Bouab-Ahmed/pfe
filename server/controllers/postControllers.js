@@ -196,6 +196,74 @@ const getSingleUserPosts = async (req, res) => {
   res.status(200).json(posts);
 };
 
+const searchPostsByCategory = async (req, res) => {
+  const searchQuery = req.body.search;
+  const searchField = req.body.option;
+  let query = {};
+  let posts = [];
+
+  if (searchField === "all") {
+    const byUser = await Post.find({})
+      .populate({
+        path: "user",
+        match: { name: { $regex: new RegExp(searchQuery, "i") } },
+        select: "_id name",
+      })
+      .then((posts) => {
+        const filteredPosts = posts.filter((post) => post.user !== null);
+        return filteredPosts;
+      });
+
+    byTag = await Post.find({})
+      .populate({
+        path: "tags",
+        match: { name: { $regex: new RegExp(searchQuery, "i") } },
+        select: "name",
+      })
+      .then((posts) => {
+        const filteredPosts = posts.filter((post) => post.tags.length !== 0);
+        return filteredPosts;
+      });
+
+    byTitleAndContent = await Post.find({
+      $or: [
+        { title: { $regex: new RegExp(searchQuery, "i") } },
+        { content: { $regex: new RegExp(searchQuery, "i") } },
+      ],
+    });
+    posts = [...byUser, ...byTag, ...byTitleAndContent];
+  } else if (searchField === "user") {
+    // query = { name: { $regex: new RegExp(searchQuery, "i") } };
+    posts = await Post.find({})
+      .populate({
+        path: "user",
+        match: { name: { $regex: new RegExp(searchQuery, "i") } },
+        select: "_id name",
+      })
+      .then((posts) => {
+        const filteredPosts = posts.filter((post) => post.user !== null);
+        return filteredPosts;
+      });
+  } else if (searchField === "tags") {
+    // query = { name: { $regex: new RegExp(searchQuery, "i") } };
+    posts = await Post.find({})
+      .populate({
+        path: "tags",
+        match: { name: { $regex: new RegExp(searchQuery, "i") } },
+        select: "name",
+      })
+      .then((posts) => {
+        const filteredPosts = posts.filter((post) => post.tags.length !== 0);
+        return filteredPosts;
+      });
+  } else {
+    query[searchField] = { $regex: new RegExp(searchQuery, "i") };
+    posts = await Post.find(query);
+  }
+
+  res.status(200).json(posts);
+};
+
 module.exports = {
   getAllPosts,
   getSinglePost,
@@ -206,6 +274,7 @@ module.exports = {
   dislike,
   getRandomPosts,
   getSingleUserPosts,
+  searchPostsByCategory,
 };
 
 // for remaind me
