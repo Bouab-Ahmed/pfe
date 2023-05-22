@@ -163,7 +163,7 @@ const NewPost = () => {
               init={{
                 plugins: "lists link image paste wordcount",
                 toolbar:
-                  "undo redo | blocks | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | fontfamily fontsize forecolor |  link image",
+                  "undo redo | blocks | bold italic underline blockquote | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | fontfamily fontsize forecolor |  link image",
                 menubar: true,
               }}
               value={contentEditor}
