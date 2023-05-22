@@ -82,12 +82,18 @@ const PageDetails = () => {
                 className="text-2xl stroke-[0.5] bg-transparent"
                 onClick={openRightDrawer}
               />
-              <CommentDrawer closeDrawerRight={closeDrawerRight} openDrawer={openDrawer} comments={post?.comments}/>
+              <CommentDrawer
+                closeDrawerRight={closeDrawerRight}
+                openDrawer={openDrawer}
+                comments={post?.comments}
+              />
             </div>
           </div>
-          <div className="flex-1">
-            <Aside user={post?.user} />
-          </div>
+          {user && (
+            <div className="flex-1">
+              <Aside user={post?.user} />
+            </div>
+          )}
         </div>
       )}
     </div>
