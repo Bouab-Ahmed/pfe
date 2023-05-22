@@ -8,12 +8,14 @@ const {
   deletePost,
   like,
   dislike,
+  searchPostsByCategory,
 } = require("../controllers/postControllers");
 const { auth } = require("../middleware/authMiddleware");
 
 router.route("/").get(auth, getAllPosts).post(auth, createNewPost);
 router.route("/:id/like").put(auth, like);
 router.route("/:id/dislike/").put(auth, dislike);
+router.route("/search").post(auth, searchPostsByCategory);
 
 router
   .route("/:id")
