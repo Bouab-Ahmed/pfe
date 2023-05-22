@@ -12,10 +12,13 @@ const initialState = {
 
 // send like
 
-export const sendLike = createAsyncThunk("post/sendLike", async (id, thunkAPI) => {
-  console.log(id);
-  return rateService.sendLike(id, thunkAPI);
-});
+export const sendLike = createAsyncThunk(
+  "post/sendLike",
+  async (id, thunkAPI) => {
+    console.log(id);
+    return rateService.sendLike(id, thunkAPI);
+  }
+);
 
 // send unlike
 
@@ -45,6 +48,7 @@ export const rateSlice = createSlice({
       state.isRateLoading = false;
       state.isRateError = false;
       state.isRateSuccess = true;
+      state.dislikes = action.payload.dislikes;
       state.likes = action.payload.likes;
     });
     builder.addCase(sendLike.rejected, (state) => {
@@ -58,10 +62,12 @@ export const rateSlice = createSlice({
       state.isRateSuccess = false;
     });
     builder.addCase(sendDislike.fulfilled, (state, action) => {
+      console.log(action);
       state.isRateLoading = false;
       state.isRateError = false;
       state.isRateSuccess = true;
       state.dislikes = action.payload.dislikes;
+      state.likes = action.payload.likes;
     });
     builder.addCase(sendDislike.rejected, (state, action) => {
       state.isRateLoading = false;

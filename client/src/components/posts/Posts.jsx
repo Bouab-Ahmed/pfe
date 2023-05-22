@@ -20,7 +20,7 @@ const Posts = () => {
   }
 
   if (isPostError) {
-    return <h1>Something went wrong</h1>;
+    return <h1>you don't have any post you follow</h1>;
   }
 
   console.log(posts);

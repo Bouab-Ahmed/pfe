@@ -17,7 +17,6 @@ const PageDetails = () => {
   const dispatch = useDispatch();
   const { isPostSuccess, singlePost } = useSelector((state) => state.post);
 
-
   const { user } = useSelector((state) => state.auth);
 
   const getInnerComments = (comments) => {
@@ -52,7 +51,6 @@ const PageDetails = () => {
     }
     // eslint-disable-next-line
   }, [isPostSuccess]);
-
 
   console.log(singlePost);
   return (

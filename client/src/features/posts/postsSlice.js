@@ -11,7 +11,6 @@ const initialState = {
   isPostLoading: false,
   isPostSuccess: false,
   isPostError: false,
-
 };
 
 // create post
