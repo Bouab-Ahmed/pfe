@@ -18,6 +18,20 @@ const createNewPost = async (req, res) => {
   res.status(200).json({ post });
 };
 
+const getRandomPosts = async (req, res) => {
+  const posts = await Post.find()
+    .populate({
+      path: "tags",
+      select: "name _id",
+    })
+    .populate({
+      path: "user",
+      select: "name profilePic _id ",
+    });
+  res.status(200).json({ posts });
+};
+
+
 const getAllPosts = async (req, res) => {
   const posts = await Post.find({
     $or: [
@@ -162,6 +176,24 @@ const dislike = async (req, res) => {
   res.status(200).json({ likes: post.like.length });
 };
 
+const getSingleUserPosts = async (req, res) => {
+  const posts = await Post.find({ user: req.params.id })
+    .populate({
+      path: "tags",
+      select: "name _id",
+    })
+    .populate({
+      path: "user",
+      select: "name profilePic _id following follower",
+    });
+
+  if (!posts.length) {
+    throw new NotFoundError("not found any post ");
+  }
+
+  res.status(200).json(posts);
+};
+
 module.exports = {
   getAllPosts,
   getSinglePost,
@@ -170,4 +202,6 @@ module.exports = {
   deletePost,
   like,
   dislike,
+  getRandomPosts,
+  getSingleUserPosts,
 };
