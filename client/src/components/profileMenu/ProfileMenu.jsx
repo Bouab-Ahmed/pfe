@@ -32,31 +32,24 @@ const ProfileMenu = ({ user, onLogout }) => {
       <MenuList>
         <MenuItem
           className="flex items-center gap-2  text-textColor"
-          onClick={() => navigate(`/profile/me`)}
+          onClick={() => navigate(`/profile/${user._id}`)}
         >
           <UserCircleIcon strokeWidth={2} className="h-4 w-4" />
           <Typography variant="small" className="font-normal">
             My Profile
           </Typography>
         </MenuItem>
-        <MenuItem
-          className="flex items-center gap-2  text-textColor"
-          onClick={() => navigate("/notifications")}
-        >
-          <InboxArrowDownIcon strokeWidth={2} className="h-4 w-4" />
-          <Typography variant="small" className="font-normal">
-            Inbox
-          </Typography>
-        </MenuItem>
-        <MenuItem
-          className="flex items-center gap-2  text-textColor"
-          onClick={() => navigate("/help")}
-        >
-          <LifebuoyIcon strokeWidth={2} className="h-4 w-4" />
-          <Typography variant="small" className="font-normal">
-            Help
-          </Typography>
-        </MenuItem>
+        {user?.role === "admin" && (
+          <MenuItem
+            className="flex items-center gap-2  text-textColor"
+            onClick={() => navigate("/dashboard")}
+          >
+            <InboxArrowDownIcon strokeWidth={2} className="h-4 w-4" />
+            <Typography variant="small" className="font-normal">
+              Dashboard
+            </Typography>
+          </MenuItem>
+        )}
         <hr className="my-2 border-blue-gray-50" />
         <MenuItem
           className="flex items-center gap-2  text-textColor "
