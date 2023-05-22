@@ -87,9 +87,11 @@ const PageDetails = () => {
               />
             </div>
           </div>
-          <div className="flex-1">
-            <Aside user={post?.user} />
-          </div>
+          {user && (
+            <div className="flex-1">
+              <Aside user={post?.user} />
+            </div>
+          )}
         </div>
       )}
     </div>

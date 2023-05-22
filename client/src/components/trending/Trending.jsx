@@ -1,108 +1,47 @@
-import React from 'react';
-import user from '../../assets/default.jpg';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getRandomPosts } from "../../features/posts/postsSlice";
+import PostCard from "../posts/PostCard";
+import { useNavigate } from "react-router-dom";
+
 const Trending = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const path = window.location.pathname;
+  let { posts, isPostSuccess } = useSelector((state) => state.post);
+  useEffect(() => {
+    dispatch(getRandomPosts());
+  }, []);
+
+  useEffect(() => {
+    if (isPostSuccess) {
+      console.log(posts);
+    }
+    // eslint-disable-next-line
+  }, [isPostSuccess]);
+  
+  if (path !== "/trending") {
+    posts = posts.slice(0, 6);
+  }
+
+
   return (
-    <div className='mx-2 lg:mx-10 mb-8 font-DINRoundPro'>
-      <div className='relative grid gap-5 sm:grid-cols-2 lg:grid-cols-3'>
-        <h1 className='text-4xl font-bold text-textColor font-DINRoundPro col-span-full'>
-          Trending On Platfom
-        </h1>
-        <div className='flex flex-col items-start justify-between overflow-hidden text-left transition-shadow duration-200 rounded p-4 shadow-md cursor-pointer group hover:shadow-2xl'>
-          <div className='flex items-center justify-start gap-3'>
-            <div className='flex items-center justify-center w-8 h-8 mb-4 rounded-full bg-indigo-50'>
-              <img src={user} alt='' />
-            </div>
-            <p className='font-bold text-lg mb-3'>Tom Cooper</p>
-          </div>
-          <h3 className='text-base font-bold leading-5 text-gray-900 mb-2'>
-            2023 South Side Servings: White Sox Announce New Food and Beverages
-          </h3>
-          <div className='flex items-center justify-start gap-3 text-gray-400 text-sm my-1'>
-            <span>Mar 23</span>
-            <span>•</span>
-            <span>5 min read</span>
-          </div>
-        </div>
-        <div className='flex flex-col items-start justify-between overflow-hidden text-left transition-shadow duration-200 rounded p-4 shadow-md cursor-pointer group hover:shadow-2xl'>
-          <div className='flex items-center justify-start gap-3'>
-            <div className='flex items-center justify-center w-8 h-8 mb-4 rounded-full bg-indigo-50'>
-              <img src={user} alt='' />
-            </div>
-            <p className='font-bold text-lg mb-3'>Tom Cooper</p>
-          </div>
-          <h3 className='text-base font-bold leading-5 text-gray-900 mb-2'>
-            2023 South Side Servings: White Sox Announce New Food and Beverages
-          </h3>
-          <div className='flex items-center justify-start gap-3 text-gray-400 text-sm my-1'>
-            <span>Mar 23</span>
-            <span>•</span>
-            <span>5 min read</span>
-          </div>
-        </div>
-        <div className='flex flex-col items-start justify-between overflow-hidden text-left transition-shadow duration-200 rounded p-4 shadow-md cursor-pointer group hover:shadow-2xl'>
-          <div className='flex items-center justify-start gap-3'>
-            <div className='flex items-center justify-center w-8 h-8 mb-4 rounded-full bg-indigo-50'>
-              <img src={user} alt='' />
-            </div>
-            <p className='font-bold text-lg mb-3'>Tom Cooper</p>
-          </div>
-          <h3 className='text-base font-bold leading-5 text-gray-900 mb-2'>
-            2023 South Side Servings: White Sox Announce New Food and Beverages
-          </h3>
-          <div className='flex items-center justify-start gap-3 text-gray-400 text-sm my-1'>
-            <span>Mar 23</span>
-            <span>•</span>
-            <span>5 min read</span>
-          </div>
-        </div>
-        <div className='flex flex-col items-start justify-between overflow-hidden text-left transition-shadow duration-200 rounded p-4 shadow-md cursor-pointer group hover:shadow-2xl'>
-          <div className='flex items-center justify-start gap-3'>
-            <div className='flex items-center justify-center w-8 h-8 mb-4 rounded-full bg-indigo-50'>
-              <img src={user} alt='' />
-            </div>
-            <p className='font-bold text-lg mb-3'>Tom Cooper</p>
-          </div>
-          <h3 className='text-base font-bold leading-5 text-gray-900 mb-2'>
-            2023 South Side Servings: White Sox Announce New Food and Beverages
-          </h3>
-          <div className='flex items-center justify-start gap-3 text-gray-400 text-sm my-1'>
-            <span>Mar 23</span>
-            <span>•</span>
-            <span>5 min read</span>
-          </div>
-        </div>
-        <div className='flex flex-col items-start justify-between overflow-hidden text-left transition-shadow duration-200 rounded p-4 shadow-md cursor-pointer group hover:shadow-2xl'>
-          <div className='flex items-center justify-start gap-3'>
-            <div className='flex items-center justify-center w-8 h-8 mb-4 rounded-full bg-indigo-50'>
-              <img src={user} alt='' />
-            </div>
-            <p className='font-bold text-lg mb-3'>Tom Cooper</p>
-          </div>
-          <h3 className='text-base font-bold leading-5 text-gray-900 mb-2'>
-            2023 South Side Servings: White Sox Announce New Food and Beverages
-          </h3>
-          <div className='flex items-center justify-start gap-3 text-gray-400 text-sm my-1'>
-            <span>Mar 23</span>
-            <span>•</span>
-            <span>5 min read</span>
-          </div>
-        </div>
-        <div className='flex flex-col items-start justify-between overflow-hidden text-left transition-shadow duration-200 rounded p-4 shadow-md cursor-pointer group hover:shadow-2xl'>
-          <div className='flex items-center justify-start gap-3'>
-            <div className='flex items-center justify-center w-8 h-8 mb-4 rounded-full bg-indigo-50'>
-              <img src={user} alt='' />
-            </div>
-            <p className='font-bold text-lg mb-3'>Tom Cooper</p>
-          </div>
-          <h3 className='text-base font-bold leading-5 text-gray-900 mb-2'>
-            2023 South Side Servings: White Sox Announce New Food and Beverages
-          </h3>
-          <div className='flex items-center justify-start gap-3 text-gray-400 text-sm my-1'>
-            <span>Mar 23</span>
-            <span>•</span>
-            <span>5 min read</span>
-          </div>
-        </div>
+    <div className={`${path === "/"?"bg-[#F1FAF7]":"bg-white"} py-10`}>
+      <div className="flex justify-between items-center container1 mx-auto my-4">
+        <h1 className="text-4xl font-bold">Trending on platform</h1>
+        {path === "/" && (
+          <button
+            className="bg-primary text-white font-bold py-2 px-8 rounded-sm"
+            onClick={() => navigate("/trending")}
+          >
+            see more
+          </button>
+        )}
+      </div>
+
+      <div className="grid grid-cols-3 gap-3 container1 mx-auto ">
+        {isPostSuccess &&
+          posts.map((post) => <PostCard key={post.id} {...post} />)}
       </div>
     </div>
   );

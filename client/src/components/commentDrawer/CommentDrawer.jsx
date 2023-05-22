@@ -188,7 +188,7 @@ const CommentDrawer = ({ openDrawer, closeDrawerRight, comments }) => {
               comment.replies?.map((reply) => {
                 return (
                   <div
-                    className="p-6 mb-6 ml-6 text-base bg-white rounded-lg"
+                    className="border-l-2 border-l-black p-6 mb-6 ml-6 text-base bg-white "
                     key={reply._id}
                   >
                     <footer className="flex justify-between items-center mb-2">

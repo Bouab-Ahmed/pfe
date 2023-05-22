@@ -97,6 +97,7 @@ const Aside = ({user}) => {
                     src={`http://localhost:5000${author.profilePic}`}
                     alt="author"
                     className="h-8 w-8 rounded-full self-start"
+                    onClick={() => navigate(`/profile/${author._id}`)}
                   />
                   <div className="flex flex-col mx-2">
                     <span className="text-lg font-bold"> {author.name} </span>

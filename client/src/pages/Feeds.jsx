@@ -10,7 +10,7 @@ import { reset } from "../features/posts/postsSlice";
 const Feeds = () => {
 
   return (
-    <div className="container1 mx-auto flex justify-between my-2">
+    <div className="container1 mx-auto flex justify-between my-2 ">
       <div className="flex-[2]">
         <Posts />
       </div>
