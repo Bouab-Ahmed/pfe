@@ -30,6 +30,19 @@ export const getPosts = async (thunkAPI) => {
   return await res.json();
 };
 
+export const getRandomPosts = async (thunkAPI) => {
+  const res = await fetch(API_URL + "/posts/random", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+  return await res.json();
+
+};
+
 export const getSinglePost = async (id, thunkAPI) => {
   const res = await fetch(API_URL + "/posts/" + id, {
     method: "GET",
@@ -82,6 +95,19 @@ export const updatePost = async (post, thunkAPI) => {
 
 };
 
+export const getSingleUserPosts = async (id, thunkAPI) => {
+  const res = await fetch(API_URL + "/posts/user/" + id, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+
+  return await res.json();
+};
+
 const postsService = {
   createPost,
   getPosts,
@@ -89,6 +115,8 @@ const postsService = {
   getComments,
   updatePost,
   getSingleTag,
+  getRandomPosts,
+  getSingleUserPosts,
 };
 
 export default postsService;

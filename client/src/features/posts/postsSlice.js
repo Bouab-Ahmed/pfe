@@ -55,6 +55,26 @@ export const deletePost = createAsyncThunk(
   }
 );
 
+// get random posts
+
+export const getRandomPosts = createAsyncThunk(
+  "posts/getRandomPosts",
+  async (_, thunkAPI) => {
+    return postsService.getRandomPosts(thunkAPI);
+  }
+);
+
+// get single user posts
+
+export const getSingleUserPosts = createAsyncThunk(
+  "posts/getSingleUserPosts",
+  async (id, thunkAPI) => {
+    return postsService.getSingleUserPosts(id, thunkAPI);
+  }
+);
+
+
+
 
 // posts slice
 export const postsSlice = createSlice({
@@ -155,6 +175,51 @@ export const postsSlice = createSlice({
       state.isPostError = true;
       state.isPostSuccess = false;
     });
+    builder.addCase(getRandomPosts.pending, (state) => {
+      state.isPostLoading = true;
+      state.isPostError = false;
+      state.isPostSuccess = false;
+      state.posts = [];
+    }
+    );
+    builder.addCase(getRandomPosts.fulfilled, (state, action) => {
+      state.isPostLoading = false;
+      state.isPostError = false;
+      state.isPostSuccess = true;
+      state.posts = action.payload.posts;
+    }
+    );
+    builder.addCase(getRandomPosts.rejected, (state, action) => {
+      state.isPostLoading = false;
+      state.isPostError = true;
+      state.isPostSuccess = false;
+      state.posts = [];
+    }
+    );
+
+    builder.addCase(getSingleUserPosts.pending, (state) => {
+      state.isPostLoading = true;
+      state.isPostError = false;
+      state.isPostSuccess = false;
+      state.posts = [];
+    }
+    );
+    builder.addCase(getSingleUserPosts.fulfilled, (state, action) => {
+      console.log(action.payload)
+      state.isPostLoading = false;
+      state.isPostError = false;
+      state.isPostSuccess = true;
+      state.posts = action.payload;
+    }
+    );
+    builder.addCase(getSingleUserPosts.rejected, (state, action) => {
+      state.isPostLoading = false;
+      state.isPostError = true;
+      state.isPostSuccess = false;
+      state.posts = [];
+    }
+    );
+
   },
 });
 
