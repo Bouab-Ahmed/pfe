@@ -178,6 +178,24 @@ const dislike = async (req, res) => {
     .json({ dislikes: post.dislike.length, likes: post.like.length });
 };
 
+const getSingleUserPosts = async (req, res) => {
+  const posts = await Post.find({ user: req.params.id })
+    .populate({
+      path: "tags",
+      select: "name _id",
+    })
+    .populate({
+      path: "user",
+      select: "name profilePic _id following follower",
+    });
+
+  if (!posts.length) {
+    throw new NotFoundError("not found any post ");
+  }
+
+  res.status(200).json(posts);
+};
+
 module.exports = {
   getAllPosts,
   getSinglePost,
@@ -186,6 +204,8 @@ module.exports = {
   deletePost,
   like,
   dislike,
+  getRandomPosts,
+  getSingleUserPosts,
 };
 
 // for remaind me
