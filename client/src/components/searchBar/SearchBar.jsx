@@ -1,13 +1,19 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+// import { search } from "../features/posts/postsSlice";
+import { search } from "../../features/posts/postsSlice";
 
 const SearchBar = () => {
-  const [search, setSearch] = useState("");
+  const [query, setQuery] = useState("");
   const [type, setType] = useState("all");
+  const dispatch = useDispatch();
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(search, type);
+    console.log({ searchInput: query, option: type });
+    dispatch(search({ searchInput: query, option: type }));
   };
+
   return (
     <form className="w-1/2" onSubmit={onSubmit}>
       <div className=" bg-white rounded flex items-center w-full p-3 shadow-sm border border-gray-200">
@@ -31,8 +37,8 @@ const SearchBar = () => {
           placeholder="search for Books, Authors, Articles, etc..."
           x-model="q"
           className="w-full pl-4 text-sm outline-none focus:outline-none bg-transparent"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
         />
         <div className="select">
           <select
@@ -46,9 +52,9 @@ const SearchBar = () => {
             <option value="all" defaultValue={"all"}>
               All
             </option>
-            <option value="post">Articles</option>
+            <option value="content">Articles</option>
             <option value="user">Authors</option>
-            <option value="tag">Categories</option>
+            <option value="tags">Categories</option>
           </select>
         </div>
       </div>
