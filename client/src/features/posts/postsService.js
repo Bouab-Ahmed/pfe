@@ -40,7 +40,6 @@ export const getRandomPosts = async (thunkAPI) => {
     return thunkAPI.rejectWithValue(await res.json());
   }
   return await res.json();
-
 };
 
 export const getSinglePost = async (id, thunkAPI) => {
@@ -107,6 +106,23 @@ export const getSingleUserPosts = async (id, thunkAPI) => {
   return await res.json();
 };
 
+export const search = async (data, thunkAPI) => {
+  const res = await fetch(API_URL + "/posts/search", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+
+  return await res.json();
+};
+
 const postsService = {
   createPost,
   getPosts,
@@ -116,6 +132,7 @@ const postsService = {
   getSingleTag,
   getRandomPosts,
   getSingleUserPosts,
+  search,
 };
 
 export default postsService;
