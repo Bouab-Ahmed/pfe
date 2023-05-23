@@ -43,6 +43,12 @@ const postSchema = mongoose.Schema(
       required: [true, "you must to provide content"],
     },
 
+    stauts: {
+      type: String,
+      enum: ["pending", "published"],
+      default: "pending",
+    },
+
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: [true, "you must to provide user id"],
