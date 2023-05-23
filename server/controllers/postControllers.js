@@ -33,9 +33,10 @@ const getRandomPosts = async (req, res) => {
 
 const getAllPosts = async (req, res) => {
   const posts = await Post.find({
-    $or: [
+    $and: [
       // { following: { $in: req.user.following } },
       { tags: { $in: req.user.tags } },
+      { stauts: "published" },
     ],
   })
     .populate({
@@ -197,13 +198,15 @@ const getSingleUserPosts = async (req, res) => {
 };
 
 const searchPostsByCategory = async (req, res) => {
-  const searchQuery = req.body.search;
+  const searchQuery = req.body.searchInput;
   const searchField = req.body.option;
   let query = {};
   let posts = [];
 
   if (searchField === "all") {
-    const byUser = await Post.find({})
+    const byUser = await Post.find({
+      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
+    })
       .populate({
         path: "user",
         match: { name: { $regex: new RegExp(searchQuery, "i") } },
@@ -214,7 +217,9 @@ const searchPostsByCategory = async (req, res) => {
         return filteredPosts;
       });
 
-    byTag = await Post.find({})
+    byTag = await Post.find({
+      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
+    })
       .populate({
         path: "tags",
         match: { name: { $regex: new RegExp(searchQuery, "i") } },
@@ -230,11 +235,14 @@ const searchPostsByCategory = async (req, res) => {
         { title: { $regex: new RegExp(searchQuery, "i") } },
         { content: { $regex: new RegExp(searchQuery, "i") } },
       ],
+      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
     });
     posts = [...byUser, ...byTag, ...byTitleAndContent];
   } else if (searchField === "user") {
     // query = { name: { $regex: new RegExp(searchQuery, "i") } };
-    posts = await Post.find({})
+    posts = await Post.find({
+      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
+    })
       .populate({
         path: "user",
         match: { name: { $regex: new RegExp(searchQuery, "i") } },
@@ -246,7 +254,9 @@ const searchPostsByCategory = async (req, res) => {
       });
   } else if (searchField === "tags") {
     // query = { name: { $regex: new RegExp(searchQuery, "i") } };
-    posts = await Post.find({})
+    posts = await Post.find({
+      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
+    })
       .populate({
         path: "tags",
         match: { name: { $regex: new RegExp(searchQuery, "i") } },
