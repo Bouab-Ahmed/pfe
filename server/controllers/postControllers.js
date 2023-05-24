@@ -217,7 +217,7 @@ const searchPostsByCategory = async (req, res) => {
         return filteredPosts;
       });
 
-    byTag = await Post.find({
+    const byTag = await Post.find({
       $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
     })
       .populate({
@@ -230,14 +230,30 @@ const searchPostsByCategory = async (req, res) => {
         return filteredPosts;
       });
 
-    byTitleAndContent = await Post.find({
+    // const byTitle = await Post.find({
+    //   $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
+    // });
+    // const byContent = await Post.find({
+    //   $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
+    // });
+
+    const byTitleAndContent = await Post.find({
+      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
       $or: [
         { title: { $regex: new RegExp(searchQuery, "i") } },
         { content: { $regex: new RegExp(searchQuery, "i") } },
       ],
-      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
     });
-    posts = [...byUser, ...byTag, ...byTitleAndContent];
+
+    posts = [
+      ...new Set(
+        [...byTitleAndContent, ...byUser, ...byTag].map((obj) => {
+          return obj._id.toString();
+        })
+      ),
+    ];
+
+    posts = await Post.find({ _id: posts });
   } else if (searchField === "user") {
     // query = { name: { $regex: new RegExp(searchQuery, "i") } };
     posts = await Post.find({
