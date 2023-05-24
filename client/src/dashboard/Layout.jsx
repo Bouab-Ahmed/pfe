@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Main from "./main/Main";
 import SideBar from "./sidebar/SideBar";
 import ManagePosts from "./managePosts/ManagePosts";
@@ -9,14 +9,20 @@ import ErrorPage from "../pages/ErrorPage";
 
 const Layout = ({ page }) => {
   const user = JSON.parse(localStorage.getItem("user"));
+  	const [collapsed, setCollapsed] = useState(false);
+
   return (
     <div>
       {user.role === "admin" ? (
-        <div className="relative flex">
+        <div
+          className={`flex ${
+            collapsed ? "max-w-[94.94vw]" : "max-w-[89.064vw]"
+          }`}
+        >
           <div className="">
-            <SideBar />
+            <SideBar collapsed={collapsed} setCollapsed={setCollapsed} />
           </div>
-          <div>
+          <div className="min-w-full">
             {page === "main" && <Main />}
             {page === "posts" && <ManagePosts />}
             {page === "categories" && <ManageCategories />}
