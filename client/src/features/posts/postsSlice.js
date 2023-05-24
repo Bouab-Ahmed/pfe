@@ -72,8 +72,12 @@ export const getSingleUserPosts = createAsyncThunk(
   }
 );
 
-
-
+export const search = createAsyncThunk(
+  "posts/search",
+  async (data, thunkAPI) => {
+    return postsService.search(data, thunkAPI);
+  }
+);
 
 // posts slice
 export const postsSlice = createSlice({
@@ -179,46 +183,60 @@ export const postsSlice = createSlice({
       state.isPostError = false;
       state.isPostSuccess = false;
       state.posts = [];
-    }
-    );
+    });
     builder.addCase(getRandomPosts.fulfilled, (state, action) => {
       state.isPostLoading = false;
       state.isPostError = false;
       state.isPostSuccess = true;
       state.posts = action.payload.posts;
-    }
-    );
+    });
     builder.addCase(getRandomPosts.rejected, (state, action) => {
       state.isPostLoading = false;
       state.isPostError = true;
       state.isPostSuccess = false;
       state.posts = [];
-    }
-    );
+    });
 
     builder.addCase(getSingleUserPosts.pending, (state) => {
       state.isPostLoading = true;
       state.isPostError = false;
       state.isPostSuccess = false;
       state.posts = [];
-    }
-    );
+    });
     builder.addCase(getSingleUserPosts.fulfilled, (state, action) => {
-      console.log(action.payload)
+      console.log(action.payload);
       state.isPostLoading = false;
       state.isPostError = false;
       state.isPostSuccess = true;
       state.posts = action.payload;
-    }
-    );
+    });
     builder.addCase(getSingleUserPosts.rejected, (state, action) => {
       state.isPostLoading = false;
       state.isPostError = true;
       state.isPostSuccess = false;
       state.posts = [];
-    }
-    );
+    });
 
+    //search
+    builder.addCase(search.pending, (state) => {
+      state.isPostLoading = true;
+      state.isPostError = false;
+      state.isPostSuccess = false;
+      state.posts = [];
+    });
+    builder.addCase(search.fulfilled, (state, action) => {
+      console.log(action.payload);
+      state.isPostLoading = false;
+      state.isPostError = false;
+      state.isPostSuccess = true;
+      state.posts = action.payload;
+    });
+    builder.addCase(search.rejected, (state, action) => {
+      state.isPostLoading = false;
+      state.isPostError = true;
+      state.isPostSuccess = false;
+      state.posts = [];
+    });
   },
 });
 
