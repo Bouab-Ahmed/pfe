@@ -5,9 +5,7 @@ import { RiGitRepositoryLine } from "react-icons/ri";
 import { FiUsers } from "react-icons/fi";
 import { AiOutlineSetting } from "react-icons/ai";
 import { BiHomeAlt2 } from "react-icons/bi";
-const SideBar = () => {
-
-	const [collapsed, setCollapsed] = useState(false);
+const SideBar = ({collapsed, setCollapsed}) => {
 	
   return (
     <div className="flex h-screen">
