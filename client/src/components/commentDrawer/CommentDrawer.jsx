@@ -2,43 +2,39 @@ import { Drawer } from "antd";
 import React, { useEffect, useState } from "react";
 import { BiDownvote, BiUpvote } from "react-icons/bi";
 import { useSelector, useDispatch } from "react-redux";
-import { toast } from "react-toastify";
 import PostComment from "./PostComment";
 
+import { useParams } from "react-router-dom";
 import { getComments } from "../../features/comments/commentSlice";
-import { Await, useParams } from "react-router-dom";
-const CommentDrawer = ({ openDrawer, closeDrawerRight }) => {
-  const [post, setPost] = useState({});
-  const [commentsSinglePost, setCommentsSinglePost] = useState([]);
-  const [commentActiveBtn, setCommentActiveBtn] = useState([]);
+const CommentDrawer = ({ openDrawer, closeDrawerRight, commentslength }) => {
+  const [comPost, setComPost] = useState([]);
+
   const [ref, setref] = useState(false);
   const dispatch = useDispatch();
   const { id } = useParams();
 
   const { user } = useSelector((state) => state.auth);
-  const { comments, update, isSuccessComment } = useSelector(
-    (state) => state.comment
-  );
+  const { comments, isLoadingComment } = useSelector((state) => state.comment);
 
   useEffect(() => {
-    setCommentsSinglePost(comments);
-  });
+    if (commentslength && openDrawer) {
+      dispatch(getComments(id));
+    }
+  }, [openDrawer]);
 
-  // useEffect(() => {
-  //   dispatch(getComments(id));
-  // }, []);
+  const handleCommentLikes = () => {};
 
-  const handleCommentLikes = (clicked, id) => {};
   return (
     <Drawer
-      title={`Discussion ${post?.comments && post?.comments.length}`}
+      title={`Discussion ${commentslength}`}
       placement="right"
       onClose={closeDrawerRight}
       open={openDrawer}
       width={420}
     >
       <PostComment change={setref} />
-      {commentsSinglePost?.map((comment) => {
+
+      {comments?.map((comment) => {
         return (
           <div key={comment._id}>
             <div className="p-6 mb-6 text-base bg-white rounded-lg ">
