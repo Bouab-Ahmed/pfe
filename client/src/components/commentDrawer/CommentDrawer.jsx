@@ -50,7 +50,7 @@ const CommentDrawer = ({ openDrawer, closeDrawerRight, commentslength }) => {
   };
 
   useEffect(() => {
-    if (commentslength && openDrawer) {
+    if (isSuccessReply) {
       dispatch(getComments(id));
     }
   }, [isSuccessReply]);
