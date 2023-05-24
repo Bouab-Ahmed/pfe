@@ -47,11 +47,11 @@ export const deleteComment = createAsyncThunk(
 
 // comment slice
 
-export const postsSlice = createSlice({
+const CommentSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
-    reset: (state) => initialState,
+    resetComment: () => initialState,
   },
   extraReducers: (builder) => {
     builder.addCase(createComment.pending, (state) => {
@@ -140,6 +140,6 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { reset } = postsSlice.actions;
+export const { resetComment } = CommentSlice.actions;
 
-export default postsSlice.reducer;
+export default CommentSlice.reducer;
