@@ -6,6 +6,8 @@ import { createPost, reset } from "../features/posts/postsSlice";
 import { getTags } from "../features/tags/tagSlice";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@material-tailwind/react";
+import Terms from "../components/terms/Terms";
 
 const NewPost = () => {
   const [contentEditor, setContentEditor] = useState();
@@ -13,12 +15,14 @@ const NewPost = () => {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
   const [preview, setPreview] = useState();
+  const [open, setOpen] = useState(false);
+  const [acceptterms, setAcceptTerms] = useState(false);
 
+  const handleOpen = () => setOpen(!open);
+  const handleAcceptTerms = () => setAcceptTerms(!acceptterms);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isPostLoading, isPostSuccess } = useSelector(
-    (state) => state.post
-  );
+  const { isPostLoading, isPostSuccess } = useSelector((state) => state.post);
 
   const { tags, isTagLoading, isTagSuccess, isTagError } = useSelector(
     (state) => state.tag
@@ -188,11 +192,34 @@ const NewPost = () => {
                 ))}
               </select>
             </div>
+            <div>
+              <input
+                type="checkbox"
+                name="acceptterms"
+                id="acceptterms"
+                checked={acceptterms ? true : false}
+                onChange={handleOpen}
+                className="mr-2"
+              />
+              <button onClick={handleOpen} className=" py-4 ">
+                you must accept terms uses first
+              </button>
+            </div>
+            <Terms
+              open={open}
+              handleOpen={handleOpen}
+              handleAcceptTerms={handleAcceptTerms}
+            />
             <button
               type="submit"
               className="w-full px-4 py-2 text-white font-medium bg-primary hover:bg-primary active:bg-primary rounded-lg duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary"
               disabled={
-                !contentEditor || !idTag || !title || isPostLoading || !image
+                !contentEditor ||
+                !idTag ||
+                !title ||
+                isPostLoading ||
+                !image ||
+                acceptterms === false
               }
             >
               Publish

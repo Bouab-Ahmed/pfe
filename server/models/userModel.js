@@ -61,6 +61,10 @@ const userSchema = mongoose.Schema(
       type: Number,
       default: 50,
     },
+    bio : {
+      type : String,
+      default : "no bio"
+    }
   },
   {
     timestamps: true,
