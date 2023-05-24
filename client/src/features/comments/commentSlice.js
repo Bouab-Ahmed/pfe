@@ -6,6 +6,7 @@ const initialState = {
   isError: false,
   isLoadingComment: false,
   isSuccessComment: false,
+  isSuccessReply: false,
   update: false,
   message: "",
 };
@@ -42,6 +43,14 @@ export const deleteComment = createAsyncThunk(
   "comment/deleteComment",
   async (id, thunkAPI) => {
     return commentService.deleteComment(id, thunkAPI);
+  }
+);
+
+export const replyComments = createAsyncThunk(
+  "comment/replyComments",
+  async (data, thunkAPI) => {
+    console.log(data);
+    return commentService.replyComments(data, thunkAPI);
   }
 );
 
@@ -135,6 +144,24 @@ const CommentSlice = createSlice({
       state.isLoadingComment = false;
       state.isError = true;
       state.isSuccessComment = false;
+      // state.message = action.payload.msg;
+    });
+    ///// reply/////////////
+    builder.addCase(replyComments.pending, (state, action) => {
+      state.isLoadingComment = true;
+      state.isError = false;
+      state.isSuccessReply = false;
+      state.message = "";
+    });
+    builder.addCase(replyComments.fulfilled, (state, action) => {
+      state.isLoadingComment = false;
+      state.isError = false;
+      state.isSuccessReply = true;
+    });
+    builder.addCase(replyComments.rejected, (state, action) => {
+      state.isLoadingComment = false;
+      state.isError = true;
+      state.isSuccessReply = false;
       // state.message = action.payload.msg;
     });
   },
