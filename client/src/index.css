@@ -108,6 +108,14 @@
   @apply my-2;
 }
 
+.ant-table-cell {
+  @apply px-4 py-2 font-black text-sm text-gray-900;
+}
+
+.ant-table-thead > tr > th {
+  @apply px-4 py-2 font-black text-base !text-gray-800 ;
+}
+
 
 
 @tailwind utilities;
@@ -151,7 +159,12 @@
   33%   {top: 0px;}
   66%  {top: 20px;}
   100%  {top: 0px}
-
-
-
 }
+
+/* table thead tr th {
+  padding: 0.75rem 1rem;
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(209, 213, 219, 1);
+  border-bottom-style: solid;
+  background-color: rgba(69 ,153 ,93, 1);
+} */
