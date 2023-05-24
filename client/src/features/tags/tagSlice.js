@@ -84,7 +84,6 @@ export const tagsSlice = createSlice({
         }
         );
         builder.addCase(getTags.fulfilled, (state, { payload }) => {
-			console.log(payload)
             state.isTagLoading = false;
             state.isTagError = false;
             state.isTagSuccess = true;
