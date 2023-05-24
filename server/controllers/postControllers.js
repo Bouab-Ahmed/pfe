@@ -238,6 +238,7 @@ const searchPostsByCategory = async (req, res) => {
     // });
 
     const byTitleAndContent = await Post.find({
+      // to prevent unfollowed tags posts
       $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
       $or: [
         { title: { $regex: new RegExp(searchQuery, "i") } },
@@ -284,7 +285,10 @@ const searchPostsByCategory = async (req, res) => {
       });
   } else {
     query[searchField] = { $regex: new RegExp(searchQuery, "i") };
-    posts = await Post.find(query);
+    posts = await Post.find({
+      query,
+      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
+    })
   }
 
   res.status(200).json(posts);
