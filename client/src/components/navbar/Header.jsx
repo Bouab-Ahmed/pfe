@@ -60,7 +60,7 @@ function Header() {
           >
             <span>Logo</span>
           </div>
-          {((user && path !== "auth/verifyEmail") ||
+          {((user && path === "/") ||
             path === "trending" ||
             path.startsWith("tag")) && <SearchBar />}
         </div>
