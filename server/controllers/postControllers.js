@@ -230,13 +230,6 @@ const searchPostsByCategory = async (req, res) => {
         return filteredPosts;
       });
 
-    // const byTitle = await Post.find({
-    //   $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
-    // });
-    // const byContent = await Post.find({
-    //   $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
-    // });
-
     const byTitleAndContent = await Post.find({
       // to prevent unfollowed tags posts
       $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
@@ -256,12 +249,12 @@ const searchPostsByCategory = async (req, res) => {
 
     posts = await Post.find({ _id: posts })
       .populate({
-        path: "tags",
-        select: "name",
+        path: "user",
+        select: "_id name",
       })
       .populate({
-        path: "user",
-        select: "name profilePic _id following follower",
+        path: "tags",
+        select: "_id name",
       });
   } else if (searchField === "user") {
     // query = { name: { $regex: new RegExp(searchQuery, "i") } };
@@ -271,6 +264,10 @@ const searchPostsByCategory = async (req, res) => {
       .populate({
         path: "user",
         match: { name: { $regex: new RegExp(searchQuery, "i") } },
+        select: "_id name",
+      })
+      .populate({
+        path: "tags",
         select: "_id name",
       })
       .then((posts) => {
@@ -289,7 +286,7 @@ const searchPostsByCategory = async (req, res) => {
       })
       .populate({
         path: "user",
-        select: "name profilePic _id following follower",
+        select: "_id name",
       })
       .then((posts) => {
         const filteredPosts = posts.filter((post) => post.tags.length !== 0);
@@ -297,9 +294,12 @@ const searchPostsByCategory = async (req, res) => {
       });
   } else {
     query[searchField] = { $regex: new RegExp(searchQuery, "i") };
+
     posts = await Post.find({
-      query,
-      // $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
+      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }, query],
+    }).populate({
+      path: "user tags",
+      select: "_id name",
     });
   }
 

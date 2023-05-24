@@ -7,17 +7,19 @@ const createNewComment = async (req, res) => {
   req.body.post = req.body.postId;
 
   const comment = await Comments.create({ ...req.body });
-  
 
   const commentWithInfoUser = await comment.populate({
     path: "user",
     select: "name profilePic _id",
   });
 
-  const isComment = await Comments.find({user:comment.user,post:comment.post})
+  const isComment = await Comments.find({
+    user: comment.user,
+    post: comment.post,
+  });
 
-  if(isComment.length === 1 ){
-   await comment.increseCounters()
+  if (isComment.length === 1) {
+    await comment.increseCounters();
   }
 
   res.status(201).json({

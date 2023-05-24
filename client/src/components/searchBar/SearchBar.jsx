@@ -10,7 +10,9 @@ const SearchBar = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log({ searchInput: query, option: type });
+    if (!query) {
+      return;
+    }
     dispatch(search({ searchInput: query, option: type }));
   };
 

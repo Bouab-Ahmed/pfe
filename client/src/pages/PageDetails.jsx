@@ -8,31 +8,15 @@ import { FaRegCommentDots } from "react-icons/fa";
 import RateSection from "../components/rateSection/RateSection";
 import CommentDrawer from "../components/commentDrawer/CommentDrawer";
 const PageDetails = () => {
-  const [commentActiveBtn, setCommentActiveBtn] = useState([]);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [post, setPost] = useState({});
   const openRightDrawer = () => setOpenDrawer(true);
   const closeDrawerRight = () => setOpenDrawer(false);
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { isPostSuccess, singlePost } = useSelector((state) => state.post);
+  const { singlePost } = useSelector((state) => state.post);
 
   const { user } = useSelector((state) => state.auth);
-
-  const getInnerComments = (comments) => {
-    const innerComments = comments?.map((comment) => {
-      if (comment.replies) {
-        return {
-          ...comment,
-          activeBtn: "none",
-          replies: getInnerComments(comment.replies),
-        };
-      }
-      return { ...comment, activeBtn: "none" };
-    });
-    setCommentActiveBtn(() => innerComments);
-    return innerComments;
-  };
 
   useEffect(() => {
     dispatch(getSinglePost(id));
@@ -40,19 +24,9 @@ const PageDetails = () => {
   }, []);
 
   useEffect(() => {
-    if (isPostSuccess) {
-      setPost(() => {
-        return {
-          ...singlePost,
-          comments: getInnerComments(singlePost?.comments),
-        };
-      });
-      // setCommentActiveBtn(getInnerComments(comments));
-    }
-    // eslint-disable-next-line
-  }, [isPostSuccess]);
+    setPost(singlePost);
+  });
 
-  console.log(singlePost);
   return (
     <div>
       {post && (
@@ -83,7 +57,7 @@ const PageDetails = () => {
               <CommentDrawer
                 closeDrawerRight={closeDrawerRight}
                 openDrawer={openDrawer}
-                comments={post?.comments}
+                commentslength={post?.comments?.length}
               />
             </div>
           </div>
