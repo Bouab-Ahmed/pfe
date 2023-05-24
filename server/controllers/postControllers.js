@@ -253,7 +253,15 @@ const searchPostsByCategory = async (req, res) => {
       ),
     ];
 
-    posts = await Post.find({ _id: posts });
+    posts = await Post.find({ _id: posts })
+      .populate({
+        path: "user",
+        select: "_id name",
+      })
+      .populate({
+        path: "tags",
+        select: "_id name",
+      });
   } else if (searchField === "user") {
     // query = { name: { $regex: new RegExp(searchQuery, "i") } };
     posts = await Post.find({
@@ -262,6 +270,10 @@ const searchPostsByCategory = async (req, res) => {
       .populate({
         path: "user",
         match: { name: { $regex: new RegExp(searchQuery, "i") } },
+        select: "_id name",
+      })
+      .populate({
+        path: "tags",
         select: "_id name",
       })
       .then((posts) => {
@@ -278,13 +290,23 @@ const searchPostsByCategory = async (req, res) => {
         match: { name: { $regex: new RegExp(searchQuery, "i") } },
         select: "name",
       })
+      .populate({
+        path: "user",
+        select: "_id name",
+      })
       .then((posts) => {
         const filteredPosts = posts.filter((post) => post.tags.length !== 0);
         return filteredPosts;
       });
   } else {
     query[searchField] = { $regex: new RegExp(searchQuery, "i") };
-    posts = await Post.find(query);
+
+    posts = await Post.find({
+      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }, query],
+    }).populate({
+      path: "user tags",
+      select: "_id name",
+    });
   }
 
   res.status(200).json(posts);
