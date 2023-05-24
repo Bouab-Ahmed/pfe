@@ -11,6 +11,9 @@ const initialState = {
   isPostLoading: false,
   isPostSuccess: false,
   isPostError: false,
+  singlePostLoading: false,
+  singlePostSuccess: false,
+  singlePostError: false,
 };
 
 // create post
@@ -127,21 +130,21 @@ export const postsSlice = createSlice({
     });
 
     builder.addCase(getSinglePost.pending, (state) => {
-      state.isPostLoading = true;
-      state.isPostError = false;
-      state.isPostSuccess = false;
+      state.singlePostSuccess = false;
+      state.singlePostError = false;
+      state.singlePostLoading = true;
       state.message = "";
     });
     builder.addCase(getSinglePost.fulfilled, (state, action) => {
-      state.isPostLoading = false;
-      state.isPostError = false;
-      state.isPostSuccess = true;
+      state.singlePostLoading = false;
+      state.singlePostError = false;
+      state.singlePostSuccess = true;
       state.singlePost = action.payload.post;
     });
     builder.addCase(getSinglePost.rejected, (state) => {
-      state.isPostLoading = false;
-      state.isPostError = true;
-      state.isPostSuccess = false;
+      state.singlePostLoading = false;
+      state.singlePostError = true;
+      state.singlePostSuccess = false;
     });
 
     builder.addCase(updatePost.pending, (state) => {
