@@ -19,38 +19,14 @@ const PageDetails = () => {
 
   const { user } = useSelector((state) => state.auth);
 
-  const getInnerComments = (comments) => {
-    const innerComments = comments?.map((comment) => {
-      if (comment.replies) {
-        return {
-          ...comment,
-          activeBtn: "none",
-          replies: getInnerComments(comment.replies),
-        };
-      }
-      return { ...comment, activeBtn: "none" };
-    });
-    setCommentActiveBtn(() => innerComments);
-    return innerComments;
-  };
-
   useEffect(() => {
     dispatch(getSinglePost(id));
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    if (isPostSuccess) {
-      setPost(() => {
-        return {
-          ...singlePost,
-          comments: getInnerComments(singlePost?.comments),
-        };
-      });
-      // setCommentActiveBtn(getInnerComments(comments));
-    }
-    // eslint-disable-next-line
-  }, [isPostSuccess]);
+    setPost(singlePost);
+  });
 
   console.log(singlePost);
   return (
@@ -83,7 +59,7 @@ const PageDetails = () => {
               <CommentDrawer
                 closeDrawerRight={closeDrawerRight}
                 openDrawer={openDrawer}
-                comments={post?.comments}
+                // comments={post?.comments}
               />
             </div>
           </div>
