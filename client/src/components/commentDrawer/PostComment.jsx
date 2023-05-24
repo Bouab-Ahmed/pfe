@@ -21,6 +21,7 @@ const PostComment = ({ change }) => {
       return;
     }
     dispatch(createComment({ postId: id, comment }));
+    setComment("");
   };
 
   useEffect(() => {
