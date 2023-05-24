@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import authorPic from "../../assets/default.jpg";
 import { useNavigate } from "react-router-dom";
