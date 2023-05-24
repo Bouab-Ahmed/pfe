@@ -4,8 +4,9 @@ import commentService from "./commentService";
 const initialState = {
   comments: [],
   isError: false,
-  isLoading: false,
-  isSuccess: false,
+  isLoadingComment: false,
+  isSuccessComment: false,
+  update: false,
   message: "",
 };
 
@@ -54,79 +55,86 @@ export const postsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(createComment.pending, (state) => {
-      state.isLoading = true;
+      state.isLoadingComment = true;
       state.isError = false;
-      state.isSuccess = false;
+      state.isSuccessComment = false;
+      state.update = false;
+
       state.message = "";
     });
     builder.addCase(createComment.fulfilled, (state, action) => {
       console.log(action);
-      state.isLoading = false;
+      state.isLoadingComment = false;
       state.isError = false;
-      state.isSuccess = true;
+      state.isSuccessComment = true;
+      state.update = true;
+
       // state.message.push(action.payload.msg);
       // state.posts = [...action.payload.posts];
     });
     builder.addCase(createComment.rejected, (state, action) => {
       console.log(action);
-      state.isLoading = false;
+      state.isLoadingComment = false;
       state.isError = true;
-      state.isSuccess = false;
+      state.isSuccessComment = false;
+      state.update = false;
+
       // state.message.push(action.payload.msg);
     });
     builder.addCase(getComments.pending, (state) => {
-      state.isLoading = true;
+      state.isLoadingComment = true;
       state.isError = false;
-      state.isSuccess = false;
+      state.isSuccessComment = false;
       state.message = "";
     });
     builder.addCase(getComments.fulfilled, (state, action) => {
-      state.isLoading = false;
+      state.isLoadingComment = false;
       state.isError = false;
-      state.isSuccess = true;
-      state.singlePost = action.payload.post;
+      state.isSuccessComment = true;
+      state.comments = action.payload.comment;
+      console.log(action.payload);
     });
     builder.addCase(getComments.rejected, (state) => {
-      state.isLoading = false;
+      state.isLoadingComment = false;
       state.isError = true;
-      state.isSuccess = false;
+      state.isSuccessComment = false;
       // state.message = action.payload.msg;
     });
     builder.addCase(updateComment.pending, (state) => {
-      state.isLoading = true;
+      state.isLoadingComment = true;
       state.isError = false;
-      state.isSuccess = false;
+      state.isSuccessComment = false;
       state.message = "";
     });
     builder.addCase(updateComment.fulfilled, (state, action) => {
-      state.isLoading = false;
+      state.isLoadingComment = false;
       state.isError = false;
-      state.isSuccess = true;
+      state.isSuccessComment = true;
       state.tags = [...action.payload.tag];
     });
     builder.addCase(updateComment.rejected, (state, action) => {
-      state.isLoading = false;
+      state.isLoadingComment = false;
       state.isError = true;
-      state.isSuccess = false;
+      state.isSuccessComment = false;
     });
     builder.addCase(deleteComment.pending, (state) => {
-      state.isLoading = true;
+      state.isLoadingComment = true;
       state.isError = false;
-      state.isSuccess = false;
+      state.isSuccessComment = false;
       state.message = "";
     });
     builder.addCase(deleteComment.fulfilled, (state, action) => {
       console.log("fulfilled", action);
-      state.isLoading = false;
+      state.isLoadingComment = false;
       state.isError = false;
-      state.isSuccess = true;
+      state.isSuccessComment = true;
       state.comments = [...action.payload.comment];
     });
     builder.addCase(deleteComment.rejected, (state, action) => {
       console.log("rejected", action);
-      state.isLoading = false;
+      state.isLoadingComment = false;
       state.isError = true;
-      state.isSuccess = false;
+      state.isSuccessComment = false;
       // state.message = action.payload.msg;
     });
   },
