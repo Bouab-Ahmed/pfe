@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import PostCard from "./PostCard";
 import { getPosts } from "../../features/posts/postsSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { resetComment } from "../../features/comments/commentSlice";
 
 const Posts = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,10 @@ const Posts = () => {
     dispatch(getPosts());
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    dispatch(resetComment());
+  });
 
   if (isPostLoading) {
     return <h1>Loading...</h1>;
@@ -29,15 +34,13 @@ const Posts = () => {
     <div className="flex flex-col items-center">
       {isPostSuccess &&
         posts.map((post) => <PostCard key={post.id} {...post} />)}
-      {
-        path !=="profile" && (
-          <div>
-        <button className="text-[#222222] font-bold py-2 px-4 rounded-lg bg-gray-300 ">
-          follow more categories to see more posts
-        </button>
-      </div>
-        )
-      }
+      {path !== "profile" && (
+        <div>
+          <button className="text-[#222222] font-bold py-2 px-4 rounded-lg bg-gray-300 ">
+            follow more categories to see more posts
+          </button>
+        </div>
+      )}
     </div>
   );
 };
