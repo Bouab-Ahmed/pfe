@@ -1,16 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createComment,
+  getComments,
+} from "../../features/comments/commentSlice";
+import { Await, useParams } from "react-router-dom";
 
-const PostComment = () => {
+const PostComment = ({ change }) => {
   const [comment, setComment] = useState("");
 
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const { isSuccessComment, comments, update } = useSelector(
+    (state) => state.comment
+  );
+
+  const handleComment = async (e) => {
+    e.preventDefault();
+    if (!comment) {
+      return;
+    }
+    dispatch(createComment({ postId: id, comment }));
+  };
+
+  useEffect(() => {
+    if (update) {
+      dispatch(getComments(id));
+      change(true);
+    }
+  }, [update]);
+
   return (
-    <form
-      className="mb-6"
-      onSubmit={(e) => {
-        e.preventDefault();
-        console.log(comment);
-      }}
-    >
+    <form className="mb-6" onSubmit={handleComment}>
       <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
         <label htmlFor="comment" className="sr-only">
           Your comment
