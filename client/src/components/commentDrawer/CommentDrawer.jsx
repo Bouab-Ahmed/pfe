@@ -1,64 +1,34 @@
 import { Drawer } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiDownvote, BiUpvote } from "react-icons/bi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import PostComment from "./PostComment";
 
-const CommentDrawer = ({ openDrawer, closeDrawerRight, comments }) => {
+import { getComments } from "../../features/comments/commentSlice";
+import { Await, useParams } from "react-router-dom";
+const CommentDrawer = ({ openDrawer, closeDrawerRight }) => {
   const [post, setPost] = useState({});
+  const [commentsSinglePost, setCommentsSinglePost] = useState([]);
   const [commentActiveBtn, setCommentActiveBtn] = useState([]);
-  const { user } = useSelector((state) => state.auth);
+  const [ref, setref] = useState(false);
+  const dispatch = useDispatch();
+  const { id } = useParams();
 
-  const handleCommentLikes = (clicked, id) => {
-    if (!user) {
-      toast.error("You must be logged in to like a comment");
-      return;
-    }
-    // const innerComments = comments.map((comment) => {
-    //   if (comment._id === id) {
-    //     if (clicked === "upvote") {
-    //       if (comment.activeBtn === "upvote") {
-    //         return { ...comment, activeBtn: "none", like: comment.like - 1 };
-    //       } else if (comment.activeBtn === "none") {
-    //         return { ...comment, activeBtn: "upvote", like: comment.like + 1 };
-    //       } else {
-    //         return {
-    //           ...comment,
-    //           activeBtn: "upvote",
-    //           like: comment.like + 1,
-    //           dislike: comment.dislike - 1,
-    //         };
-    //       }
-    //     } else if (clicked === "downvote") {
-    //       if (comment.activeBtn === "downvote") {
-    //         return {
-    //           ...comment,
-    //           activeBtn: "none",
-    //           dislike: comment.dislike - 1,
-    //         };
-    //       } else if (comment.activeBtn === "upvote") {
-    //         return {
-    //           ...comment,
-    //           activeBtn: "downvote",
-    //           like: comment.like - 1,
-    //           dislike: comment.dislike + 1,
-    //         };
-    //       } else if (comment.activeBtn === "none") {
-    //         return {
-    //           ...comment,
-    //           activeBtn: "downvote",
-    //           dislike: comment.dislike + 1,
-    //         };
-    //       }
-    //     }
-    //   }
-    //   return comment;
-    // });
-    // setCommentActiveBtn(() => innerComments);
-    // const updatedPost = { ...post, comments: commentActiveBtn };
-    // setPost(() => updatedPost);
-  };
+  const { user } = useSelector((state) => state.auth);
+  const { comments, update, isSuccessComment } = useSelector(
+    (state) => state.comment
+  );
+
+  useEffect(() => {
+    setCommentsSinglePost(comments);
+  });
+
+  // useEffect(() => {
+  //   dispatch(getComments(id));
+  // }, []);
+
+  const handleCommentLikes = (clicked, id) => {};
   return (
     <Drawer
       title={`Discussion ${post?.comments && post?.comments.length}`}
@@ -67,8 +37,8 @@ const CommentDrawer = ({ openDrawer, closeDrawerRight, comments }) => {
       open={openDrawer}
       width={420}
     >
-      <PostComment />
-      {comments?.map((comment) => {
+      <PostComment change={setref} />
+      {commentsSinglePost?.map((comment) => {
         return (
           <div key={comment._id}>
             <div className="p-6 mb-6 text-base bg-white rounded-lg ">
