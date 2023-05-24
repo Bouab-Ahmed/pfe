@@ -1,10 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Posts from "../components/posts/Posts";
 import Aside from "../components/aside/Aside";
-import { useDispatch, useSelector } from "react-redux";
-import { reset } from "../features/posts/postsSlice";
-
-// get user from local storage
 
 
 const Feeds = () => {
