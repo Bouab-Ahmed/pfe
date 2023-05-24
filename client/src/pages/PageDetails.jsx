@@ -8,14 +8,13 @@ import { FaRegCommentDots } from "react-icons/fa";
 import RateSection from "../components/rateSection/RateSection";
 import CommentDrawer from "../components/commentDrawer/CommentDrawer";
 const PageDetails = () => {
-  const [commentActiveBtn, setCommentActiveBtn] = useState([]);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [post, setPost] = useState({});
   const openRightDrawer = () => setOpenDrawer(true);
   const closeDrawerRight = () => setOpenDrawer(false);
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { isPostSuccess, singlePost } = useSelector((state) => state.post);
+  const { singlePost } = useSelector((state) => state.post);
 
   const { user } = useSelector((state) => state.auth);
 
@@ -28,7 +27,6 @@ const PageDetails = () => {
     setPost(singlePost);
   });
 
-  console.log(singlePost);
   return (
     <div>
       {post && (
@@ -59,7 +57,7 @@ const PageDetails = () => {
               <CommentDrawer
                 closeDrawerRight={closeDrawerRight}
                 openDrawer={openDrawer}
-                // comments={post?.comments}
+                commentslength={post?.comments?.length}
               />
             </div>
           </div>
