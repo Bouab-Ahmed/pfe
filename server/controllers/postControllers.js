@@ -203,7 +203,7 @@ const searchPostsByCategory = async (req, res) => {
   let query = {};
   let posts = [];
 
-  if (searchField === "all") {
+  if (searchField === "all" || searchField === "content") {
     const byUser = await Post.find({
       $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
     })
@@ -230,14 +230,8 @@ const searchPostsByCategory = async (req, res) => {
         return filteredPosts;
       });
 
-    // const byTitle = await Post.find({
-    //   $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
-    // });
-    // const byContent = await Post.find({
-    //   $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
-    // });
-
     const byTitleAndContent = await Post.find({
+      // to prevent unfollowed tags posts
       $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
       $or: [
         { title: { $regex: new RegExp(searchQuery, "i") } },
