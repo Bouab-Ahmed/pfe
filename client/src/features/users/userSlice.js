@@ -7,6 +7,9 @@ const initialState = {
   isUserLoading: false,
   isUserSuccess: false,
   isUserError: false,
+  isSingleUserSuccess: false,
+  isSingleUserError: false,
+  isSingleUserLoading: false,
 };
 
 // get all users
@@ -120,21 +123,21 @@ export const postsSlice = createSlice({
       // state.message.push(action.payload.msg);
     });
     builder.addCase(getSingleUser.pending, (state) => {
-      state.isUserLoading = true;
-      state.isUserError = false;
-      state.isUserSuccess = false;
+      state.isSingleUserLoading = true;
+      state.isSingleUserError = false;
+      state.isSingleUserSuccess = false;
       state.user = null;
     });
     builder.addCase(getSingleUser.fulfilled, (state, action) => {
-      state.isUserLoading = false;
-      state.isUserError = false;
-      state.isUserSuccess = true;
+      state.isSingleUserLoading = false;
+      state.isSingleUserError = false;
+      state.isSingleUserSuccess = true;
       state.user = action.payload.user;
     });
     builder.addCase(getSingleUser.rejected, (state, action) => {
-      state.isUserLoading = false;
-      state.isUserError = true;
-      state.isUserSuccess = false;
+      state.isSingleUserLoading = false;
+      state.isSingleUserError = true;
+      state.isSingleUserSuccess = false;
       state.user = null;
     });
     builder.addCase(updateUser.pending, (state) => {
