@@ -51,7 +51,7 @@ const Aside = ({user}) => {
           </div>
           <h3
             className="my-1 text-lg cursor-pointer"
-            onClick={() => navigate(`/me/${user._id}`)}
+            onClick={() => navigate(`/profile/${user._id}`)}
           >
             {user?.name}
           </h3>
