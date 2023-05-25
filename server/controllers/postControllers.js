@@ -102,7 +102,7 @@ const updatePost = async (req, res) => {
     throw new NotFoundError("this post not found");
   }
 
-  await post.save();
+  // await post.save();
 
   res.status(200).json({ msg: "updated success", post });
 };
