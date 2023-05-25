@@ -1,7 +1,7 @@
 const express = require("express");
 const {
   getAllUsers,
-  getSingleUsers,
+  getSingleUser,
   updateUser,
   removeUser,
   updatePassword,
@@ -12,9 +12,9 @@ const {
 const { auth } = require("../middleware/authMiddleware");
 const router = express.Router();
 
-router.route("/").get(auth, getAllUsers);
+router.route("/").get(getAllUsers);
 router.route("/me").get(auth, setCurrentUser);
-router.route("/:id").get(auth, getSingleUsers);
+router.route("/:id").get(getSingleUser);
 router.route("/updateUser/:id").patch(auth, updateUser);
 router.route("/removeUser").patch(auth, removeUser);
 router.route("/updatePassword").patch(auth, updatePassword);
