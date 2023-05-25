@@ -1,3 +1,5 @@
+import { json } from "react-router-dom";
+
 const API_URL = "http://localhost:5000";
 
 export const getAllusers = async (thunkAPI) => {
@@ -98,6 +100,23 @@ export const getMe = async (thunkAPI) => {
   return await res.json();
 };
 
+export const activateUser = async (data, thunkAPI) => {
+  const res = await fetch(API_URL + "/user/" + data.id, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ accepted: data.accepted }),
+  });
+
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+
+  return await res.json();
+};
+
 const userService = {
   getAllusers,
   getSingleUser,
@@ -106,6 +125,7 @@ const userService = {
   addFollow,
   removeFollow,
   getMe,
+  activateUser,
 };
 
 export default userService;
