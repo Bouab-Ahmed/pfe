@@ -90,6 +90,8 @@ const getSinglePost = async (req, res) => {
 };
 
 const updatePost = async (req, res) => {
+  // const { stauts } = req.body;
+
   const post = await Post.findOneAndUpdate(
     { _id: req.params.id },
     { ...req.body },
@@ -100,7 +102,9 @@ const updatePost = async (req, res) => {
     throw new NotFoundError("this post not found");
   }
 
-  res.status(200).json({ post });
+  await post.save();
+
+  res.status(200).json({ msg: "updated success", post });
 };
 
 const deletePost = async (req, res) => {
