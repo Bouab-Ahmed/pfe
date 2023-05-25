@@ -5,12 +5,17 @@ const { sendCookies } = require("../utils/jwt");
 const { BadRequestError } = require("../errors");
 
 const getAllUsers = async (req, res) => {
-  const user = await User.find().select("-password").populate("tags");
+  const user = await User.find().select("-password");
   res.status(StatusCodes.OK).json({ user });
 };
 
-const getSingleUsers = async (req, res) => {
-  const user = await User.findOne({ _id: req.params.id }).select("-password");
+const getSingleUser = async (req, res) => {
+  const user = await User.findOne({ _id: req.params.id })
+    .select("-password")
+    .populate({
+      path: "tags",
+      select: "name _id",
+    });
 
   if (!user) {
     throw new BadRequestError("user not found");
@@ -87,11 +92,10 @@ const addFollow = async (req, res) => {
 
 module.exports = {
   getAllUsers,
-  getAllUsers,
   updateUser,
   updatePassword,
   removeUser,
-  getSingleUsers,
+  getSingleUser,
   setCurrentUser,
   addTag,
   addFollow,
