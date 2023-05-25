@@ -8,13 +8,14 @@ const {
   setCurrentUser,
   addTag,
   addFollow,
+  activateUser,
 } = require("../controllers/userControllers");
 const { auth } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.route("/").get(getAllUsers);
 router.route("/me").get(auth, setCurrentUser);
-router.route("/:id").get(getSingleUser);
+router.route("/:id").get(getSingleUser).put(auth, activateUser);
 router.route("/updateUser/:id").patch(auth, updateUser);
 router.route("/removeUser").patch(auth, removeUser);
 router.route("/updatePassword").patch(auth, updatePassword);
