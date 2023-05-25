@@ -81,16 +81,20 @@ export const getSingleTag = async (id, thunkAPI) => {
 };
 
 export const updatePost = async (post, thunkAPI) => {
-  console.log(post);
-  const res = axios.put(API_URL + "/posts/" + post._id, post, {
-    withCredentials: true,
+  const res = await fetch(API_URL + "/posts/" + post.id, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ stauts: post.stauts }),
   });
 
   if (!res.ok) {
     return thunkAPI.rejectWithValue(await res.json());
   }
 
-  return await res;
+  return await res.json();
 };
 
 export const getSingleUserPosts = async (id, thunkAPI) => {
@@ -123,6 +127,23 @@ export const search = async (data, thunkAPI) => {
   return await res.json();
 };
 
+export const deletePost = async (id, thunkAPI) => {
+  const res = await fetch(API_URL + "/posts/" + id, {
+    method: "DELETE",
+    credentials: "include",
+    // headers: {
+    //   "Content-Type": "application/json",
+    // },
+    // body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+
+  return await res.json();
+};
+
 const postsService = {
   createPost,
   getPosts,
@@ -133,6 +154,7 @@ const postsService = {
   getRandomPosts,
   getSingleUserPosts,
   search,
+  deletePost,
 };
 
 export default postsService;
