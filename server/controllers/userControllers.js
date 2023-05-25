@@ -39,6 +39,22 @@ const updateUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "update user", payload });
 };
 
+const activateUser = async (req, res) => {
+  const { accepted } = req.body;
+  if (!accepted) {
+    throw new BadRequestError("some thing wrrong");
+  }
+
+  await User.findByIdAndUpdate(
+    { _id: req.params.id },
+    { accepted },
+    { new: true, runValidators: true }
+  );
+  // const user = await User.findById({ _id: req.user.userId });
+
+  res.status(StatusCodes.OK).json({ msg: "activated" });
+};
+
 const setCurrentUser = async (req, res) => {
   const user = await User.findById({ _id: req.user.userId })
     .populate("tags")
@@ -99,4 +115,5 @@ module.exports = {
   setCurrentUser,
   addTag,
   addFollow,
+  activateUser,
 };
