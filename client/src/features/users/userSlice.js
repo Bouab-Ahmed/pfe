@@ -10,6 +10,7 @@ const initialState = {
   isSingleUserSuccess: false,
   isSingleUserError: false,
   isSingleUserLoading: false,
+  isUserSuccessActive: false,
 };
 
 // get all users
@@ -65,14 +66,11 @@ export const removeFollow = createAsyncThunk(
   }
 );
 
-// get me 
+// get me
 
-export const getMe = createAsyncThunk(
-  "users/getMe",
-  async (_, thunkAPI) => {
-    return userService.getMe(thunkAPI);
-  }
-);
+export const getMe = createAsyncThunk("users/getMe", async (_, thunkAPI) => {
+  return userService.getMe(thunkAPI);
+});
 
 // add tag
 
@@ -89,6 +87,14 @@ export const removeTag = createAsyncThunk(
   "users/removeTag",
   async (tag, thunkAPI) => {
     return userService.removeTag(tag, thunkAPI);
+  }
+);
+
+// get all users
+export const activateUser = createAsyncThunk(
+  "users/activated",
+  async (data, thunkAPI) => {
+    return userService.activateUser(data, thunkAPI);
   }
 );
 
@@ -205,36 +211,41 @@ export const postsSlice = createSlice({
       state.isUserError = false;
       state.isUserSuccess = true;
       state.user = action.payload.user;
-    }
-    );
+    });
     builder.addCase(removeFollow.rejected, (state, action) => {
       state.isUserLoading = false;
       state.isUserError = true;
       state.isUserSuccess = false;
       state.user = null;
-    }
-    );
+    });
     builder.addCase(getMe.pending, (state) => {
       state.isUserLoading = true;
       state.isUserError = false;
       state.isUserSuccess = false;
       state.user = null;
-    }
-    );
+    });
     builder.addCase(getMe.fulfilled, (state, action) => {
       state.isUserLoading = false;
       state.isUserError = false;
       state.isUserSuccess = true;
       state.user = action.payload;
-    }
-    );
+    });
     builder.addCase(getMe.rejected, (state, action) => {
       state.isUserLoading = false;
       state.isUserError = true;
       state.isUserSuccess = false;
       state.user = null;
-    }
-    );
+    });
+    ////active
+    builder.addCase(activateUser.pending, (state) => {
+      state.isUserSuccessActive = false;
+    });
+    builder.addCase(activateUser.fulfilled, (state, action) => {
+      state.isUserSuccessActive = true;
+    });
+    builder.addCase(activateUser.rejected, (state, action) => {
+      state.isUserSuccessActive = false;
+    });
   },
 });
 
