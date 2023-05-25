@@ -5,7 +5,7 @@ const { sendCookies } = require("../utils/jwt");
 const { BadRequestError } = require("../errors");
 
 const getAllUsers = async (req, res) => {
-  const user = await User.find().select("-password");
+  const user = await User.find({ activated: true }).select("-password");
   res.status(StatusCodes.OK).json({ user });
 };
 
