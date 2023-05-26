@@ -7,10 +7,10 @@ const initialState = {
   isUserLoading: false,
   isUserSuccess: false,
   isUserError: false,
+
   isSingleUserSuccess: false,
   isSingleUserError: false,
   isSingleUserLoading: false,
-  isUserSuccessActive: false,
 };
 
 // get all users
@@ -153,10 +153,12 @@ export const postsSlice = createSlice({
       state.user = null;
     });
     builder.addCase(updateUser.fulfilled, (state, action) => {
+      console.log(action)
       state.isUserLoading = false;
       state.isUserError = false;
       state.isUserSuccess = true;
-      state.user = action.payload.user;
+      state.user = action.payload;
+      localStorage.setItem("user", JSON.stringify(action.payload));
     });
     builder.addCase(updateUser.rejected, (state, action) => {
       state.isUserLoading = false;

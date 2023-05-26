@@ -1,5 +1,3 @@
-import { json } from "react-router-dom";
-
 const API_URL = "http://localhost:5000";
 
 export const getAllusers = async (thunkAPI) => {
@@ -29,8 +27,9 @@ export const getSingleUser = async (id, thunkAPI) => {
 };
 
 export const updateUser = async (user, thunkAPI) => {
-  const res = await fetch(API_URL + "/user/" + user._id, {
-    method: "PUT",
+  console.log(user)
+  const res = await fetch(API_URL + "/user/updateUser/" + user._id, {
+    method: "PATCH",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
