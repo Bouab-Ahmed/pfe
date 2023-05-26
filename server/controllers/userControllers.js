@@ -5,7 +5,7 @@ const { sendCookies } = require("../utils/jwt");
 const { BadRequestError } = require("../errors");
 
 const getAllUsers = async (req, res) => {
-  const user = await User.find({ activated: true }).select("-password");
+  const user = await User.find().select("-password");
   res.status(StatusCodes.OK).json({ user });
 };
 
@@ -25,18 +25,51 @@ const getSingleUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { name, email } = req.body;
-  if (!name || !email) {
-    throw new BadRequestError("put name and password");
+  const updates = req.body;
+  const userId = req.params.id;
+
+  const user = await User.findByIdAndUpdate(userId, updates, { new: true });
+
+  if (!user) {
+    throw new NotFoundError("User not found");
   }
-  // const user = await User.findByIdAndUpdate({ _id: req.user.userId }, { name, email }, { new: true, runValidators: true })
-  const user = await User.findById({ _id: req.user.userId });
-  user.name = name;
-  user.email = email;
+
   await user.save();
-  const payload = { userId: user._id, user: user.name, role: user.role };
+
+  const {
+    _id,
+    name,
+    email,
+    role,
+    follower,
+    following,
+    profilePic,
+    activated,
+    accepted,
+    tags,
+    counter,
+    bio,
+  } = user;
+
+  const updatedUser = {
+    _id,
+    name,
+    email,
+    role,
+    follower,
+    following,
+    profilePic,
+    activated,
+    accepted,
+    tags,
+    counter,
+    bio,
+  };
+
+  const payload = { ...updatedUser };
   sendCookies(res, payload);
-  res.status(StatusCodes.OK).json({ msg: "update user", payload });
+
+  res.status(StatusCodes.OK).json(payload);
 };
 
 const activateUser = async (req, res) => {

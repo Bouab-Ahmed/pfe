@@ -15,7 +15,7 @@ const Terms = ({ open, handleOpen, handleAcceptTerms }) => {
 	useEffect(() => {
 		setTimeout(() => {
 		setDelay(false)
-	}, 5000)
+	}, 10000)
 	}, [])
 	return (
     <Fragment>
@@ -72,7 +72,7 @@ const Terms = ({ open, handleOpen, handleAcceptTerms }) => {
             color="green"
             onClick={() => {
               handleOpen();
-							setDelay(true)
+							setDelay(()=>true)
               handleAcceptTerms();
             }}
 						disabled={delay}

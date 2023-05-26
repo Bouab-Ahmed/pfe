@@ -14,6 +14,7 @@ import NewPost from "./pages/NewPost";
 import TrendingPosts from "./pages/trendingPosts/TrendingPosts";
 import Layout from "./dashboard/Layout";
 import ErrorPage from "./pages/ErrorPage";
+import SelectTags from "./pages/SelectTags";
 
 function App() {
   const user = localStorage.getItem("user");
@@ -36,6 +37,7 @@ function App() {
           <Route path="/newPost" element={<NewPost />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/trending" element={<TrendingPosts />} />
+          <Route path="/topics" element={<SelectTags />} />  
           <Route path="/dashboard/posts" element={<Layout page={"posts"} />} />
           <Route path="/dashboard/users" element={<Layout page={"users"} />} />
           <Route
