@@ -166,7 +166,7 @@ const ManageUsers = () => {
             name: user.name,
             email: user.email,
             role: user.role,
-            date: user.createdAt,
+            date: new Date(user.createdAt).toLocaleDateString(),
             profilePic: user.profilePic,
             followers: user.follower,
             following: user.following,
