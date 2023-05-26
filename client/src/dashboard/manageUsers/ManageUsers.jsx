@@ -101,19 +101,6 @@ const ManageUsers = () => {
           >
             Reset
           </Button>
-          {/* <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({
-                closeDropdown: false,
-              });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
-            }}
-          >
-            Filter
-          </Button> */}
           <Button
             type="link"
             size="small"
@@ -189,6 +176,7 @@ const ManageUsers = () => {
             following: user.following,
             points: user.counter,
             accepted: user.accepted,
+            activated: user.activated,
           };
         });
       });
@@ -237,6 +225,17 @@ const ManageUsers = () => {
               },
             ],
             onFilter: (value, record) => record.role.startsWith(value),
+          },
+          {
+            title: "activated",
+            dataIndex: "activated",
+            key: "activated",
+            render: (_, row) => (
+              <span className="font-semibold">
+                {row.activated ? "true" : "false"}
+              </span>
+            ),
+            sorter: (a, b) => a.length - b.length,
           },
           {
             title: "Published at",
