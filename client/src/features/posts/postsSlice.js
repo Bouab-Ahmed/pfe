@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import postsService from "./postsService";
+import { toast } from "react-toastify";
 
 const initialState = {
   posts: [],
@@ -7,6 +8,7 @@ const initialState = {
   tags: [],
   message: "",
   singleTag: null,
+  isPostSuccessCreated: false,
 
   isPostLoading: false,
   isPostSuccess: false,
@@ -114,21 +116,22 @@ export const postsSlice = createSlice({
     builder.addCase(createPost.pending, (state) => {
       state.isPostLoading = true;
       state.isPostError = false;
-      state.isPostSuccess = false;
+      state.isPostSuccessCreated = false;
       state.message = "";
     });
     builder.addCase(createPost.fulfilled, (state, action) => {
       console.log(action);
       state.isPostLoading = false;
       state.isPostError = false;
-      state.isPostSuccess = true;
+      state.isPostSuccessCreated = true;
     });
     builder.addCase(createPost.rejected, (state, action) => {
       console.log(action);
       state.isPostLoading = false;
       state.isPostError = true;
-      state.isPostSuccess = false;
+      state.isPostSuccessCreated = false;
       // state.message.push(action.payload.msg);
+      toast.error(action.payload.msg);
     });
 
     builder.addCase(getSinglePost.pending, (state) => {
