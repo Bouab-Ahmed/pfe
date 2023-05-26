@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Input, Space, Table } from "antd";
 import { FcApproval } from "react-icons/fc";
 import { AiOutlineEye } from "react-icons/ai";
-import { getAllusers, getSingleUser } from "../../features/users/userSlice";
+import {
+  activateUser,
+  getAllusers,
+  getSingleUser,
+} from "../../features/users/userSlice";
 import { FiUsers } from "react-icons/fi";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
@@ -13,9 +17,13 @@ const ManageUsers = () => {
   const dispatch = useDispatch();
   const searchInput = useRef(null);
   const [singleUser, setSingleUser] = useState({});
-  const { isUserSuccess, users, user, isSingleUserSuccess } = useSelector(
-    (state) => state.user
-  );
+  const {
+    isUserSuccess,
+    users,
+    user,
+    isSingleUserSuccess,
+    isUserSuccessActive,
+  } = useSelector((state) => state.user);
   const [dataSourse, setDataSourse] = useState([]);
   const [columnsSourse, setColumnsSourse] = useState([]);
   const [open, setOpen] = React.useState(false);
@@ -38,6 +46,10 @@ const ManageUsers = () => {
   const handleReset = (clearFilters) => {
     clearFilters();
     setSearchText("");
+  };
+
+  const handleApprove = (id) => {
+    dispatch(activateUser({ accepted: true, id }));
   };
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -154,6 +166,11 @@ const ManageUsers = () => {
     dispatch(getAllusers());
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    dispatch(getAllusers());
+    // eslint-disable-next-line
+  }, [isUserSuccessActive]);
 
   isSingleUserSuccess && console.log(singleUser);
 
@@ -284,7 +301,10 @@ const ManageUsers = () => {
                       Delete
                     </button>
                   ) : (
-                    <button className="inline-flex items-center px-4 py-2 bg-primary hover:bg-green-800 text-white text-sm font-medium rounded-md">
+                    <button
+                      onClick={() => handleApprove(row.key)}
+                      className="inline-flex items-center px-4 py-2 bg-primary hover:bg-green-800 text-white text-sm font-medium rounded-md"
+                    >
                       <FcApproval className="text-xl mr-1" />
                       Approve
                     </button>

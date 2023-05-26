@@ -1,29 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getRandomPosts, getSinglePost } from "../../features/posts/postsSlice";
+import {
+  deletePost,
+  getRandomPosts,
+  getSinglePost,
+  updatePost,
+} from "../../features/posts/postsSlice";
 import { Table } from "antd";
 import { FcApproval } from "react-icons/fc";
 import { AiOutlineEye } from "react-icons/ai";
 import PostModel from "../components/PostModel";
 import { RiGitRepositoryLine } from "react-icons/ri";
-
+// const { id } = useParams();
 const ManagePosts = () => {
   const dispatch = useDispatch();
-  const { isPostSuccess, posts,singlePost,singlePostSuccess } = useSelector((state) => state.post);
+  const {
+    isPostSuccess,
+    posts,
+    singlePost,
+    singlePostSuccess,
+    isPostSuccessDelete,
+    isPostSuccessUpdated,
+  } = useSelector((state) => state.post);
   const [dataSourse, setDataSourse] = useState([]);
   const [columnsSourse, setColumnsSourse] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [post, setPost] = useState({});
-  
-  
-  const getPostModel = async(id) => {
+
+  const getPostModel = async (id) => {
     dispatch(getSinglePost(id));
   };
-  
+
   const handleOpen = () => {
     setOpen(!open);
-  }
-  
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deletePost(id));
+  };
+
+  const handleApprove = (id) => {
+    dispatch(updatePost({ stauts: "published", id }));
+  };
+
   useEffect(() => {
     if (singlePostSuccess) {
       setPost(() => singlePost);
@@ -32,11 +51,15 @@ const ManagePosts = () => {
     // eslint-disable-next-line
   }, [singlePostSuccess]);
 
-
   useEffect(() => {
     dispatch(getRandomPosts());
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    dispatch(getRandomPosts());
+    // eslint-disable-next-line
+  }, [isPostSuccessDelete, isPostSuccessUpdated]);
 
   useEffect(() => {
     if (isPostSuccess) {
@@ -139,7 +162,10 @@ const ManagePosts = () => {
                     view
                   </button>
                   {row.status === "published" ? (
-                    <button className="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md">
+                    <button
+                      onClick={() => handleDelete(row.key)}
+                      className="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md"
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5 mr-2"
@@ -157,7 +183,10 @@ const ManagePosts = () => {
                       Delete
                     </button>
                   ) : (
-                    <button className="inline-flex items-center px-4 py-2 bg-primary hover:bg-green-800 text-white text-sm font-medium rounded-md">
+                    <button
+                      onClick={() => handleApprove(row.key)}
+                      className="inline-flex items-center px-4 py-2 bg-primary hover:bg-green-800 text-white text-sm font-medium rounded-md"
+                    >
                       <FcApproval className="text-xl mr-1" />
                       Approve
                     </button>

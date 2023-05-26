@@ -5,7 +5,7 @@ const { sendCookies } = require("../utils/jwt");
 const { BadRequestError } = require("../errors");
 
 const getAllUsers = async (req, res) => {
-  const user = await User.find().select("-password");
+  const user = await User.find({ activated: true }).select("-password");
   res.status(StatusCodes.OK).json({ user });
 };
 
@@ -37,6 +37,22 @@ const updateUser = async (req, res) => {
   const payload = { userId: user._id, user: user.name, role: user.role };
   sendCookies(res, payload);
   res.status(StatusCodes.OK).json({ msg: "update user", payload });
+};
+
+const activateUser = async (req, res) => {
+  const { accepted } = req.body;
+  if (!accepted) {
+    throw new BadRequestError("some thing wrrong");
+  }
+
+  await User.findByIdAndUpdate(
+    { _id: req.params.id },
+    { accepted },
+    { new: true, runValidators: true }
+  );
+  // const user = await User.findById({ _id: req.user.userId });
+
+  res.status(StatusCodes.OK).json({ msg: "activated" });
 };
 
 const setCurrentUser = async (req, res) => {
@@ -99,4 +115,5 @@ module.exports = {
   setCurrentUser,
   addTag,
   addFollow,
+  activateUser,
 };

@@ -14,6 +14,8 @@ const initialState = {
   singlePostLoading: false,
   singlePostSuccess: false,
   singlePostError: false,
+  isPostSuccessDelete: false,
+  isPostSuccessUpdated: false,
 };
 
 // create post
@@ -148,39 +150,19 @@ export const postsSlice = createSlice({
     });
 
     builder.addCase(updatePost.pending, (state) => {
-      state.isPostLoading = true;
       state.isPostError = false;
-      state.isPostSuccess = false;
+      state.isPostSuccessUpdated = false;
       state.message = "";
     });
     builder.addCase(updatePost.fulfilled, (state, action) => {
-      state.isPostLoading = false;
-      state.isPostError = false;
-      state.isPostSuccess = true;
+      state.isPostSuccessUpdated = true;
       state.singlePost = action.payload.post;
     });
     builder.addCase(updatePost.rejected, (state, action) => {
-      state.isPostLoading = false;
       state.isPostError = true;
-      state.isPostSuccess = false;
+      state.isPostSuccessUpdated = false;
     });
 
-    builder.addCase(deletePost.pending, (state) => {
-      state.isPostLoading = true;
-      state.isPostError = false;
-      state.isPostSuccess = false;
-      state.message = "";
-    });
-    builder.addCase(deletePost.fulfilled, (state, action) => {
-      state.isPostLoading = false;
-      state.isPostError = false;
-      state.isPostSuccess = true;
-    });
-    builder.addCase(deletePost.rejected, (state, action) => {
-      state.isPostLoading = false;
-      state.isPostError = true;
-      state.isPostSuccess = false;
-    });
     builder.addCase(getRandomPosts.pending, (state) => {
       state.isPostLoading = true;
       state.isPostError = false;
@@ -239,6 +221,17 @@ export const postsSlice = createSlice({
       state.isPostError = true;
       state.isPostSuccess = false;
       state.posts = [];
+    });
+    //delet post
+    builder.addCase(deletePost.pending, (state) => {
+      state.isPostSuccessDelete = false;
+    });
+    builder.addCase(deletePost.fulfilled, (state, action) => {
+      console.log(action.payload);
+      state.isPostSuccessDelete = true;
+    });
+    builder.addCase(deletePost.rejected, (state, action) => {
+      state.isPostSuccessDelete = false;
     });
   },
 });
