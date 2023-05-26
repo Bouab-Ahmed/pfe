@@ -13,6 +13,8 @@ const createNewPost = async (req, res) => {
     image: pathImg,
   });
 
+  // i want to test
+
   await post.decrease(req.body.idTag);
 
   res.status(200).json({ post });
