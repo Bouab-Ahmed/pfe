@@ -59,7 +59,15 @@ const ManagePosts = () => {
             title: "Title",
             dataIndex: "title",
             key: "title",
-            sorter: (a, b) => a.localeCompare(b),
+            sorter: function (a, b) {
+              if (a.name < b.name) {
+                return -1;
+              }
+              if (a.name > b.name) {
+                return 1;
+              }
+              return 0;
+            },
             width: "20%",
           },
           {
