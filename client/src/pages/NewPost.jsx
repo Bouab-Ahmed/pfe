@@ -6,7 +6,6 @@ import { createPost, reset } from "../features/posts/postsSlice";
 import { getTags } from "../features/tags/tagSlice";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@material-tailwind/react";
 import Terms from "../components/terms/Terms";
 
 const NewPost = () => {
@@ -18,17 +17,19 @@ const NewPost = () => {
   const [open, setOpen] = useState(false);
   const [acceptterms, setAcceptTerms] = useState(false);
 
-  const handleOpen = () => setOpen(!open);
-  const handleAcceptTerms = () => setAcceptTerms(!acceptterms);
+  const handleOpen = () => setOpen((prev) => !prev);
+  const handleAcceptTerms = () => setAcceptTerms((prev) => !prev);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isPostLoading, isPostSuccess } = useSelector((state) => state.post);
+  const { isPostLoading, isPostSuccessCreated } = useSelector(
+    (state) => state.post
+  );
 
   const { tags, isTagLoading, isTagSuccess, isTagError } = useSelector(
     (state) => state.tag
   );
 
-  dispatch(reset());
+  
 
   const handleIdTagChange = (e) => {
     setIdTag(e.target.value);
@@ -57,23 +58,23 @@ const NewPost = () => {
       setImage(undefined);
       return;
     }
-
     setImage(e.target.files[0]);
   };
 
   useEffect(() => {
+    dispatch(reset());
     dispatch(getTags());
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    if (isPostSuccess && isTagSuccess) {
+    if (isPostSuccessCreated ) {
       dispatch(reset());
       navigate("/");
       toast.success("Post created successfully");
     }
     // eslint-disable-next-line
-  }, [isPostSuccess, isTagSuccess]);
+  }, [isPostSuccessCreated]);
 
   useEffect(() => {
     if (!image) {
@@ -88,8 +89,6 @@ const NewPost = () => {
     return () => URL.revokeObjectURL(objectUrl);
   }, [image]);
 
-  console.log("isPostSuccess", isPostSuccess, "isTagSuccess", isTagSuccess);
-
   return (
     <div className="container1 mx-auto my-4">
       {isTagLoading ? (
@@ -98,7 +97,7 @@ const NewPost = () => {
         <h1>Something went wrong</h1>
       ) : (
         isTagSuccess && (
-          <form action="" onSubmit={onSubmit}>
+          <form>
             <div className="relative z-0 w-full mb-6 group">
               <input
                 type="text"
@@ -192,7 +191,7 @@ const NewPost = () => {
                 ))}
               </select>
             </div>
-            <div>
+            <div className="flex items-center cursor-pointer">
               <input
                 type="checkbox"
                 name="acceptterms"
@@ -201,9 +200,9 @@ const NewPost = () => {
                 onChange={handleOpen}
                 className="mr-2"
               />
-              <button onClick={handleOpen} className=" py-4 ">
+              <p className=" py-4 " htmlFor="acceptterms">
                 you must accept terms uses first
-              </button>
+              </p>
             </div>
             <Terms
               open={open}
@@ -221,6 +220,7 @@ const NewPost = () => {
                 !image ||
                 acceptterms === false
               }
+              onClick={onSubmit}
             >
               Publish
             </button>
