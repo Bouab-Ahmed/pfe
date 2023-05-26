@@ -76,17 +76,16 @@ postSchema.pre("remove", async function () {
   await this.model("Comments").deleteMany({ post: this._id });
 });
 
-postSchema.methods.decrease = async function (id) {
-  this.tags.push(id);
-  const user = await this.model("User").findById(this.user);
-  if (user.counter < 5) {
-    throw new Error("you don't have more point to post");
-  }
-  await this.model("User").findByIdAndUpdate(
-    { _id: this.user },
-    { $inc: { counter: -5 } }
-  );
-  await this.save();
-};
+// postSchema.pre("save", async function () {
+//   const user = await this.model("User").findById(this.user);
+//   if (user.counter < 5) {
+//     throw new Error("you don't have enough points to create a post");
+//   }
+//   await this.model("User").findByIdAndUpdate(
+//     { _id: this.user },
+//     { $inc: { counter: -5 } }
+//   );
+//   await this.save();
+// });
 
 module.exports = mongoose.model("Post", postSchema);
