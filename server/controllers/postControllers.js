@@ -6,24 +6,12 @@ const { uploadProductImageLocal } = require("./uploadsController");
 
 const createNewPost = async (req, res) => {
   const pathImg = await uploadProductImageLocal(req);
-
-  const user = await User.findById(req.user.userId);
-  let post = [];
-
-  if (user.counter < 5) {
-    throw new Error("you don't have enough points to create a post");
-  } else {
-    post = await Post.create({
-      ...req.body,
-      user: req.user.userId,
-      image: pathImg,
-      tags: [req.body.idTag],
-    });
-    await User.findByIdAndUpdate(
-      { _id: req.user.userId },
-      { $inc: { counter: -5 } }
-    );
-  }
+  const post = await Post.create({
+    ...req.body,
+    user: req.user.userId,
+    image: pathImg,
+    tags: [req.body.idTag],
+  });
   res.status(200).json({ post });
 };
 
