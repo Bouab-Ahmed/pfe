@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { getTags } from "../../features/tags/tagSlice";
 import { following, getAllusers, getMe } from "../../features/users/userSlice";
 import Recommands from "./Recommands";
 import Tags from "./Tags";
+import Posts from "./Posts";
 
-const Aside = () => {
+const Aside = ({ postUser }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { tags, isTagGetSuccess } = useSelector((state) => state.tag);
 
   const { users, user } = useSelector((state) => state.user);
@@ -21,39 +25,52 @@ const Aside = () => {
 
   return (
     <div className="flex flex-col justify-center sticky top-14 z-10">
-      {/* {user && (
+      {postUser && (
         <div className="flex flex-col items-center justify-center gap-1 w-3/4 text-center">
           <div className="w-24 h-w-24 rounded-full">
             <img
-              src={`http://localhost:5000${user?.profilePic}`}
+              src={`http://localhost:5000${postUser?.profilePic}`}
               alt="author"
               className="w-full h-full object-cover"
             />
           </div>
           <h3
             className="my-1 text-lg cursor-pointer"
-            onClick={() => navigate(`/profile/${user._id}`)}
+            onClick={() => navigate(`/profile/${postUser._id}`)}
           >
-            {user?.name}
+            {postUser?.name}
           </h3>
           <div className="flex flex-row gap-2 ">
-            <span>{user?.follower.length} followers</span> •{" "}
-            <span>{user?.following.length} following</span>
+            <span>{postUser?.follower.length} followers</span> •{" "}
+            <span>{postUser?.following.length} following</span>
           </div>
           <p className="text-[#292929] opacity-75 text-sm">
             Creative Investor. Sharing my inspiring journey in...
           </p>
-          <button className="w-full rounded-full px-4 py-1 border border-primary text-white bg-primary">
-            Follow
-          </button>
+          {user?.following.some((id) => id === postUser._id) ? (
+            <button
+              // onClick={() => dispatch(following(postUser._id))}
+              // className="w-full rounded-full px-4 py-1 border border-primary text-white bg-primary"
+              className="rounded-full w-[190px] py-[8px]  border border-black "
+            >
+              Following
+            </button>
+          ) : (
+            <button
+              onClick={() => dispatch(following(postUser._id))}
+              // className="w-full rounded-full px-4 py-1 border border-primary text-white bg-primary"
+              className="rounded-full w-[190px] py-[8px] bg-primary border border-primary "
+            >
+              Follow
+            </button>
+          )}
         </div>
-      )} */}
-      <Tags tags={tags} />
-      {user ? (
-        <Recommands user={user} users={users} following={following} />
-      ) : (
-        <h2 className="text-2xl font-bold my-2">more from this user</h2>
       )}
+      <Tags tags={tags} />
+      {user && !postUser && (
+        <Recommands user={user} users={users} following={following} />
+      )}
+      {user && postUser && <Posts />}
     </div>
   );
 };
