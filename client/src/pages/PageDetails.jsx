@@ -10,11 +10,12 @@ import CommentDrawer from "../components/commentDrawer/CommentDrawer";
 const PageDetails = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [post, setPost] = useState({});
+  const [displayComment, setDispalyComment]= useState(false)
   const openRightDrawer = () => setOpenDrawer(true);
   const closeDrawerRight = () => setOpenDrawer(false);
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { singlePost } = useSelector((state) => state.post);
+  const { singlePost, singlePostSuccess } = useSelector((state) => state.post);
 
   const { user } = useSelector((state) => state.auth);
 
@@ -24,8 +25,13 @@ const PageDetails = () => {
   }, []);
 
   useEffect(() => {
-    setPost(singlePost);
-  });
+    if (singlePostSuccess) {
+      setPost(singlePost);
+      setTimeout(()=>setDispalyComment(()=>true),5000)
+    }
+  },[singlePostSuccess]);
+
+
 
   return (
     <div>
@@ -50,15 +56,17 @@ const PageDetails = () => {
                 like={post?.like}
                 dislike={post?.dislike}
               />
+              {displayComment && (
               <FaRegCommentDots
                 className="text-2xl stroke-[0.5] bg-transparent"
                 onClick={openRightDrawer}
               />
-              <CommentDrawer
-                closeDrawerRight={closeDrawerRight}
-                openDrawer={openDrawer}
-                commentslength={post?.comments?.length}
-              />
+                )}
+                <CommentDrawer
+                  closeDrawerRight={closeDrawerRight}
+                  openDrawer={openDrawer}
+                  commentslength={post?.comments?.length}
+                />
             </div>
           </div>
           {user && (
