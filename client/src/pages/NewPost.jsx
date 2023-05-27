@@ -113,7 +113,7 @@ const NewPost = () => {
 
             {preview ? (
               <div className="flex flex-col items-center justify-center w-[80%] mx-auto my-2 relative">
-                <img src={preview} alt="" className="w-full h-96 " />
+                <img src={preview} alt="" className="w-1/2 h-96 " />
                 <div
                   onClick={() => setPreview(() => undefined)}
                   className=" text-white font-medium absolute text-5xl top-2 right-4 cursor-pointer z-10"
