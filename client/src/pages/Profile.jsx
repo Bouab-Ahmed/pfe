@@ -30,16 +30,6 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    if (isPostSuccess) {
-      console.log(path);
-      console.log(posts);
-    }
-    if (isUserSuccess) {
-      console.log(user);
-    }
-  }, [isPostSuccess, isUserSuccess]);
-
-  useEffect(() => {
     if (!image) {
       setPreview(undefined);
       return;
