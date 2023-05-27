@@ -130,12 +130,17 @@ const addTag = async (req, res) => {
 const addFollow = async (req, res) => {
   const user = await User.findOne({ _id: req.user.userId }).select("-password");
   user.following.push(req.params.id);
+  console.log(user);
+
   const user2 = await User.findOne({ _id: req.params.id }).select("-password");
   user2.follower.push(req.user.userId);
+
   await user.save();
   await user2.save();
+
   const payload = { userId: user._id, ...user._doc };
   sendCookies(res, payload);
+
   res.status(StatusCodes.OK).json(user);
 };
 
