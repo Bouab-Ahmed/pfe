@@ -27,7 +27,7 @@ export const getSingleUser = async (id, thunkAPI) => {
 };
 
 export const updateUser = async (user, thunkAPI) => {
-  console.log(user)
+  console.log(user);
   const res = await fetch(API_URL + "/user/updateUser/" + user._id, {
     method: "PATCH",
     credentials: "include",
@@ -116,6 +116,22 @@ export const activateUser = async (data, thunkAPI) => {
   return await res.json();
 };
 
+export const following = async (id, thunkAPI) => {
+  const res = await fetch(API_URL + "/user/addFollow/" + id, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+
+  return await res.json();
+};
+
 const userService = {
   getAllusers,
   getSingleUser,
@@ -125,6 +141,7 @@ const userService = {
   removeFollow,
   getMe,
   activateUser,
+  following,
 };
 
 export default userService;
