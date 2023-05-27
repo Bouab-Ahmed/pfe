@@ -55,7 +55,7 @@ function Login() {
     <main className="min-w-full flex">
       <div className="relative flex-1 hidden items-center justify-center h-[91vh] bg-gray-900 lg:flex">
         <div className="relative z-10 w-full max-w-md">
-          <img src="https://floatui.com/logo-dark.svg" width={150} alt="" />
+          {/* <img src="https://floatui.com/logo-dark.svg" width={150} alt="" /> */}
           <div className=" mt-16 space-y-3">
             <h3 className="text-white text-3xl font-bold">
               Start your journey with us

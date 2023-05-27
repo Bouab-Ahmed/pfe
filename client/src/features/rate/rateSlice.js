@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import rateService from "./rateService";
+import { toast } from "react-toastify";
 
 const initialState = {
   likes: 0,
@@ -51,10 +52,16 @@ export const rateSlice = createSlice({
       state.dislikes = action.payload.dislikes;
       state.likes = action.payload.likes;
     });
-    builder.addCase(sendLike.rejected, (state) => {
+    builder.addCase(sendLike.rejected, (state, action) => {
+      console.log(action);
       state.isRateLoading = false;
       state.isRateError = true;
       state.isRateSuccess = false;
+      toast.error(
+        action.payload.msg === "authenticated invalid"
+          ? "you must be logged in to rate a post"
+          : "something went wrong"
+      );
     });
     builder.addCase(sendDislike.pending, (state) => {
       state.isRateLoading = true;
@@ -73,6 +80,11 @@ export const rateSlice = createSlice({
       state.isRateLoading = false;
       state.isRateError = true;
       state.isRateSuccess = false;
+      toast.error(
+        action.payload.msg === "authenticated invalid"
+          ? "you must be logged in to rate a post"
+          : "something went wrong"
+      );
     });
   },
 });

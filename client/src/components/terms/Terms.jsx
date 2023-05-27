@@ -20,47 +20,51 @@ const Terms = ({ open, handleOpen, handleAcceptTerms }) => {
 	return (
     <Fragment>
       <Dialog open={open} handler={handleOpen}>
-        <DialogHeader>Long modal</DialogHeader>
+        <DialogHeader>
+          Terms of Use: Guidelines for Posting and Sharing Content on Our
+          Platform
+        </DialogHeader>
         <DialogBody divider className="h-[40rem] overflow-scroll">
           <Typography className="font-normal">
-            I always felt like I could do anything. That&apos;s the main thing
-            people are controlled by! Thoughts- their perception of themselves!
-            They&apos;re slowed down by their perception of themselves. If
-            you&apos;re taught you can&apos;t do anything, you won&apos;t do
-            anything. I was taught I could do everything. As we live, our hearts
-            turn colder. Cause pain is what we go through as we become older. We
-            get insulted by others, lose trust for those others. We get back
-            stabbed by friends. It becomes harder for us to give others a hand.
-            We get our heart broken by people we love, even that we give them
-            all we have. Then we lose family over time. What else could rust the
-            heart more over time? Blackgold.
-            <br />
-            <br />
-            We&apos;re not always in the position that we want to be at.
-            We&apos;re constantly growing. We&apos;re constantly making
-            mistakes. We&apos;re constantly trying to express ourselves and
-            actualize our dreams. If you have the opportunity to play this game
-            of life you need to appreciate every moment. A lot of people
-            don&apos;t appreciate the moment until it&apos;s passed.
-            <br /> <br />
-            There&apos;s nothing I really wanted to do in life that I
-            wasn&apos;t able to get good at. That&apos;s my skill. I&apos;m not
-            really specifically talented at anything except for the ability to
-            learn. That&apos;s what I do. That&apos;s what I&apos;m here for.
-            Don&apos;t be afraid to be wrong because you can&apos;t learn
-            anything from a compliment.
-            <br /> <br />
-            It really matters and then like it really doesn&apos;t matter. What
-            matters is the people who are sparked by it. And the people who are
-            like offended by it, it doesn&apos;t matter. Because it&apos;s about
-            motivating the doers. Because I&apos;m here to follow my dreams and
-            inspire other people to follow their dreams, too.
-            <br /> <br />
-            The time is now for it to be okay to be great. People in this world
-            shun people for being great. For being a bright color. For standing
-            out. But the time is now to be okay to be the greatest you. Would
-            you believe in what you believe in, if you were the only one who
-            believed it?
+            * Our platform allows users to post books, resumes, and articles. By
+            submitting content to our site, you grant us a non-exclusive,
+            worldwide, royalty-free, transferable, and sublicensable license to
+            use, reproduce, distribute, prepare derivative works of, display,
+            and perform your content in connection with the platform and our
+            business operations. However, you retain all ownership rights to the
+            content you submit.
+            <br /> * You are solely responsible for the content you post on our
+            platform. By submitting content, you represent and warrant that you
+            have all necessary rights, licenses, and permissions to publish and
+            share the content. You also agree that the content you submit does
+            not violate any applicable laws, infringe upon the rights of others,
+            or contain any harmful or malicious elements.
+            <br /> *Respecting copyright and intellectual property rights is
+            essential. You should not post any content that infringes upon the
+            copyrights or intellectual property rights of others. If you believe
+            that your copyrighted work has been infringed upon, please contact
+            us with the relevant details for prompt resolution. <br />
+            While using our platform, you agree to abide by the following
+            guidelines:
+            <ul>
+              <li>
+                Do not post content that is defamatory, abusive, obscene, or
+                offensive.
+              </li>
+              <li>
+                Do not engage in any form of harassment, bullying, or
+                discrimination.
+              </li>
+              <li>
+                Do not post content that promotes or incites violence, hatred,
+                or illegal activities.
+              </li>
+              <li>Do not violate the privacy or personal rights of others.</li>
+              <li>
+                Do not use our platform for any unauthorized or unlawful
+                purposes.
+              </li>
+            </ul>
           </Typography>
         </DialogBody>
         <DialogFooter className="space-x-2">
@@ -72,10 +76,10 @@ const Terms = ({ open, handleOpen, handleAcceptTerms }) => {
             color="green"
             onClick={() => {
               handleOpen();
-							setDelay(()=>true)
+              setDelay(() => true);
               handleAcceptTerms();
             }}
-						disabled={delay}
+            disabled={delay}
           >
             Accept Terms
           </Button>

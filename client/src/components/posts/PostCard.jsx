@@ -1,6 +1,4 @@
 import React from "react";
-
-import authorPic from "../../assets/default.jpg";
 import { useNavigate } from "react-router-dom";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
@@ -20,7 +18,7 @@ const PostCard = (post) => {
               onClick={() => navigate(`/profile/${post.user._id}`)}
             >
               <img
-                src={authorPic}
+                src={`http://localhost:5000${post.user.profilePic}`}
                 alt="author"
                 className="h-8 w-8 rounded-full"
               />
