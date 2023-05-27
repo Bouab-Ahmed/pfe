@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import userService from "./userService";
 
 const initialState = {
-  user: null,
+  user: JSON.parse(localStorage.getItem("user")) || null,
   users: [],
   isUserLoading: false,
   isUserSuccess: false,
@@ -11,6 +11,9 @@ const initialState = {
   isSingleUserSuccess: false,
   isSingleUserError: false,
   isSingleUserLoading: false,
+  isUserSuccessFollwing: false,
+  isUserSuccessGetMe: false,
+  isUserSuccessActive: false,
 };
 
 // get all users
@@ -98,6 +101,14 @@ export const activateUser = createAsyncThunk(
   }
 );
 
+// follwing
+export const following = createAsyncThunk(
+  "users/following",
+  async (id, thunkAPI) => {
+    return userService.following(id, thunkAPI);
+  }
+);
+
 // posts slice
 export const postsSlice = createSlice({
   name: "post",
@@ -153,7 +164,7 @@ export const postsSlice = createSlice({
       state.user = null;
     });
     builder.addCase(updateUser.fulfilled, (state, action) => {
-      console.log(action)
+      console.log(action);
       state.isUserLoading = false;
       state.isUserError = false;
       state.isUserSuccess = true;
@@ -223,19 +234,19 @@ export const postsSlice = createSlice({
     builder.addCase(getMe.pending, (state) => {
       state.isUserLoading = true;
       state.isUserError = false;
-      state.isUserSuccess = false;
+      state.isUserSuccessGetMe = false;
       state.user = null;
     });
     builder.addCase(getMe.fulfilled, (state, action) => {
       state.isUserLoading = false;
       state.isUserError = false;
-      state.isUserSuccess = true;
+      state.isUserSuccessGetMe = true;
       state.user = action.payload;
     });
     builder.addCase(getMe.rejected, (state, action) => {
       state.isUserLoading = false;
       state.isUserError = true;
-      state.isUserSuccess = false;
+      state.isUserSuccessGetMe = false;
       state.user = null;
     });
     ////active
@@ -247,6 +258,17 @@ export const postsSlice = createSlice({
     });
     builder.addCase(activateUser.rejected, (state, action) => {
       state.isUserSuccessActive = false;
+    });
+    ////follwing
+    builder.addCase(following.pending, (state) => {
+      state.isUserSuccessFollwing = false;
+    });
+    builder.addCase(following.fulfilled, (state, action) => {
+      state.isUserSuccessFollwing = true;
+      state.user = action.payload;
+    });
+    builder.addCase(following.rejected, (state, action) => {
+      state.isUserSuccessFollwing = false;
     });
   },
 });
