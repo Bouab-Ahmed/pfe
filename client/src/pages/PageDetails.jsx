@@ -63,7 +63,7 @@ const PageDetails = () => {
           </div>
           {user && (
             <div className="flex-1">
-              <Aside user={post?.user} />
+              <Aside postUser={post?.user} />
             </div>
           )}
         </div>
