@@ -8,6 +8,7 @@ const initialState = {
   isTagLoading: false,
   isTagSuccess: false,
   message: "",
+  isTagGetSuccess: false,
 };
 
 // create tag
@@ -68,19 +69,19 @@ export const tagsSlice = createSlice({
     builder.addCase(createTag.fulfilled, (state, { payload }) => {
       state.isTagLoading = false;
       state.isTagError = false;
-      state.isTagSuccess = true;
+      state.isTagGetSuccess = true;
       state.message = payload.msg;
     });
     builder.addCase(getTags.pending, (state) => {
       state.isTagLoading = true;
       state.isTagError = false;
-      state.isTagSuccess = false;
+      state.isTagGetSuccess = false;
       state.tags = [];
     });
     builder.addCase(getTags.fulfilled, (state, { payload }) => {
       state.isTagLoading = false;
       state.isTagError = false;
-      state.isTagSuccess = true;
+      state.isTagGetSuccess = true;
       state.tags = [...payload.tag];
     });
     builder.addCase(updateTag.pending, (state) => {
