@@ -60,9 +60,9 @@ function Header() {
           >
             <span>Logo</span>
           </div>
-          {((user && path === "/") ||
-            path === "trending" ||
-            path.startsWith("tag")) && <SearchBar />}
+          {(user || path === "trending" || path.startsWith("tag")) && (
+            <SearchBar />
+          )}
         </div>
         <div className="flex items-center justify-between gap-3">
           <div className="hidden lg:block">
@@ -77,7 +77,10 @@ function Header() {
                 <span>write</span>
               </div>
             ) : (
-              <NavList />
+              <div className="flex items-center gap-4">
+                <NavList />
+                {user && <span className="py-2 px-3 bg-primary text-white rounded-3xl">Become a Writer</span>}
+              </div>
             )}
           </div>
           {user?.accepted === true ? (
