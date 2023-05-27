@@ -13,7 +13,7 @@ const uploadProductImageLocal = async (req, res) => {
     throw new Error("please upload image");
   }
 
-  if (getImage.size > 1024 * 1024) {
+  if (getImage.size > 2048 * 2048) {
     throw new Error("please upload size less than 1MB");
   }
 
