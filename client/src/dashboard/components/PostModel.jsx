@@ -25,9 +25,15 @@ const PostModel = ({open, handleOpen,post}) => {
             />
             <div className="-mt-px flex flex-col">
               <Typography
+                color="blue-gray"
+                className="font-semibold text-base"
+              >
+                Posted By:
+              </Typography>
+              <Typography
                 variant="small"
                 color="blue-gray"
-                className="font-medium"
+                className=""
               >
                 {post?.user?.name}
               </Typography>
@@ -40,17 +46,15 @@ const PostModel = ({open, handleOpen,post}) => {
         >
           <img
             alt="nature"
-            className="h-[30rem] w-full object-cover object-center rounded-lg"
+            className="h-full w-1/2 object-cover object-center rounded-lg mx-auto"
             src={`http://localhost:5000${post?.image}`}
           />
           <Typography
-            color="black"
-            className="font-bold text-center"
-            variant="h1"
+            className="font-bold text-center text-2xl text-gray-900 my-4"
           >
             {post?.title}
           </Typography>
-          <Typography color="gray" className="font-normal text-center">
+          <Typography className="font-normal text-gray-800 mx-[20%]">
             {parse(`${post?.content}`)}
           </Typography>
         </DialogBody>
