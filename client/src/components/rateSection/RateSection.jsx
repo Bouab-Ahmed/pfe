@@ -6,7 +6,7 @@ import { getSinglePost } from "../../features/posts/postsSlice";
 
 const RateSection = ({ postId, user, like, dislike }) => {
   const dispatch = useDispatch();
-  const { likes, dislikes, isRateSuccess, isDisliked, isliked } = useSelector(
+  const { likes, dislikes, isRateSuccess } = useSelector(
     (state) => state.rate
   );
 
