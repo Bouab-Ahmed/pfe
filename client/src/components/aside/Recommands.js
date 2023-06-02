@@ -15,7 +15,7 @@ export default function Recommands({ user, users, following }) {
           {user &&
             users.slice(0, 5).map((author, i) => (
               <div key={i}>
-                {user._id != author._id ? (
+                {user._id !== author._id ? (
                   <div className="flex flex-row my-1 items-center">
                     <img
                       src={`http://localhost:5000${author.profilePic}`}
@@ -34,7 +34,7 @@ export default function Recommands({ user, users, following }) {
                       <button
                         // onClick={() => dispatch(following(author._id))}
                         // className="rounded-full px-8 py-2 border border-black "
-                        className="rounded-full w-[190px] py-[8px]  border border-black "
+                        className="rounded-full w-[190px] py-[8px]  border border-gray-900 "
                         disabled
                         // onClick={() => onFollow(author.fellow, author.id)}
                       >
@@ -44,7 +44,7 @@ export default function Recommands({ user, users, following }) {
                       <button
                         onClick={() => dispatch(following(author._id))}
                         // className="rounded-full w-[131] px-8 py-2 border border-black bg-primary border border-primary"
-                        className="rounded-full w-[190px] py-[8px] bg-primary border border-primary "
+                        className="rounded-full w-[190px] py-[8px] text-white bg-primary border-primary border-2"
 
                         // onClick={() => onFollow(author.fellow, author.id)}
                       >
