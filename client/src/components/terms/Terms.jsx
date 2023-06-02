@@ -12,11 +12,13 @@ import {
 
 const Terms = ({ open, handleOpen, handleAcceptTerms }) => {
 	const [delay, setDelay] = useState(true)
+
 	useEffect(() => {
 		setTimeout(() => {
-		setDelay(false)
-	}, 10000)
+		setDelay(()=> false)
+	}, 15000)
 	}, [])
+
 	return (
     <Fragment>
       <Dialog open={open} handler={handleOpen}>
@@ -24,8 +26,8 @@ const Terms = ({ open, handleOpen, handleAcceptTerms }) => {
           Terms of Use: Guidelines for Posting and Sharing Content on Our
           Platform
         </DialogHeader>
-        <DialogBody divider className="h-[40rem] overflow-scroll">
-          <Typography className="font-normal">
+        <DialogBody divider className="h-[40rem]">
+          <Typography className="font-semibold ">
             * Our platform allows users to post books, resumes, and articles. By
             submitting content to our site, you grant us a non-exclusive,
             worldwide, royalty-free, transferable, and sublicensable license to
@@ -46,7 +48,7 @@ const Terms = ({ open, handleOpen, handleAcceptTerms }) => {
             us with the relevant details for prompt resolution. <br />
             While using our platform, you agree to abide by the following
             guidelines:
-            <ul>
+            <ul style={{listStyle:'initial', marginLeft:'30px'}}>
               <li>
                 Do not post content that is defamatory, abusive, obscene, or
                 offensive.
