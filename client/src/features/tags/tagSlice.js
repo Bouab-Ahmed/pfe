@@ -76,12 +76,14 @@ export const tagsSlice = createSlice({
       state.isTagLoading = true;
       state.isTagError = false;
       state.isTagGetSuccess = false;
+      state.isTagSuccess = false;
       state.tags = [];
     });
     builder.addCase(getTags.fulfilled, (state, { payload }) => {
       state.isTagLoading = false;
       state.isTagError = false;
       state.isTagGetSuccess = true;
+      state.isTagSuccess = true;
       state.tags = [...payload.tag];
     });
     builder.addCase(updateTag.pending, (state) => {

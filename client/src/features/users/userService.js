@@ -132,6 +132,22 @@ export const following = async (id, thunkAPI) => {
   return await res.json();
 };
 
+export const addTag = async (tag, thunkAPI) => {
+  const res = await fetch(API_URL + "/user/addTag/" + tag, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+
+  return await res.json();
+};
+
 const userService = {
   getAllusers,
   getSingleUser,
@@ -142,6 +158,7 @@ const userService = {
   getMe,
   activateUser,
   following,
+  addTag,
 };
 
 export default userService;

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import userService from "./userService";
+import { toast } from "react-toastify";
 
 const initialState = {
   user: JSON.parse(localStorage.getItem("user")) || null,
@@ -259,7 +260,7 @@ export const postsSlice = createSlice({
     builder.addCase(activateUser.rejected, (state, action) => {
       state.isUserSuccessActive = false;
     });
-    ////follwing
+    //follwing
     builder.addCase(following.pending, (state) => {
       state.isUserSuccessFollwing = false;
     });
@@ -270,6 +271,27 @@ export const postsSlice = createSlice({
     builder.addCase(following.rejected, (state, action) => {
       state.isUserSuccessFollwing = false;
     });
+    //add tag
+    builder.addCase(addTag.pending, (state) => {
+      state.isUserLoading = true;
+      state.isUserError = false;
+      state.isUserSuccess = false;
+    }
+    );
+    builder.addCase(addTag.fulfilled, (state, action) => {
+      state.isUserLoading = false;
+      state.isUserError = false;
+      state.isUserSuccess = true;
+      state.user = action.payload;
+      toast.success("tag added successfully");
+    }
+    );
+    builder.addCase(addTag.rejected, (state, action) => {
+      state.isUserLoading = false;
+      state.isUserError = true;
+      state.isUserSuccess = false;
+    }
+    );
   },
 });
 
