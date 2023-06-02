@@ -7,10 +7,10 @@ const Feeds = () => {
 
   return (
     <div className="container1 mx-auto flex justify-between my-2 ">
-      <div className="flex-[2]">
+      <div className="lg:flex-[2]">
         <Posts />
       </div>
-      <div className="flex-1">
+      <div className="lg:flex-1">
         <Aside />
       </div>
     </div>

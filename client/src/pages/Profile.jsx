@@ -4,15 +4,20 @@ import { getSingleUserPosts } from "../features/posts/postsSlice";
 import { getSingleUser } from "../features/users/userSlice";
 import PostCard from "../components/posts/PostCard";
 import { GoPlus } from "react-icons/go";
+import UserProfileModel from "../components/UserProfileModel";
 
 const Profile = () => {
   const [preview, setPreview] = useState();
   const [image, setImage] = useState("");
   const dispatch = useDispatch();
   const path = window.location.pathname.split("/")[2];
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(!open);
 
   const { isPostSuccess, posts } = useSelector((state) => state.post);
   const { isUserSuccess, user } = useSelector((state) => state.user);
+
+  const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
   const onSelectImage = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -83,7 +88,7 @@ const Profile = () => {
             <div className="container mx-auto px-4">
               <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
                 <div className="px-6">
-                  <div className="flex flex-wrap justify-center">
+                  <div className="flex flex-wrap justify-center flex-col md:flex-row">
                     <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                       <div className="relative h-36 w-36 -m-16 -ml-20 lg:-ml-16">
                         <img
@@ -111,16 +116,36 @@ const Profile = () => {
                         />
                       </div>
                     </div>
-                    <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
-                      <div className="py-6 px-3 mt-32 sm:mt-0">
-                        <button
-                          className="bg-white border border-primary uppercase text-primary font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
-                          type="button"
-                          style={{ transition: "all .15s ease" }}
-                        >
-                          Follow
-                        </button>
-                      </div>
+                    <div className="w-full pt-16 lg:pt-0 lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
+                      {loggedInUser._id === user._id ? (
+                        <div className="md:py-6 px-3 mt-32 sm:mt-0 flex items-center gap-11 justify-center lg:justify-end">
+                          <div className="flex flex-col items-center text-gray-900">
+                            <span>Total Points</span>
+                            <span className="text-2xl font-bold block uppercase tracking-wide text-gray-700">
+                              {user.counter}
+                            </span>
+                          </div>
+                          <button
+                            className="bg-primary text-white active:bg-primary hover:bg-primary text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
+                            type="button"
+                            style={{ transition: "all .15s ease" }}
+                            onClick={handleOpen}
+                          >
+                            Edit Profile
+                          </button>
+                          {user && <UserProfileModel open={open} handleOpen={handleOpen} user={user}/>}
+                        </div>
+                      ) : (
+                        <div className="py-6 px-3 mt-32 sm:mt-0">
+                          <button
+                            className="bg-white border border-primary uppercase text-primary font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
+                            type="button"
+                            style={{ transition: "all .15s ease" }}
+                          >
+                            Follow
+                          </button>
+                        </div>
+                      )}
                     </div>
                     <div className="w-full lg:w-4/12 px-4 lg:order-1">
                       <div className="flex justify-center py-4 lg:pt-4 pt-8">
@@ -158,11 +183,7 @@ const Profile = () => {
                     <div className="flex flex-wrap justify-center">
                       <div className="w-full lg:w-9/12 px-4">
                         <p className="mb-4 text-lg leading-relaxed text-gray-800">
-                          An artist of considerable range, Jenna the name taken
-                          by Melbourne-raised, Brooklyn-based Nick Murphy
-                          writes, performs and records all of his own music,
-                          giving it a warm, intimate feel with a solid groove
-                          structure. An artist of considerable range.
+                          {user?.bio}
                         </p>
                       </div>
                     </div>

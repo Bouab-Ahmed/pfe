@@ -29,8 +29,6 @@ const NewPost = () => {
     (state) => state.tag
   );
 
-  
-
   const handleIdTagChange = (e) => {
     setIdTag(e.target.value);
   };
