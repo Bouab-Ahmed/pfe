@@ -12,18 +12,14 @@ import {
   replyComments,
 } from "../../features/comments/commentSlice";
 const CommentDrawer = ({ openDrawer, closeDrawerRight, commentslength }) => {
-  const [comPost, setComPost] = useState([]);
-
   const [ref, setref] = useState(false);
-  const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const { id } = useParams();
 
   const [showReplyBox, setShowReplyBox] = useState(false);
   const [reply, setReply] = useState("");
 
-  const { user } = useSelector((state) => state.auth);
-  const { comments, isLoadingComment, isSuccessReply } = useSelector(
+  const { comments, isSuccessReply } = useSelector(
     (state) => state.comment
   );
 
