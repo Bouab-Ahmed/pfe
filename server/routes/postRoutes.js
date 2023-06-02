@@ -19,7 +19,8 @@ router.route("/:id/like").put(auth, like);
 router.route("/:id/dislike/").put(auth, dislike);
 router.route("/random").get(getRandomPosts);
 router.route("/user/:id").get(getSingleUserPosts);
-router.route("/search").post(searchPostsByCategory);
+router.route("/search").post(auth, searchPostsByCategory);
+router.route("/search/anonymously").post(searchPostsByCategory);
 
 router
   .route("/:id")
