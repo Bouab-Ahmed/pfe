@@ -11,7 +11,7 @@ const PostCard = (post) => {
   return (
     <div>
       {user !== null ? (
-        <div className="flex flex-col my-2 border-b border-[#DBDADB] border-opacity-70 pb-4 w-[90%]">
+        <div className="flex flex-col my-2 border-b border-[#DBDADB] border-opacity-70 pb-4 w-full md:w-[90%]">
           <div className="flex flex-row items-center gap-2 py-1">
             <div
               className="flex items-center gap-2 cursor-pointer"
@@ -20,7 +20,7 @@ const PostCard = (post) => {
               <img
                 src={`http://localhost:5000${post.user.profilePic}`}
                 alt="author"
-                className="h-8 w-8 rounded-full"
+                className="h-12 w-12 md:h-8 md:w-8 rounded-full"
               />
             </div>
             <div className="flex flex-col">
@@ -58,13 +58,13 @@ const PostCard = (post) => {
               <img
                 src={`http://localhost:5000${post.image}`}
                 alt="post"
-                className="w-[70%]"
+                className="w-full md:w-[70%]"
               />
             </div>
           </div>
         </div>
       ) : (
-        <div className="overflow-hidden shadow-lg hover:shadow-2xl h-[405px] relative rounded-lg w-60 md:w-80 cursor-pointer m-auto my-4 bg-white">
+        <div className="overflow-hidden shadow-lg hover:shadow-2xl h-[405px] relative rounded-lg cursor-pointer m-auto my-4 bg-white">
           <div href="#" className="w-full block h-full">
             <img
               src={`http://localhost:5000${post.image}`}
