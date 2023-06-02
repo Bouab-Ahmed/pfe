@@ -28,8 +28,8 @@ const Features = () => {
         </span>
       </div>
       <div className="bg-[#F1FAF7] pb-10">
-        <div className="flex container1 mx-auto gap-10 ">
-          <div className="flex gap-3 w-2/3 ">
+        <div className="flex flex-col justify-center items-center md:flex-row md:justify-start md:items-start container1 mx-auto gap-10 ">
+          <div className="flex flex-col lg:flex-row gap-3 w-2/3 ">
             <div>
               <div className="flex flex-col items-start justify-center gap-4">
                 <h2 className="text-4xl font-bold">Features</h2>
@@ -51,7 +51,7 @@ const Features = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-start items-start w-1/3 mt-3">
+          <div className="flex justify-start items-start w-3/4 md:w-[40%] mt-3">
             <img src={featurePic} alt="feature" className="w-full" />
           </div>
         </div>
