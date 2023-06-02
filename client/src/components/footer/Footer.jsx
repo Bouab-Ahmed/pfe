@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Footer = () => {
   const navigate = useNavigate()
   return (
-    <footer className="flex justify-center px-4 text-gray-800 bg-[#F1FAF7] dark:text-white dark:bg-gray-900">
+    <footer className="flex justify-center text-gray-800 bg-[#F1FAF7] dark:text-white dark:bg-gray-900">
       <div className="container px-6 py-6">
         <h1 className="text-lg font-bold text-center lg:text-2xl">
           Join 31,000+ other and never miss <br /> out on new tips, tutorials,
@@ -15,7 +15,7 @@ const Footer = () => {
           <input
             id="email"
             type="text"
-            className="px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-primary  focus:outline-none w-1/3"
+            className="px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-primary focus:outline-none md:w-1/3"
             placeholder="Email Address"
           />
 
