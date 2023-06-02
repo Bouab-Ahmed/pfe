@@ -120,6 +120,13 @@ const updatePassword = async (req, res) => {
 
 const addTag = async (req, res) => {
   const user = await User.findOne({ _id: req.user.userId }).select("-password");
+  // Check if the tag already exists in the user's tags array
+  if (user.tags.includes(req.params.id)) {
+    // Throw an error if the tag already exists
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ error: "Tag already exists" });
+  }
   user.tags.push(req.params.id);
   user.save();
   const payload = { userId: user._id, ...user._doc };
