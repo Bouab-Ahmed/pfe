@@ -204,23 +204,26 @@ const searchPostsByCategory = async (req, res) => {
   let query = {};
   let posts = [];
 
+  // Check if the user is logged in
+  const loggedIn = req.user !== undefined;
+
+  const baseQuery = loggedIn
+    ? { $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }] }
+    : { stauts: "published" };
+
   if (searchField === "all" || searchField === "content") {
-    const byUser = await Post.find({
-      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
-    })
+    const byUser = await Post.find(baseQuery)
       .populate({
         path: "user",
         match: { name: { $regex: new RegExp(searchQuery, "i") } },
-        select: "_id name",
+        select: "_id name profilePic",
       })
       .then((posts) => {
         const filteredPosts = posts.filter((post) => post.user !== null);
         return filteredPosts;
       });
 
-    const byTag = await Post.find({
-      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
-    })
+    const byTag = await Post.find(baseQuery)
       .populate({
         path: "tags",
         match: { name: { $regex: new RegExp(searchQuery, "i") } },
@@ -232,8 +235,7 @@ const searchPostsByCategory = async (req, res) => {
       });
 
     const byTitleAndContent = await Post.find({
-      // to prevent unfollowed tags posts
-      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
+      ...baseQuery,
       $or: [
         { title: { $regex: new RegExp(searchQuery, "i") } },
         { content: { $regex: new RegExp(searchQuery, "i") } },
@@ -251,21 +253,18 @@ const searchPostsByCategory = async (req, res) => {
     posts = await Post.find({ _id: posts })
       .populate({
         path: "user",
-        select: "_id name",
+        select: "_id name profilePic",
       })
       .populate({
         path: "tags",
         select: "_id name",
       });
   } else if (searchField === "user") {
-    // query = { name: { $regex: new RegExp(searchQuery, "i") } };
-    posts = await Post.find({
-      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
-    })
+    posts = await Post.find(baseQuery)
       .populate({
         path: "user",
         match: { name: { $regex: new RegExp(searchQuery, "i") } },
-        select: "_id name",
+        select: "_id name profilePic",
       })
       .populate({
         path: "tags",
@@ -276,10 +275,7 @@ const searchPostsByCategory = async (req, res) => {
         return filteredPosts;
       });
   } else if (searchField === "tags") {
-    // query = { name: { $regex: new RegExp(searchQuery, "i") } };
-    posts = await Post.find({
-      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }],
-    })
+    posts = await Post.find(baseQuery)
       .populate({
         path: "tags",
         match: { name: { $regex: new RegExp(searchQuery, "i") } },
@@ -287,7 +283,7 @@ const searchPostsByCategory = async (req, res) => {
       })
       .populate({
         path: "user",
-        select: "_id name",
+        select: "_id name profilePic",
       })
       .then((posts) => {
         const filteredPosts = posts.filter((post) => post.tags.length !== 0);
@@ -296,16 +292,15 @@ const searchPostsByCategory = async (req, res) => {
   } else {
     query[searchField] = { $regex: new RegExp(searchQuery, "i") };
 
-    posts = await Post.find({
-      $and: [{ tags: { $in: req.user.tags } }, { stauts: "published" }, query],
-    }).populate({
+    posts = await Post.find({ ...baseQuery, ...query }).populate({
       path: "user tags",
-      select: "_id name",
+      select: "_id name profilePic",
     });
   }
 
   res.status(200).json(posts);
 };
+
 
 module.exports = {
   getAllPosts,
