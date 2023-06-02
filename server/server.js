@@ -25,6 +25,7 @@ const tagRoute = require("./routes/tagRoute");
 const errorHandlerMiddleware = require("./middleware/errorMiddleware");
 const middlewareNotFoundError = require("./middleware/notFound");
 
+// cros
 // app.use(cors());
 app.use(cors({ credentials: true, origin: ["http://localhost:3000"] }));
 // app.use(cors({ origin: "http://localhost:3000" }));
