@@ -19,12 +19,11 @@ const Aside = ({ postUser }) => {
   useEffect(() => {
     dispatch(getTags());
     dispatch(getAllusers());
-    dispatch(getMe());
     // eslint-disable-next-line
   }, []);
 
   return (
-    <div className="flex flex-col justify-center sticky top-14 z-10">
+    <div className="lg:flex flex-col justify-center sticky top-14 z-10 hidden">
       {postUser && (
         <div className="flex flex-col items-center justify-center gap-1 w-3/4 text-center">
           <div className="w-24 h-w-24 rounded-full">
@@ -51,7 +50,7 @@ const Aside = ({ postUser }) => {
             <button
               // onClick={() => dispatch(following(postUser._id))}
               // className="w-full rounded-full px-4 py-1 border border-primary text-white bg-primary"
-              className="rounded-full w-[190px] py-[8px]  border border-black "
+              className="rounded-full w-[190px] py-[8px]  border border-gray-900 "
             >
               Following
             </button>
@@ -59,18 +58,20 @@ const Aside = ({ postUser }) => {
             <button
               onClick={() => dispatch(following(postUser._id))}
               // className="w-full rounded-full px-4 py-1 border border-primary text-white bg-primary"
-              className="rounded-full w-[190px] py-[8px] bg-primary border border-primary "
+              className="rounded-full w-[190px] py-[8px] text-white bg-primary border-primary border-2"
             >
               Follow
             </button>
           )}
         </div>
       )}
-      <Tags tags={tags} />
-      {user && !postUser && (
-        <Recommands user={user} users={users} following={following} />
-      )}
-      {user && postUser && <Posts />}
+      <div className="">
+        <Tags user={user} tags={tags} />
+        {user && !postUser && (
+          <Recommands user={user} users={users} following={following} />
+        )}
+      </div>
+      {user && postUser && <Posts user={postUser} />}
     </div>
   );
 };
