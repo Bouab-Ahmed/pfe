@@ -127,6 +127,23 @@ export const search = async (data, thunkAPI) => {
   return await res.json();
 };
 
+export const searchAnonymously = async (data, thunkAPI) => {
+  const res = await fetch(API_URL + "/posts/search/anonymously", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    return thunkAPI.rejectWithValue(await res.json());
+  }
+
+  return await res.json();
+};
+
 export const deletePost = async (id, thunkAPI) => {
   const res = await fetch(API_URL + "/posts/" + id, {
     method: "DELETE",
@@ -155,6 +172,7 @@ const postsService = {
   getSingleUserPosts,
   search,
   deletePost,
+  searchAnonymously,
 };
 
 export default postsService;

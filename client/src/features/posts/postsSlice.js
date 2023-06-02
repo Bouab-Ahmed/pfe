@@ -86,6 +86,13 @@ export const search = createAsyncThunk(
   }
 );
 
+export const searchAnonymously = createAsyncThunk(
+  "posts/searchAnonymously",
+  async (data, thunkAPI) => {
+    return postsService.searchAnonymously(data, thunkAPI);
+  }
+);
+
 // posts slice
 export const postsSlice = createSlice({
   name: "post",
@@ -220,6 +227,26 @@ export const postsSlice = createSlice({
       state.posts = action.payload;
     });
     builder.addCase(search.rejected, (state, action) => {
+      state.isPostLoading = false;
+      state.isPostError = true;
+      state.isPostSuccess = false;
+      state.posts = [];
+    });
+    // search anonymously
+    builder.addCase(searchAnonymously.pending, (state) => {
+      state.isPostLoading = true;
+      state.isPostError = false;
+      state.isPostSuccess = false;
+      state.posts = [];
+    });
+    builder.addCase(searchAnonymously.fulfilled, (state, action) => {
+      console.log(action.payload);
+      state.isPostLoading = false;
+      state.isPostError = false;
+      state.isPostSuccess = true;
+      state.posts = action.payload;
+    });
+    builder.addCase(searchAnonymously.rejected, (state, action) => {
       state.isPostLoading = false;
       state.isPostError = true;
       state.isPostSuccess = false;
