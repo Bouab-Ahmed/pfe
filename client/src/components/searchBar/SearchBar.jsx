@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { search } from "../features/posts/postsSlice";
-import { search } from "../../features/posts/postsSlice";
+import { search, searchAnonymously } from "../../features/posts/postsSlice";
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
   const [type, setType] = useState("all");
   const dispatch = useDispatch();
 
+  const {user} = useSelector((state) => state.user);
   const onSubmit = (e) => {
     e.preventDefault();
     if (!query) {
       return;
     }
-    dispatch(search({ searchInput: query, option: type }));
+    if (user) {
+      dispatch(search({ searchInput: query, option: type }));
+    } else {
+      dispatch(searchAnonymously({ searchInput: query, option: type }));
+    }
   };
 
   return (
