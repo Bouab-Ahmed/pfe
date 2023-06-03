@@ -27,7 +27,6 @@ const getSingleUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const updates = req.body;
   const userId = req.params.id;
-
   let user = await User.findById(userId);
 
   if (!user) {
@@ -36,11 +35,10 @@ const updateUser = async (req, res) => {
 
   if (updates.tags) {
     user.tags.push(...updates.tags);
+    await user.save();
   } else {
     user = await User.findByIdAndUpdate(userId, updates, { new: true });
   }
-
-  await user.save();
 
   const {
     _id,
