@@ -58,6 +58,7 @@ const updateUser = async (req, res) => {
   } = user;
 
   const updatedUser = {
+    userId: _id,
     _id,
     name,
     email,
@@ -95,8 +96,7 @@ const activateUser = async (req, res) => {
 };
 
 const setCurrentUser = async (req, res) => {
-  console.log(req.user);
-  const user = await User.findById({ _id: req.user._id })
+  const user = await User.findById({ _id: req.user.userId })
     .populate("tags")
     .select("-password");
   res.status(StatusCodes.OK).json(user);
