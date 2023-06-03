@@ -35,7 +35,6 @@ const Topics = () => {
 
   useEffect(() => {
     if (isUserUpdateSuccess) {
-      dispatch(reset());
       navigate("/");
     }
     // eslint-disable-next-line
