@@ -7,6 +7,7 @@ import {
   activateUser,
   getAllusers,
   getSingleUser,
+  updateUser,
 } from "../../features/users/userSlice";
 import { FiUsers } from "react-icons/fi";
 import { SearchOutlined } from "@ant-design/icons";
@@ -23,6 +24,7 @@ const ManageUsers = () => {
     user,
     isSingleUserSuccess,
     isUserSuccessActive,
+    isUserUpdateSuccess,
   } = useSelector((state) => state.user);
   const [dataSourse, setDataSourse] = useState([]);
   const [columnsSourse, setColumnsSourse] = useState([]);
@@ -50,6 +52,14 @@ const ManageUsers = () => {
 
   const handleApprove = (id) => {
     dispatch(activateUser({ accepted: true, id }));
+  };
+
+  const handleRoleAdmin = (id) => {
+    dispatch(updateUser({ role: "admin", _id: id }));
+  };
+
+  const handleRoleReader = (id) => {
+    dispatch(updateUser({ role: "reader", _id: id }));
   };
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -157,9 +167,7 @@ const ManageUsers = () => {
   useEffect(() => {
     dispatch(getAllusers());
     // eslint-disable-next-line
-  }, [isUserSuccessActive]);
-
-  isSingleUserSuccess && console.log(singleUser);
+  }, [isUserSuccessActive, isUserUpdateSuccess]);
 
   useEffect(() => {
     if (isUserSuccess) {
@@ -306,6 +314,24 @@ const ManageUsers = () => {
                     >
                       <FcApproval className="text-xl mr-1" />
                       Approve
+                    </button>
+                  )}
+                  {row.role === "admin" ? (
+                    <button
+                      onClick={() => handleRoleReader(row.key)}
+                      className="inline-flex items-center px-4 py-2 bg-primary hover:bg-green-800 text-white text-sm font-medium rounded-md"
+                    >
+                      <FcApproval className="text-xl mr-1" />
+                      {row.role}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleRoleAdmin(row.key)}
+                      className="inline-flex items-center px-4 py-2 bg-primary hover:bg-green-800 text-white text-sm font-medium rounded-md"
+                    >
+                      <FcApproval className="text-xl mr-1" />
+
+                      {row.role}
                     </button>
                   )}
                 </div>
