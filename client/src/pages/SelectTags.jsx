@@ -3,10 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTags } from "../features/tags/tagSlice";
 import Topics from "../components/Topics";
 
-
-
 const SelectTags = () => {
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -27,7 +24,6 @@ const SelectTags = () => {
         </p>
         <Topics />
       </div>
-      
     </div>
   );
 };
