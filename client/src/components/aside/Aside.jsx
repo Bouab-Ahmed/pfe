@@ -19,6 +19,12 @@ const Aside = ({ postUser }) => {
   useEffect(() => {
     dispatch(getTags());
     dispatch(getAllusers());
+    dispatch(getMe());
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    dispatch(getAllusers());
     // eslint-disable-next-line
   }, []);
 
@@ -66,7 +72,7 @@ const Aside = ({ postUser }) => {
         </div>
       )}
       <div className="">
-        { tags.length && <Tags tags={tags} />}
+        {tags.length && <Tags tags={tags} />}
         {user && !postUser && (
           <Recommands user={user} users={users} following={following} />
         )}
