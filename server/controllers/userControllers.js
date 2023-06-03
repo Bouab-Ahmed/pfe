@@ -37,7 +37,7 @@ const updateUser = async (req, res) => {
   if (updates.tags) {
     user.tags.push(...updates.tags);
   } else {
-    user = await User.findByIdAndUpdate(userId, updates, {new: true})
+    user = await User.findByIdAndUpdate(userId, updates, { new: true });
   }
 
   await user.save();
@@ -95,7 +95,8 @@ const activateUser = async (req, res) => {
 };
 
 const setCurrentUser = async (req, res) => {
-  const user = await User.findById({ _id: req.user.userId })
+  console.log(req.user);
+  const user = await User.findById({ _id: req.user._id })
     .populate("tags")
     .select("-password");
   res.status(StatusCodes.OK).json(user);
