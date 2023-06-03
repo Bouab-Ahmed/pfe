@@ -72,7 +72,7 @@ const updateUser = async (req, res) => {
   };
 
   const payload = { ...updatedUser };
-  sendCookies(res, payload);
+  // sendCookies(res, payload);
 
   res.status(StatusCodes.OK).json(payload);
 };
@@ -94,9 +94,44 @@ const activateUser = async (req, res) => {
 };
 
 const setCurrentUser = async (req, res) => {
-  const user = await User.findById({ _id: req.user.userId })
+  let user = await User.findById({ _id: req.user.userId })
     .populate("tags")
     .select("-password");
+
+  const {
+    _id,
+    name,
+    email,
+    role,
+    follower,
+    following,
+    profilePic,
+    activated,
+    accepted,
+    tags,
+    counter,
+    bio,
+  } = user;
+
+  const updatedUser = {
+    userId: _id,
+    _id,
+    name,
+    email,
+    role,
+    follower,
+    following,
+    profilePic,
+    activated,
+    accepted,
+    tags,
+    counter,
+    bio,
+  };
+
+  user = { ...updatedUser };
+  sendCookies(res, user);
+
   res.status(StatusCodes.OK).json(user);
 };
 
