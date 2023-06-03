@@ -19,7 +19,6 @@ const Aside = ({ postUser }) => {
   useEffect(() => {
     dispatch(getTags());
     dispatch(getAllusers());
-    dispatch(getMe());
     // eslint-disable-next-line
   }, []);
 
