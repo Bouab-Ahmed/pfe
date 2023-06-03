@@ -28,10 +28,16 @@ const updateUser = async (req, res) => {
   const updates = req.body;
   const userId = req.params.id;
 
-  const user = await User.findByIdAndUpdate(userId, updates, { new: true });
+  let user = await User.findById(userId);
 
   if (!user) {
     throw new NotFoundError("User not found");
+  }
+
+  if (updates.tags) {
+    user.tags.push(...updates.tags);
+  } else {
+    user = await User.findByIdAndUpdate(userId, updates, {new: true})
   }
 
   await user.save();

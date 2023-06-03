@@ -15,6 +15,8 @@ const initialState = {
   isUserSuccessFollwing: false,
   isUserSuccessGetMe: false,
   isUserSuccessActive: false,
+
+  isUserUpdateSuccess: false,
 };
 
 // get all users
@@ -162,6 +164,7 @@ export const postsSlice = createSlice({
       state.isUserLoading = true;
       state.isUserError = false;
       state.isUserSuccess = false;
+      state.isUserUpdateSuccess = false;
       state.user = null;
     });
     builder.addCase(updateUser.fulfilled, (state, action) => {
@@ -169,6 +172,7 @@ export const postsSlice = createSlice({
       state.isUserLoading = false;
       state.isUserError = false;
       state.isUserSuccess = true;
+      state.isUserUpdateSuccess = true;
       state.user = action.payload;
       localStorage.setItem("user", JSON.stringify(action.payload));
     });
@@ -176,6 +180,7 @@ export const postsSlice = createSlice({
       state.isUserLoading = false;
       state.isUserError = true;
       state.isUserSuccess = false;
+      state.isUserUpdateSuccess = false;
       state.user = null;
     });
     builder.addCase(deleteUser.pending, (state) => {

@@ -27,7 +27,6 @@ export const getSingleUser = async (id, thunkAPI) => {
 };
 
 export const updateUser = async (user, thunkAPI) => {
-  console.log(user);
   const res = await fetch(API_URL + "/user/updateUser/" + user._id, {
     method: "PATCH",
     credentials: "include",
