@@ -2,9 +2,6 @@ import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import userService from "./userService";
 import { toast } from "react-toastify";
 
-
-
-
 const initialState = {
   user: JSON.parse(localStorage.getItem("user")) || null,
   users: [],
@@ -176,8 +173,8 @@ export const postsSlice = createSlice({
       state.isUserError = false;
       state.isUserSuccess = true;
       state.isUserUpdateSuccess = true;
-      state.user = action.payload;
-      localStorage.setItem("user", JSON.stringify(action.payload));
+      // state.user = action.payload;
+      // localStorage.setItem("user", JSON.stringify(action.payload));
     });
     builder.addCase(updateUser.rejected, (state, action) => {
       state.isUserLoading = false;
@@ -251,6 +248,8 @@ export const postsSlice = createSlice({
       state.isUserError = false;
       state.isUserSuccessGetMe = true;
       state.user = action.payload;
+      console.log(action.payload);
+      localStorage.setItem("user", JSON.stringify(action.payload));
     });
     builder.addCase(getMe.rejected, (state, action) => {
       state.isUserLoading = false;
@@ -284,22 +283,19 @@ export const postsSlice = createSlice({
       state.isUserLoading = true;
       state.isUserError = false;
       state.isUserSuccess = false;
-    }
-    );
+    });
     builder.addCase(addTag.fulfilled, (state, action) => {
       state.isUserLoading = false;
       state.isUserError = false;
       state.isUserSuccess = true;
       state.user = action.payload;
       toast.success("tag added successfully");
-    }
-    );
+    });
     builder.addCase(addTag.rejected, (state, action) => {
       state.isUserLoading = false;
       state.isUserError = true;
       state.isUserSuccess = false;
-    }
-    );
+    });
   },
 });
 
