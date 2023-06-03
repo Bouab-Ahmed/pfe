@@ -2,27 +2,17 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTags } from "../features/tags/tagSlice";
 import Topics from "../components/Topics";
-import { useNavigate } from "react-router-dom";
 
 
 
 const SelectTags = () => {
-    const navigate = useNavigate();
 
-  const { isUserUpdateSuccess } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getTags());
     // eslint-disable-next-line
   }, []);
-
-    useEffect(() => {
-      if (isUserUpdateSuccess) {
-        navigate("/");
-      }
-      // eslint-disable-next-line
-    }, [isUserUpdateSuccess]);
 
   return (
     <div className="container1 mx-auto flex flex-col">

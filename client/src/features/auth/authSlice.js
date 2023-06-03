@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
 import { toast } from "react-toastify";
+import { updateUser } from "../users/userSlice";
+
 // get user from local storage
 
 const users = JSON.parse(localStorage.getItem("user"));
@@ -149,7 +151,11 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-      });
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+      }
+      );
   },
 });
 

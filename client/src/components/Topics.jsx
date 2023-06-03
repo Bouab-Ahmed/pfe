@@ -1,23 +1,29 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser } from "../features/users/userSlice";
+import { reset, updateUser } from "../features/users/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Topics = () => {
+  const navigate = useNavigate();
+  const { isUserUpdateSuccess } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
   const [selectedTags, setSelectedTags] = useState([]);
   const { tags } = useSelector((state) => state.tag);
   const id = JSON.parse(localStorage.getItem("user"))._id;
 
-  const handleTagClick = (tagId) => { 	
-    if (selectedTags.includes(tagId)) {
-      setSelectedTags(
-        selectedTags.filter((selectedTag) => selectedTag !== tagId)
-      );
-    } else {
-      setSelectedTags([...selectedTags, tagId]);
-    }
-  };
+  const handleTagClick = useCallback(
+    (tagId) => {
+      if (selectedTags.includes(tagId)) {
+        setSelectedTags(
+          selectedTags.filter((selectedTag) => selectedTag !== tagId)
+        );
+      } else {
+        setSelectedTags([...selectedTags, tagId]);
+      }
+    },
+    [selectedTags]
+  );
 
   const handleSubmit = useCallback(() => {
     const user = {
@@ -26,6 +32,14 @@ const Topics = () => {
     };
     dispatch(updateUser(user));
   }, [selectedTags, id, dispatch]);
+
+  useEffect(() => {
+    if (isUserUpdateSuccess) {
+      dispatch(reset());
+      navigate("/");
+    }
+    // eslint-disable-next-line
+  }, [isUserUpdateSuccess]);
 
   return (
     <>

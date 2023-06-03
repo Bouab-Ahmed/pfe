@@ -66,7 +66,7 @@ const Aside = ({ postUser }) => {
         </div>
       )}
       <div className="">
-        <Tags user={user} tags={tags} />
+        { tags.length && <Tags tags={tags} />}
         {user && !postUser && (
           <Recommands user={user} users={users} following={following} />
         )}

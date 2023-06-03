@@ -14,9 +14,9 @@ export default function Recommands({ user, users, following }) {
         <div className="flex flex-wrap gap-2">
           {user &&
             users.slice(0, 5).map((author, i) => (
-              <div key={i}>
+              <div key={i} className="min-w-max">
                 {user._id !== author._id ? (
-                  <div className="flex flex-row my-1 items-center">
+                  <div className="flex flex-row justify-between w-full my-1 items-center">
                     <img
                       src={`http://localhost:5000${author.profilePic}`}
                       alt="author"
@@ -26,7 +26,7 @@ export default function Recommands({ user, users, following }) {
                     <div className="flex flex-col mx-2">
                       <span className="text-lg font-bold"> {author.name} </span>
                       <p className="text-[#292929] opacity-75 text-sm">
-                        Creative Investor. Sharing my inspiring journey in...
+                        {author.bio}
                       </p>
                     </div>
 
@@ -34,7 +34,7 @@ export default function Recommands({ user, users, following }) {
                       <button
                         // onClick={() => dispatch(following(author._id))}
                         // className="rounded-full px-8 py-2 border border-black "
-                        className="rounded-full w-[190px] py-[8px]  border border-gray-900 "
+                        className="rounded-full px-10 py-[8px]  border border-gray-900 "
                         disabled
                         // onClick={() => onFollow(author.fellow, author.id)}
                       >
@@ -44,7 +44,7 @@ export default function Recommands({ user, users, following }) {
                       <button
                         onClick={() => dispatch(following(author._id))}
                         // className="rounded-full w-[131] px-8 py-2 border border-black bg-primary border border-primary"
-                        className="rounded-full w-[190px] py-[8px] text-white bg-primary border-primary border-2"
+                        className="rounded-full px-10 py-[8px] text-white bg-primary border-primary border-2"
 
                         // onClick={() => onFollow(author.fellow, author.id)}
                       >
