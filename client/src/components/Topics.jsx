@@ -1,44 +1,22 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { reset, updateUser } from "../features/users/userSlice";
-import { useNavigate } from "react-router-dom";
+import { updateUser } from "../features/users/userSlice";
 
 const Topics = () => {
-  const navigate = useNavigate();
-  const { isUserUpdateSuccess } = useSelector((state) => state.user);
-
   const dispatch = useDispatch();
   const [selectedTags, setSelectedTags] = useState([]);
   const { tags } = useSelector((state) => state.tag);
   const id = JSON.parse(localStorage.getItem("user"))._id;
 
-  const handleTagClick = useCallback(
-    (tagId) => {
-      if (selectedTags.includes(tagId)) {
-        setSelectedTags(
-          selectedTags.filter((selectedTag) => selectedTag !== tagId)
-        );
-      } else {
-        setSelectedTags([...selectedTags, tagId]);
-      }
-    },
-    [selectedTags]
-  );
-
-  const handleSubmit = useCallback(() => {
-    const user = {
-      tags: selectedTags,
-      _id: id,
-    };
-    dispatch(updateUser(user));
-  }, [selectedTags, id, dispatch]);
-
-  useEffect(() => {
-    if (isUserUpdateSuccess) {
-      navigate("/");
+  const handleTagClick = (tagId) => {
+    if (selectedTags.includes(tagId)) {
+      setSelectedTags(
+        selectedTags.filter((selectedTag) => selectedTag !== tagId)
+      );
+    } else {
+      setSelectedTags([...selectedTags, tagId]);
     }
-    // eslint-disable-next-line
-  }, [isUserUpdateSuccess]);
+  };
 
   return (
     <>
@@ -60,7 +38,7 @@ const Topics = () => {
           selectedTags.length < 3 ? "opacity-50 cursor-not-allowed" : ""
         }`}
         disabled={selectedTags.length < 3}
-        onClick={handleSubmit}
+        onClick={() => dispatch(updateUser({ tags: selectedTags, _id: id }))}
       >
         Submit
       </button>
