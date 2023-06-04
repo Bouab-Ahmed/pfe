@@ -151,11 +151,11 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-      })
-      .addCase(updateUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-      }
-      );
+      });
+    // .addCase(updateUser.fulfilled, (state, action) => {
+    //   state.user = action.payload;
+    // }
+    // );
   },
 });
 
