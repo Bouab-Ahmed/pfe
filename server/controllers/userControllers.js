@@ -25,56 +25,37 @@ const getSingleUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const updates = req.body;
-  const userId = req.params.id;
-  let user = await User.findById(userId);
+  const { id } = req.params; // Get the user id from the parameters
+  const updates = req.body; // Get the updates from the request body
 
-  if (!user) {
-    throw new NotFoundError("User not found");
-  }
+  console.log(updates)
 
-  if (updates.tags) {
-    user.tags.push(...updates.tags);
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    // If updates contain tags, add new tags to the old ones
+    if (updates.tags) {
+      user.tags = [...user.tags, ...updates.tags];
+      delete updates.tags;
+    }
+
+    // Update the user with the remaining updates
+    Object.assign(user, updates);
     await user.save();
-  } else {
-    user = await User.findByIdAndUpdate(userId, updates, { new: true });
+
+    // If the user id is the logged-in user, update the cookies
+    if (req.user._id === id) {
+      const payload = { ...user._doc, password: undefined };
+      sendCookies(res, payload);
+    }
+
+    return res.status(200).send(payload);
+  } catch (err) {
+    return res.status(500).send(err);
   }
-
-  const {
-    _id,
-    name,
-    email,
-    role,
-    follower,
-    following,
-    profilePic,
-    activated,
-    accepted,
-    tags,
-    counter,
-    bio,
-  } = user;
-
-  const updatedUser = {
-    userId: _id,
-    _id,
-    name,
-    email,
-    role,
-    follower,
-    following,
-    profilePic,
-    activated,
-    accepted,
-    tags,
-    counter,
-    bio,
-  };
-
-  const payload = { ...updatedUser };
-  // sendCookies(res, payload);
-
-  res.status(StatusCodes.OK).json(payload);
 };
 
 const activateUser = async (req, res) => {

@@ -12,13 +12,6 @@ const Trending = () => {
   useEffect(() => {
     dispatch(getRandomPosts());
   }, []);
-
-  useEffect(() => {
-    if (isPostSuccess) {
-      console.log(posts);
-    }
-    // eslint-disable-next-line
-  }, [isPostSuccess]);
   
   if (path !== "/trending") {
     posts = posts.slice(0, 6);

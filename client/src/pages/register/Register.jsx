@@ -80,7 +80,7 @@ function Register() {
             <div className="mt-5 space-y-2">
               <p className="">
                 Already have an account?{" "}
-                <a href="/auth/register" className="font-medium text-primary">
+                <a href="/auth/login" className="font-medium text-primary">
                   Sign in
                 </a>
               </p>

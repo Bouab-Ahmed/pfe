@@ -6,7 +6,6 @@ import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user);
   if (user) {
     if (user.tags.length > 0) {
       return <Feeds />;
